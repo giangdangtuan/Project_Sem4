@@ -1,0 +1,203 @@
+<div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Add User</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" th:action="@{/user/add}" th:object="${dl}" id="formAddUser">
+          <input type="hidden" th:field="*{id}"/>
+          <div class="row">
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Email</label>
+                <input type="email" class="form-control" th:field="*{email}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group input-group-static my-3">
+                <label>Date</label>
+                <input type="date" class="form-control" th:field="*{dob}">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group input-group-static mb-4">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" th:field="*{phoneNo}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group input-group-static mb-4">
+                <label for="exampleFormControlSelect1" class="ms-0">Role</label>
+                <select class="form-control" th:field="*{role}">
+                  <option th:each="rl : ${listRole}" th:value="${rl.id}" th:text="${rl.name}"></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Password</label>
+                <input type="password" class="form-control" th:field="*{password}" id="password">
+              </div>
+            </div>
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" th:field="*{status}">
+                <label class="custom-control-label" for="customCheck1">Account active</label>
+              </div>
+            </div>
+          </div>
+        </form>      
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn bg-gradient-primary" form="formAddUser">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Xác minh mật khẩu cho form Add User
+  document.getElementById("formAddUser").addEventListener("submit", function(event) {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (password !== confirmPassword) {
+      event.preventDefault(); // Ngăn không cho form submit
+      alert("Password và Confirm Password phải giống nhau.");
+    }
+  });
+
+  // Xác minh mật khẩu cho form Update User
+  document.getElementById("formUpdateUser").addEventListener("submit", function(event) {
+    const password = document.getElementById("updatePassword").value;
+    const confirmPassword = document.getElementById("updateConfirmPassword").value;
+
+    if (password !== confirmPassword) {
+      event.preventDefault(); // Ngăn không cho form submit
+      alert("Password và Confirm Password phải giống nhau.");
+    }
+  });
+</script>
+
+
+<div class="modal fade" id="modalSua" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Update User</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn bg-gradient-primary" form="formUpdateUser">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Authors table</h6>
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-secondary" style="max-width: 200px; margin: 20px 0 10px 40px" data-toggle="modal" href="#modalAddUser"
+          data-target="#modalAddUser" data-original-title="Add user">Add User</button>
+          <script>
+            $('#modalAddUser').on('show.bs.modal', function (e) {
+
+
+                //populate the textbox
+                // $(e.currentTarget).find('input[name="id"]').val(id);
+            });
+          </script>
+        </div>
+        <div class="card-body px-0 pb-2" style="padding: 0;">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone number</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of birth</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="dl : ${ds}">
+                  <td>
+                    <div class="d-flex px-3 py-1">
+                      <span class="text-xs font-weight-bold mb-0" th:text="${dl.id}"></span>
+                    </div>
+                  </td>
+                  <td>
+                        <p class="text-xs font-weight-bold mb-0" th:text="${dl.email}">Giangbe291@gmail.com</p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.phoneNo}">0987654321</p>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold" th:text="${dl.dob}">23/04/18</span>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-success" th:text="${dl.status}">Online</span>
+                  </td>
+                  <td class="align-middle">
+                    <a class="text-secondary font-weight-bold text-xs" th:data-id="${dl.id}" data-toggle="modal" href="#modalSua"
+                    data-target="#modalSua" data-original-title="Edit user">
+                      Edit
+                    </a>
+                    &nbsp;
+                    <script>
+                      // https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
+                      // triggered when modal is about to be shown
+                      $('#modalSua').on('show.bs.modal', function (e) {
+
+                          //get data-id attribute of the clicked element
+                          var id = $(e.relatedTarget).data('id');
+
+                          $('#modalSua .modal-body').load("/user/updateajax?id="+id);
+
+                          //populate the textbox
+                          // $(e.currentTarget).find('input[name="id"]').val(id);
+                      });
+                    </script>
+                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs" th:href="@{/user/xoa(id=${dl.id})}">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

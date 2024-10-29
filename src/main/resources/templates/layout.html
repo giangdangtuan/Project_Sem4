@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BossTicket</title>
+<link rel="stylesheet" href="../static/css/layout.css" />
+<!-- For Brands -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css">
+<!-- For Regular -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/regular.min.css">
+<!-- For Solid -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+    <header style="background-color: white">
+      <nav style="height: 50px;">
+        <div class="logo">
+          <img src="assets/Logo64x64.png" alt="logo" />
+          <h1>LOGO</h1>
+        </div>
+        <ul style="float: right;margin-top: -30px;">
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Services</a>
+          </li>
+          <li>
+            <a href="#">Blog</a>
+          </li>
+          <li>
+            <a href="#">Contact Us</a>
+          </li>
+        </ul>
+        <div class="hamburger">
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
+      </nav>
+      <div class="menubar">
+        <ul>
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Services</a>
+          </li>
+          <li>
+            <a href="#">Blog</a>
+          </li>
+          <li>
+            <a href="#">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+  
+      <script src="script.js"></script>
+    </header>
+
+<div >
+  <i th:replace="${content}">
+  </i>
+</div>
+
+
+
+	<!-- footer section start -->
+  <footer id="footer" style="width: 100%">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+                   <div class="footer-about">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  </p>
+                    </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="useful-link">
+            <h2>Useful Links</h2>
+            <img src="./assets/images/about/home_line.png" alt="" class="img-fluid">
+            <div class="use-links">
+              <li><a href="index.html"><i class="fa-solid fa-angles-right"></i> Home</a></li>
+              <li><a href="about.html"><i class="fa-solid fa-angles-right"></i> About Us</a></li>
+              <li><a href="gallery.html"><i class="fa-solid fa-angles-right"></i> Gallery</a></li>
+              <li><a href="contact.html"><i class="fa-solid fa-angles-right"></i> Contact</a></li>
+            </div>
+          </div>
+
+        </div>
+                  <div class="col-md-3">
+                      <div class="social-links">
+            <h2>Follow Us</h2>
+            <img src="./assets/images/about/home_line.png" alt="">
+            <div class="social-icons">
+              <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
+              <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+              <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
+            </div>
+          </div>
+                  
+
+                  </div>
+        <div class="col-md-3">
+          <div class="address">
+            <h2>Address</h2>
+            <img src="./assets/images/about/home_line.png" alt="" class="img-fluid">
+            <div class="address-links">
+              <li class="address1"><i class="fa-solid fa-location-dot"></i> Kolathur ramankulam-
+                Malappuram Dt 
+                 Kerala 679338</li>
+                 <li><a href=""><i class="fa-solid fa-phone"></i> +91 90904500112</a></li>
+                 <li><a href=""><i class="fa-solid fa-envelope"></i> mail@1234567.com</a></li>
+            </div>
+          </div>
+        </div>
+                
+      </div>
+    </div>
+
+  </footer>
+ 
+</html>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+  const mobileNav = document.querySelector(".hamburger");
+const navbar = document.querySelector(".menubar");
+
+const toggleNav = () => {
+  navbar.classList.toggle("active");
+  mobileNav.classList.toggle("hamburger-active");
+};
+mobileNav.addEventListener("click", () => toggleNav());
+
+</script>
+<script>
+  async function fetchData() {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('/api/some-protected-resource', {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      });
+
+      if (response.ok) {
+          const data = await response.json();
+          // Xử lý dữ liệu
+          console.log(data);
+          // Hiển thị dữ liệu nếu cần
+          document.getElementById('data').innerHTML = JSON.stringify(data);
+      } else {
+          alert('Không có quyền truy cập hoặc token không hợp lệ.');
+          // Chuyển hướng về trang đăng nhập nếu token không hợp lệ
+          window.location.href = '/user/login'; // Thay đổi đường dẫn nếu cần
+      }
+  }
+
+  window.onload = function() {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+          // Nếu không có token, chuyển hướng về trang đăng nhập
+          window.location.href = '/login'; // Thay đổi đường dẫn nếu cần
+      } else {
+          // Nếu có token, bạn có thể xác thực nó với server
+          fetchData(); // Gọi hàm để lấy dữ liệu nếu cần
+      }
+  };
+</script>

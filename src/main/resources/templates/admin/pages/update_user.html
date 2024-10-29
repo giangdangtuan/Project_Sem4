@@ -1,0 +1,50 @@
+<form method="post" th:action="@{/user/sua}" th:object="${dl}" id="formUpdateUser">
+  <input type="hidden" th:field="*{id}" />
+  <div class="row">
+    <div class="col-md-6" style="padding: 16px">
+      <div class="input-group input-group-static mb-4">
+        <label>Email</label>
+        <input type="email" class="form-control" th:field="*{email}">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group input-group-static my-3">
+        <label>Date</label>
+        <input type="date" class="form-control" th:field="*{dob}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group input-group-static mb-4">
+        <label>Phone Number</label>
+        <input type="text" class="form-control" th:field="*{phoneNo}">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group input-group-static mb-4">
+        <label for="exampleFormControlSelect1" class="ms-0">Role</label>
+        <select class="form-control" th:field="*{role}">
+          <option th:each="rl : ${listRole}" th:value="${rl.id}" th:text="${rl.name}"></option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-7">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" th:field="*{status}">
+        <label class="custom-control-label" for="customCheck1">Account active</label>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" style="visibility: hidden;">
+        <label class="custom-control-label" for="customCheck1">Account active</label>
+      </div>
+    </div>
+  </div>
+  <div th:field="*{role}">
+    <input type="text" class="form-control" th:each="rl : ${listRole}" th:value="${rl.id}" th:text="${rl.name}">
+  </div>
+</form>

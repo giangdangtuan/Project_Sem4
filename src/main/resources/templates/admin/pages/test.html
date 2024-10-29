@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bổ sung Bootstrap CSS và JS nếu cần -->
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-6 mt-4">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Category table</h6>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category Name</th>
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="dh : ${ds}">
+                                    <td>
+                                        <div class="d-flex px-3 py-1">
+                                            <span class="text-xs font-weight-bold mb-0" th:text="${dh.id}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0" th:text="${dh.catname}"></p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a class="text-secondary font-weight-bold text-xs" th:data-id="${dh.id}" data-toggle="modal"
+                                            data-target="#modalSua" data-original-title="Edit user">
+                                            Edit
+                                        </a>
+                                        <a class="text-secondary font-weight-bold text-xs" data-toggle="modal" data-target="#modalXoa"
+                                            href="#modalXoa" th:data-id="${dh.id}">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mt-5">
+            <div class="card mb-4">
+                <div class="card-header pb-2 px-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="mb-0">Add Category</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-4 p-3">
+                    <form role="form" method="post" th:action="@{/category/them}" th:object="${dl}">
+                        <div class="input-group input-group-outline mb-3">
+                            <label class="form-label">Category Name</label>
+                            <input type="text" th:field="*{catname}" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa -->
+    <div class="modal" id="modalSua">
+        <!-- Nội dung Modal Sửa -->
+    </div>
+
+    <!-- Modal Xóa -->
+    <div class="modal" id="modalXoa">
+        <div class="modal-body">
+            <form action="/category/xoa" method="post">
+                <input type="hidden" name="id" id="deleteId" value="" />
+                <p>Bạn có chắc muốn xóa?</p>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="bi-x"></i> Hủy</button>
+                <button type="submit" class="btn btn-danger"><i class="bi-trash"></i> Xóa</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function() {
+            $('a[data-target="#modalXoa"]').on('click', function() {
+                var id = $(this).data('id');
+                $('#deleteId').val(id);
+            });
+        });
+    </script>
+</body>
+
+</html>

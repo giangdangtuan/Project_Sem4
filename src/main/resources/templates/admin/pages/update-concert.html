@@ -1,0 +1,187 @@
+<div class="row">
+    <div class="col-md-8 mt-4">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Billing Information</h6>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <form method="post" th:action="@{/concert/update}" th:object="${concert}" id="formUpdateConcert">
+              <input type="hidden" th:field="*{id}" />
+              <div class="row">
+                <div class="col-md-6" style="padding: 16px">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Name</label>
+                    <input type="text" class="form-control" th:field="*{name}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static my-3">
+                    <label>Duration</label>
+                    <input type="number" class="form-control" th:field="*{Duration}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Start Sale</label>
+                    <input type="date" class="form-control" th:value="${concert.startSale}" th:field="*{startSale}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>End Sale</label>
+                    <input type="date" class="form-control" th:field="*{endSale}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+
+                    <label>Start Date</label>
+                    <input type="date" class="form-control" th:field="*{startDate}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Video Link</label>
+                    <input type="text" class="form-control" th:field="*{videoLink}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label for="exampleFormControlSelect1" class="ms-0">Category</label>
+                    <select class="form-control" th:field="*{category_id}">
+                      <option th:each="cl : ${listCategory}" th:value="${cl.id}" th:text="${cl.catname}"></option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" th:field="*{status}">
+                    <label class="custom-control-label" for="customCheck1">Concert active</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <button type="submit" class="btn bg-gradient-primary" form="formUpdateConcert">Save changes</button>
+            <div class="container">
+              <ul class="list-group">
+                  <li class="list-group-item border-0 d-flex flex-column align-items-center p-4 mb-2 mt-3 bg-gray-100 border-radius-lg">
+                      <h2 style="margin-bottom: 3rem;">Sân Khấu</h2>
+                      <div id="seats">
+                          <div th:each="row : ${#numbers.sequence(1, 40)}" class="seat-row">
+                              <div th:each="seat : ${seats}" th:if="${seat.seat_row == row}">
+                                  <div style="margin: 5px;"
+                                       th:id="'seat-' + ${seat.id}"
+                                       class="seat"
+                                       th:text="${seat.row} + '-' + ${seat.seat_column}"
+                                       th:class="${seat.status ? 'occupied' : 'available'}"
+                                       th:onclick="'selectSeat(' + ${seat.id} + ', ' + ${seat.status} + ')'">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <button onclick="updateSeats()" class="btn bg-gradient-primary mt-3">Update Seat Status</button>
+                  </li>
+              </ul>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mt-4">
+        <div class="card h-100 mb-4">
+          <div class="card-header pb-0 px-3">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="mb-0">Concert Photos</h6>
+              </div>    
+            </div>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Main Photo</h6>          
+            <img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}" 
+                   alt="Ảnh Đại Diện" 
+                   style="max-width: 100px; max-height: 100px;" 
+                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+            <h6 class="text-uppercase text-body text-xs font-weight-bolder my-3">Yesterday</h6>
+            <img th:src="@{/images/{imageName}(imageName=${concert.subImage1})}" 
+                   alt="Ảnh Đại Diện" 
+                   style="max-width: 100px; max-height: 100px;" 
+                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+            <img th:src="@{/images/{imageName}(imageName=${concert.subImage2})}" 
+                   alt="Ảnh Đại Diện" 
+                   style="max-width: 100px; max-height: 100px;" 
+                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+            
+          </div>
+        </div>
+      </div>
+  </div>
+  <style>
+    .seat-row {
+        display: flex; /* Sắp xếp các ghế theo hàng ngang */
+    }
+    .seat {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+        text-align: center;
+        line-height: 30px;
+        border: 1px solid #000;
+        cursor: pointer;
+    }
+    .occupied {
+        background-color: red;
+        color: white;
+        cursor: not-allowed; /* Không cho phép nhấp vào ghế đã chiếm chỗ */
+    }
+    .available {
+        background-color: green;
+        color: white;
+    }
+    .selected {
+        background-color: yellow; /* Màu ghế đã chọn */
+        color: black; /* Màu chữ khi đã chọn */
+    }
+    
+</style>
+<script>
+    let selectedSeats = [];
+
+    function selectSeat(seatId, seatStatus) {
+        const seatElement = document.getElementById("seat-" + seatId);
+
+        if (selectedSeats.includes(seatId)) {
+            // Nếu ghế đã được chọn, bỏ chọn
+            selectedSeats = selectedSeats.filter(id => id !== seatId);
+            seatElement.classList.remove("selected");
+        } else {
+            // Nếu ghế chưa được chọn, chọn nó
+            selectedSeats.push(seatId);
+            seatElement.classList.add("selected");
+        }
+
+        console.log("Selected seats: ", selectedSeats); // Xem danh sách ghế đã chọn
+    }
+
+    function updateSeats() {
+        fetch('/concert/updateSeats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedSeats),
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url; // Redirect tới trang mới
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>

@@ -1,0 +1,115 @@
+<div class="row">
+    <div class="col-md-8 mt-4">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Add Concert</h6>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <form method="post" th:action="@{/addConcertAndSeats}" id="formAddConcert" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-6" style="padding: 16px">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Concert Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static my-3">
+                    <label>Duration</label>
+                    <input type="number" class="form-control" id="duration" name="duration" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Start Sale</label>
+                    <input type="date" class="form-control" id="startSale" name="startSale" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>End Sale</label>
+                    <input type="date" class="form-control" id="endSale" name="endSale" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Video Link</label>
+                    <input type="text" class="form-control" id="videoLink" name="videoLink">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Popularity</label>
+                      <input type="number" class="form-control" id="popularity" name="popularity">
+                    </div>
+                  </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label for="exampleFormControlSelect1" class="ms-0">Category</label>
+                    <select class="form-control" name="category_id">
+                      <option th:each="cl : ${listCategory}" th:value="${cl.id}" th:text="${cl.catname}"></option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Main Photo</label>
+                      <input type="file" class="form-control" id="mainImageFile" name="mainImageFile">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Sub Photo 1</label>
+                      <input type="file" class="form-control" id="subImageFile1" name="subImageFile1">
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Sub Photo 1</label>
+                      <input type="file" class="form-control" id="subImageFile2" name="subImageFile2">
+                    </div>
+                  </div>
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="status" name="status">
+                    <label class="custom-control-label" for="customCheck1">Concert active</label>
+                  </div>
+                </div>
+              </div>
+              <h6 class="mb-0">Add Seats</h6>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Total Rows</label>
+                      <input type="number" class="form-control" id="rows" name="rows" required>
+                    </div>
+                  </div>
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                        <label>Total Columns</label>
+                        <input type="number" class="form-control" id="columns" name="columns" required>
+                      </div>
+                </div>
+              </div>
+            </form>
+            <button type="submit" class="btn bg-gradient-primary" form="formAddConcert">Save changes</button>
+          </div>
+        </div>
+    </div>
+</div>
