@@ -31,16 +31,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
     }
 
-    @ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException e) {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+    // @ExceptionHandler(value = AccessDeniedException.class)
+    // ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException e) {
+    //     ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(errorCode.getMessage());
-        return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
+    //     ApiResponse apiResponse = new ApiResponse();
+    //     apiResponse.setCode(errorCode.getCode());
+    //     apiResponse.setMessage(errorCode.getMessage());
+    //     return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
 
-    }
+    // }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException e) {

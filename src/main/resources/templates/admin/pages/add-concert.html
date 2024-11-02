@@ -107,6 +107,22 @@
                       </div>
                 </div>
               </div>
+              <h4>Chọn Zone và Nhập Giá</h4>
+              <div th:each="zone, zoneStat : ${listZone}">
+                <input type="checkbox" th:name="zoneIds" th:value="${zone.id}"
+                    th:checked="${zone.name == 'standard'}" 
+                    th:disabled="${zone.name == 'standard'}" />
+                <label th:text="${zone.name}">Zone Name</label>
+            
+                <input type="number" th:name="prices" 
+                    placeholder="Nhập giá cho zone" 
+                    min="0" step="1000" 
+                    th:value="${zone.name == 'standard' ? null : ''}" /> <!-- Cho phép nhập giá cho zone standard -->
+                    <!-- Trường ẩn cho zone "standard" để lưu giá trị ID -->
+                <input type="hidden" th:name="zoneIds" th:value="${zone.id}" 
+                th:if="${zone.name == 'standard'}" />
+            </div>
+                    
             </form>
             <button type="submit" class="btn bg-gradient-primary" form="formAddConcert">Save changes</button>
           </div>

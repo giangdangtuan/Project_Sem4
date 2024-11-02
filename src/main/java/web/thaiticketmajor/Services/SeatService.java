@@ -44,5 +44,15 @@ public class SeatService {
         }
         seatRepository.saveAll(newSeats); // Lưu tất cả ghế mới vào cơ sở dữ liệu
     }
+
+    public Seat findById(Integer seatId) {
+        return seatRepository.findById(seatId)
+                .orElseThrow(() -> new RuntimeException("Ghế không tồn tại với ID: " + seatId));
+    }
+
+    // Lưu ghế
+    public Seat save(Seat seat) {
+        return seatRepository.save(seat);
+    }
 }
 

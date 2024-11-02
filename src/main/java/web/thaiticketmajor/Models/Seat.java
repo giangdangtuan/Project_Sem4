@@ -31,4 +31,18 @@ public class Seat
     @ManyToOne
     @JoinColumn(name = "zone_id",insertable=false,updatable=false)
     private Zone zone;
+
+    private int concertZone_id;
+
+    @ManyToOne
+    @JoinColumn(name = "concertZone_id",insertable=false,updatable=false)
+    private ConcertZone concertZone;
+
+    public String getColor() {
+        return this.concertZone.getZone().getColor();
+    }
+    
+    public int getConcertZone() {
+        return this.concertZone_id;
+    }
 }

@@ -16,17 +16,17 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        // ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
-        response.setStatus(errorCode.getStatusCode().value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // response.setStatus(errorCode.getStatusCode().value());
+        // response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ApiResponse<?> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(errorCode.getMessage());
+        // ApiResponse<?> apiResponse = new ApiResponse<>();
+        // apiResponse.setCode(errorCode.getCode());
+        // apiResponse.setMessage(errorCode.getMessage());
 
-        ObjectMapper mapper = new ObjectMapper();
-        response.getWriter().write(mapper.writeValueAsString(apiResponse));
-        response.flushBuffer();
+        // ObjectMapper mapper = new ObjectMapper();
+        // response.getWriter().write(mapper.writeValueAsString(apiResponse));
+        // response.flushBuffer();
     }
 }

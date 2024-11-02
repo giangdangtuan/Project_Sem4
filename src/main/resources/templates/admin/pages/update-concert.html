@@ -1,11 +1,51 @@
 <div class="row">
-    <div class="col-md-8 mt-4">
+    <div class="col-md-12 mt-4">
         <div class="card">
           <div class="card-header pb-0 px-3">
             <h6 class="mb-0">Billing Information</h6>
           </div>
-          <div class="card-body pt-4 p-3">
-            <form method="post" th:action="@{/concert/update}" th:object="${concert}" id="formUpdateConcert">
+          <div class="card-body pt-4 p-3" >
+            <form method="post" th:action="@{/concert/update}" th:object="${concert}" id="formUpdateConcert" enctype="multipart/form-data" style="display: flex;">
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-6">
+                      <div class="input-group input-group-static mb-4">
+                        <img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}" 
+                          alt="Ảnh Đại Diện" 
+                          style="width: 430px; height: 480px;" 
+                          onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+                        <label>Main Photo</label>
+                        <input type="file" class="form-control" id="mainImageFile" name="mainImageFile">
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <img th:src="@{/images/{imageName}(imageName=${concert.subImage1})}" 
+                        alt="Ảnh Đại Diện" 
+                        style="max-width: 100px; max-height: 100px;" 
+                        onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+                      <label>Sub Photo 1</label>
+                      <input type="file" class="form-control" id="subImageFile1" name="subImageFile1">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <img th:src="@{/images/{imageName}(imageName=${concert.subImage2})}" 
+                          alt="Ảnh Đại Diện" 
+                          style="max-width: 100px; max-height: 100px;" 
+                          onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+                      <label>Sub Photo 1</label>
+                      <input type="file" class="form-control" id="subImageFile2" name="subImageFile2">
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="row">
+                  
+                </div>
+              <div class="col-md-7" style="margin-left: 5rem;" >
               <input type="hidden" th:field="*{id}" />
               <div class="row">
                 <div class="col-md-6" style="padding: 16px">
@@ -66,64 +106,85 @@
                   </div>
                 </div>
               </div>
+              <h4>Chọn Zone và Nhập Giá</h4>
+              <div class="container">
+                <div class="row" th:each="zone : ${listZone}">
+                  <div class="form-check col-sm-4" style="margin-top: 2px;">
+                    <input class="form-check-input" type="checkbox" th:name="zoneIds" th:value="${zone.id}"
+                      th:disabled="${zone.name == 'standard'}" 
+                      th:checked="${concertZonePrices[zone.id] != null}" />
+                    <label class="custom-control-label" th:text="${zone.name}">Zone Name</label>
+                  </div>
+                  <div class="input-group input-group-static col-sm">
+                    <input type="number" class="form-control"th:name="prices" 
+                      th:value="${concertZonePrices[zone.id] != null ? concertZonePrices[zone.id] : ''}" 
+                      placeholder="Nhập giá cho zone" min="0" step="1000" />
+                    <input type="hidden" th:name="zoneIds" th:value="${zone.id}" 
+                         th:if="${zone.name == 'standard'}" />
+                  </div>
+                </div>
+              </div>
+              </div>
             </form>
-            <button type="submit" class="btn bg-gradient-primary" form="formUpdateConcert">Save changes</button>
+            <button type="submit" class="btn bg-gradient-primary" form="formUpdateConcert" style="margin: 35px 0px 0px 50px;">Save changes</button>
             <div class="container">
               <ul class="list-group">
                   <li class="list-group-item border-0 d-flex flex-column align-items-center p-4 mb-2 mt-3 bg-gray-100 border-radius-lg">
+                    <div class="mb-3">
+                      <label for="zoneSelect" class="form-label">Chọn Zone:</label>
+                      <select id="zoneSelect" class="form-select" aria-label="Chọn Zone">
+                        <option selected disabled>Chọn một zone</option>
+                        <th:block th:each="concertZone : ${concertZones}">
+                            <option th:value="${concertZone.id}" th:text="'Zone ' + ${concertZone.zone_id}"></option>
+                        </th:block>
+                    </select>                      
+                      
+                  </div>
                       <h2 style="margin-bottom: 3rem;">Sân Khấu</h2>
-                      <div id="seats">
-                          <div th:each="row : ${#numbers.sequence(1, 40)}" class="seat-row">
-                              <div th:each="seat : ${seats}" th:if="${seat.seat_row == row}">
-                                  <div style="margin: 5px;"
-                                       th:id="'seat-' + ${seat.id}"
-                                       class="seat"
-                                       th:text="${seat.row} + '-' + ${seat.seat_column}"
-                                       th:class="${seat.status ? 'occupied' : 'available'}"
-                                       th:onclick="'selectSeat(' + ${seat.id} + ', ' + ${seat.status} + ')'">
-                                  </div>
-                              </div>
-                          </div>
+
+                      <div th:fragment="seats">
+                        <div id="seats">
+                            <div th:each="row : ${#numbers.sequence(1, 40)}" class="seat-row">
+                                <div th:each="seat : ${seats}" th:if="${seat.seat_row == row}" style="margin: 0.5rem;">
+                                    <i
+                                        class="fas fa-couch"
+                                        th:style="|color: ${seat.status ? seat.getColor() : 'red'}|"
+                                        th:id="'seat-' + ${seat.id}"
+                                        th:onclick="'selectSeat(' + ${seat.id} + ', ' + ${seat.status} + ')'"
+                                    ></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div style="display: flex;">
+                      <button onclick="updateSeats()" class="btn bg-gradient-primary mt-3" style="margin-right: 10px;">Update Seat Status</button>
+                      <button onclick="changeZone()" class="btn bg-gradient-primary mt-3" style="margin-left: 10px;min-width: 171.58px">Update Zone</button>
                       </div>
-                      <button onclick="updateSeats()" class="btn bg-gradient-primary mt-3">Update Seat Status</button>
+                    </div>
                   </li>
               </ul>
           </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mt-4">
-        <div class="card h-100 mb-4">
-          <div class="card-header pb-0 px-3">
-            <div class="row">
-              <div class="col-md-6">
-                <h6 class="mb-0">Concert Photos</h6>
-              </div>    
-            </div>
-          </div>
-          <div class="card-body pt-4 p-3">
-            <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Main Photo</h6>          
-            <img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}" 
-                   alt="Ảnh Đại Diện" 
-                   style="max-width: 100px; max-height: 100px;" 
-                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
-            <h6 class="text-uppercase text-body text-xs font-weight-bolder my-3">Yesterday</h6>
-            <img th:src="@{/images/{imageName}(imageName=${concert.subImage1})}" 
-                   alt="Ảnh Đại Diện" 
-                   style="max-width: 100px; max-height: 100px;" 
-                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
-            <img th:src="@{/images/{imageName}(imageName=${concert.subImage2})}" 
-                   alt="Ảnh Đại Diện" 
-                   style="max-width: 100px; max-height: 100px;" 
-                   onerror="this.onerror=null; this.src='@{/images/error.png}';" />
-            
-          </div>
-        </div>
-      </div>
+      
   </div>
   <style>
+    #seats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
     .seat-row {
         display: flex; /* Sắp xếp các ghế theo hàng ngang */
+        justify-content: center; /* Căn giữa các ghế trong hàng */
+        width: 100%; /* Đảm bảo hàng ghế chiếm đủ chiều rộng của #seats */
+    }
+
+    .fa-couch {
+      font-size: 1.8rem;
     }
     .seat {
         display: inline-flex;
@@ -135,17 +196,16 @@
         border: 1px solid #000;
         cursor: pointer;
     }
-    .occupied {
-        background-color: red;
+    #occupied {
+        color: red;
         color: white;
         cursor: not-allowed; /* Không cho phép nhấp vào ghế đã chiếm chỗ */
     }
-    .available {
+    #available {
         background-color: green;
         color: white;
     }
     .selected {
-        background-color: yellow; /* Màu ghế đã chọn */
         color: black; /* Màu chữ khi đã chọn */
     }
     
@@ -154,34 +214,83 @@
     let selectedSeats = [];
 
     function selectSeat(seatId, seatStatus) {
-        const seatElement = document.getElementById("seat-" + seatId);
+      const seatElement = document.getElementById("seat-" + seatId);
+  
+      if (selectedSeats.includes(seatId)) {
+          // Nếu ghế đã được chọn, bỏ chọn và trả về màu ban đầu
+          selectedSeats = selectedSeats.filter(id => id !== seatId);
+          seatElement.classList.remove("selected");
+          seatElement.style.color = seatStatus ? seatElement.getAttribute("data-original-color") : "red";
+      } else {
+          // Nếu ghế chưa được chọn, chọn nó và đổi màu thành đen
+          selectedSeats.push(seatId);
+          seatElement.classList.add("selected");
+          seatElement.setAttribute("data-original-color", seatElement.style.color); // Lưu màu ban đầu
+          seatElement.style.color = "black"; // Đổi sang màu đen
+      }
+  
+      console.log("Selected seats: ", selectedSeats); // Kiểm tra danh sách ghế đã chọn
+  }
+  
 
-        if (selectedSeats.includes(seatId)) {
-            // Nếu ghế đã được chọn, bỏ chọn
-            selectedSeats = selectedSeats.filter(id => id !== seatId);
-            seatElement.classList.remove("selected");
-        } else {
-            // Nếu ghế chưa được chọn, chọn nó
-            selectedSeats.push(seatId);
-            seatElement.classList.add("selected");
-        }
+  function updateSeats() {
+    fetch('/concert/updateSeats', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedSeats),
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("seats").innerHTML = data; // Cập nhật nội dung trong div #seats
 
-        console.log("Selected seats: ", selectedSeats); // Xem danh sách ghế đã chọn
-    }
-
-    function updateSeats() {
-        fetch('/concert/updateSeats', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(selectedSeats),
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url; // Redirect tới trang mới
+        // Xóa các ghế đã chọn và đặt lại màu ban đầu
+        selectedSeats.forEach(seatId => {
+            const seatElement = document.getElementById("seat-" + seatId);
+            if (seatElement) {
+                seatElement.classList.remove("selected");
             }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        });
+        selectedSeats = [];
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function changeZone() {
+  const selectedZoneId = document.getElementById("zoneSelect").value;
+
+  if (selectedSeats.length === 0) {
+      alert("Vui lòng chọn ít nhất một ghế trước khi đổi zone.");
+      return;
+  }
+
+  fetch('/concert/changeZone', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ selectedSeatIds: selectedSeats, selectedZoneId: selectedZoneId }),
+  })
+  .then(response => response.text()) // Vẫn sử dụng response.text()
+  .then(data => {
+      document.getElementById("seats").innerHTML = data; // Cập nhật nội dung trong div #seats
+
+      // Xóa các ghế đã chọn và đặt lại màu ban đầu
+      selectedSeats.forEach(seatId => {
+          const seatElement = document.getElementById("seat-" + seatId);
+          if (seatElement) {
+              seatElement.classList.remove("selected"); // Bỏ chọn ghế
+              console.log("color:", seatElement.getAttribute("data-original-color"));
+          }
+      });
+      selectedSeats = [];
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+
+
+  
+  
 </script>

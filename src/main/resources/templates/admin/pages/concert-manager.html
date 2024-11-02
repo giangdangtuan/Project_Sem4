@@ -8,20 +8,17 @@
         </button>
       </div>
       <div class="modal-body">
-        <form role="form" action="/concert/delete" method="post" id="delete-concert">
-          <input type="hidden" name="id" value="id của bản ghi mình cần xóa" />
-          <p>
-              Bạn có chắc muốn xóa?
-          </p>
+        <input type="hidden" name="id" />
+        <p>Bạn có chắc muốn xóa?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn bg-gradient-danger">Delete</button>
+        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Delete</button>
       </div>
-      </form>
     </div>
   </div>
 </div>
+
 
  
  <div class="row">
@@ -51,6 +48,7 @@
                   </tr>
                 </thead>
                 <tbody>
+
                   <tr th:each="dl : ${ds}">
                     <td>
                       <div class="d-flex px-3 py-1">
@@ -89,17 +87,37 @@
                       Delete
                     </a>
                     <script>
-                      // https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
-                      //triggered when modal is about to be shown
+                        function setupDeleteButton() {
+                          $('#modalXoa').off('click', '.btn.bg-gradient-danger').on('click', '.btn.bg-gradient-danger', function() {
+                            $('#modalXoa').modal('hide'); // Ẩn modal
+                              var id = $('#modalXoa').find('input[name="id"]').val();
+                              
+                              $.ajax({
+                                  url: '/concert/delete',
+                                  type: 'POST',
+                                  data: {
+                                      id: id
+                                  },
+                                  success: function(response) {
+                                    alert(response); // Thông báo xóa thành công
+                                    $('tr:has(td:contains("'+ id +'"))').remove(); // Tìm hàng có ID tương ứng và xóa
+                                    $('#modalXoa').modal('hide');
+                                },
+                                  error: function(xhr, status, error) {
+                                      alert("Error deleting concert: " + error);
+                                  }
+                              });
+                          });
+                      }
+                      
                       $('#modalXoa').on('show.bs.modal', function (e) {
-
-                          //get data-id attribute of the clicked element
                           var id = $(e.relatedTarget).data('id');
-
-                          //populate the textbox
                           $(e.currentTarget).find('input[name="id"]').val(id);
+                          setupDeleteButton(); // Gọi hàm để thiết lập sự kiện mỗi khi modal mở
                       });
+                      
                   </script>
+                  
                     </td>
                   </tr>
                 </tbody>

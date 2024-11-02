@@ -33,4 +33,4 @@ public class Permission {
     //     inverseJoinColumns = @JoinColumn(name = "role_nam") // Khóa ngoại cho Role
     // )
     // Set<Role> roles; // Định nghĩa bên sở hữu
-}
+} 

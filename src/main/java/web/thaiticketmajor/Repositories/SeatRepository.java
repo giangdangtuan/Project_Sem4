@@ -13,6 +13,8 @@ import java.util.List;
 public interface SeatRepository extends JpaRepository<Seat, Integer> {
     List<Seat> findByConcertId(int concertId);
 
+    List<Seat> findByConcertZoneId(int concertZoneId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Seat s WHERE s.concert.id = :concertId")

@@ -91,23 +91,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="./pages/rtl.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-door-closed opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Room</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="./pages/notifications.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-couch opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Seat</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="./pages/notifications.html">
+          <a class="nav-link text-white " href="/zones">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-grip-horizontal opacity-10"></i>
             </div>
@@ -144,7 +128,7 @@
     </script>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
-        <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Log Out</a>
+        <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" onclick="logout()" type="button">Log Out</a>
       </div>
     </div>
   </aside>
@@ -646,6 +630,25 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
+  <script>
+    function logout() {
+        fetch('/user/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Điều hướng người dùng về trang đăng nhập sau khi đăng xuất
+                window.location.href = '/user/login';
+            } else {
+                alert("Có lỗi xảy ra khi đăng xuất.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

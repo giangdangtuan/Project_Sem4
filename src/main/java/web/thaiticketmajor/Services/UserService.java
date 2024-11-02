@@ -86,6 +86,20 @@ public class UserService
         this.userRepository.save(user);
     }
 
+    public void saveUser(User user)
+    {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        this.userRepository.save(user);
+    }
+
+    public void updateUser(User user)
+    {
+
+        this.userRepository.save(user);
+    }
+
+
     
     public void xóaUser(int id)
     {

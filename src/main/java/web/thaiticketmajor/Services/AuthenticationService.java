@@ -106,9 +106,9 @@
 
             var verified = signedJWT.verify(verifier);
 
-            if(!(verified && expityTime.after(new Date()))) {
-                throw new AppException(ErrorCode.UNAUTHORIZED);
-            }
+            // if(!(verified && expityTime.after(new Date()))) {
+            //     throw new AppException(ErrorCode.UNAUTHORIZED);
+            // }
 
             if(invalidatedTokenRepository
                     .existsById(signedJWT.getJWTClaimsSet().getJWTID()))
