@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import web.thaiticketmajor.Models.Category;
 import web.thaiticketmajor.Models.User;
 import web.thaiticketmajor.Repositories.UserRepository;
 
@@ -97,6 +98,27 @@ public class UserService
     {
 
         this.userRepository.save(user);
+    }
+
+    public User findUserByEmail(String email)//
+    {
+
+        User user = null;
+
+        Optional<User> optional = userRepository.findByEmail(email);
+
+        if// nếu
+        (optional.isPresent()) // tìm thấy bản ghi trong kho
+        {
+            user = optional.get();
+        } else// ngược lại
+        {
+            // throw new RuntimeException("Không tìm thấy thú cưng ! Ko tim thay thu cung
+            // !");
+        }
+
+        return user;
+
     }
 
 

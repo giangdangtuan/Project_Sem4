@@ -1,11 +1,282 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<div class="booking booking-seat">
+    <div class="booking-header">
+        <div class="box-bg">
+<div class="bg" style="background-image: url('/img_poster/prefix_1/0077/6077/in-a-memory-of-aod-keereeboon-66d821199b2c2-l.png');"></div>
+</div>
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-3 status-bar">
+                        <div class="inner">
+                            <h2 class="text-center text-lg-right">STEP <br class="d-none d-lg-block"> <span>2/4</span> Select seat</h2>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <div class="event-thumb align-self-center">
+                            <div class="row row-s">
+                                <div class="col-auto">
+                                    <div class="poster">
+                                        <img class="lazy" src="/img_poster/prefix_1/0077/6077/in-a-memory-of-aod-keereeboon-66d821199b2c2-l.png" alt="" style="display: block;">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h1 class="title">คิดถึง รณชัย ถมยาปริวัฒน์ IN A MEMORY OF AOD KEEREEBOON</h1>
+                                    <a href="#popup-event-detail" class="fancybox"><small><u>Detail</u> <i class="fa fa-angle-right" aria-hidden="true"></i></small></a>
+                                    <div class="divider-h"></div>
+                                    <div class="row-select-round form-row">
+                                        <div class="col-auto align-self-center">
+                                            <span>Show Round</span>
+                                        </div>
+                                        <div class="col-auto align-self-center">
+                                            <span>: Sat 16 Nov 2024 17:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div class="popup-event-detail" id="popup-event-detail">
+            <div class="box-content">
+                <p class="poster">
+                    <img src="/img_poster/prefix_1/0077/6077/in-a-memory-of-aod-keereeboon-66d821199b2c2-l.png" alt="">
+                </p>
+                <h1>คิดถึง รณชัย ถมยาปริวัฒน์ IN A MEMORY OF AOD KEEREEBOON</h1>
+                <h2>Venue</h2>
+                <p>
+                    JJ HALL, 6th Fl. JJ MALL
+                </p>
+                <h2>Promoter</h2>
+                <p>
+                    บริษัท คลาสส์ซี่ เรคคอร์ดส์ จำกัด
+                </p>
+            </div>
+            <div class="box-bg">
+                <div class="bg" style="background-image: url('/img_poster/prefix_1/0077/6077/in-a-memory-of-aod-keereeboon-66d821199b2c2-l.png');">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-body bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col seat-map-container">
+                    <div class="seat-map">
+                        <div class="seat-map-info">
+                            <!-- SEAT TYPE -->
+                            <ul class="seat-type">
+                                <li>
+                                    <span class="ico" style="background-color: #C98F8E;"></span>
+                                    <span class="txt">2,500</span>
+                                </li>
+                                <li>
+                                    <span class="ico" style="background-color: #FFFF80;"></span>
+                                    <span class="txt">3,500</span>
+                                </li>
+
+                                <li>
+                                    <span class="ico ico-seat-select"><img src="/assets/img/icon/seat-select.svg" alt=""></span>
+                                    <span class="txt">Selected Seat(s)</span>
+                                </li>
+                                <li>
+                                    <span class="ico ico-not-available"><img src="/assets/img/icon/seat-not-available.svg" alt=""></span>
+                                    <span class="txt txt-red">Not Available</span>
+                                </li>
+                            </ul>
+                            <!-- / SEAT TYPE -->
+                        </div>
+                        <div class="seat-map-stage">
+                            <span class="txt">STAGE</span>
+                        </div>
+                        <div class="seat-map-body" style="height: 491px;">
+                            <div th:fragment="seats">
+                                <div id="seats">
+                                    <div th:each="row : ${#numbers.sequence(1, 40)}" class="seat-row">
+                                        <div th:each="seat : ${seats}" th:if="${seat.seat_row == row}" style="margin: 0.5rem;">
+                                            <i
+                                                class="fas fa-couch"
+                                                th:style="|color: ${seat.status ? seat.getColor() : 'red'}|"
+                                                th:id="'seat-' + ${seat.id}"
+                                                th:onclick="selectSeat([[${seat.id}]], [[${seat.seat_row}]], [[${seat.seat_column}]], [[${seat.status}]], [[${seat.getPrice()}]])"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col booking-sidebar">
+                    <div class="booking-sidebar-space" style="max-height: 110px; height: 0px;"></div>
+                    <div class="inner" style="width: 290px;">
+                        <h3 class="head">Booking details</h3>
+                        <ul class="booking-summary">
+                            <li class="row row-img">
+                                <a href="javascript:void(0);" class="img-zone-thumb" onclick="$app.booking.expandZoneThumb();"><img src="/booking/thumbnails/MAP624/a1.gif"></a>
+                            </li>
+                            <li class="row">
+                                <span class="label">Show Round</span>
+                                <span class="result">Sat 16 Nov 2024 17:00</span>
+                            </li>
+                            <li class="row">
+                                <span class="label">Status</span>
+                                <span class="result">
+                                    <span class="txt-label txt-green">Available</span>
+                                </span>
+                            </li>
+                            <li class="row">
+                                <span class="label">Price</span>
+                                <span class="result" id="price_selected">2,500</span>
+                            </li>
+                            <li class="row">
+                                <span class="label">Number of seats</span>
+                                <span class="result" id="total_selected">2</span>
+                            </li>
+                            <li class="row">
+                                <span class="label">Seat number</span>
+                                <span class="result" id="seat_selected"></span>
+                            </li>
+                        </ul>
+                        
+                        <div class="row">
+                            <div class="col d-block d-lg-none">
+                                <p class="d-block d-lg-none">
+                                    <a href="javascript:void(0);" class="btn-collapse" onclick="$app.booking.expandDetail();">
+                                        <span><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                    </a>
+                                </p>
+                                </div>
+                                <div class="col-auto col-lg-12">
+                                <p>
+                                    <a onclick="bookSeats()" class="btn-red btn-main-action w-auto d-inline-block d-lg-block" id="booknow"><span>Book Now</span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #seats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
     
-</body>
-</html>
+    .seat-row {
+        display: flex; /* Sắp xếp các ghế theo hàng ngang */
+        justify-content: center; /* Căn giữa các ghế trong hàng */
+        width: 100%; /* Đảm bảo hàng ghế chiếm đủ chiều rộng của #seats */
+    }
+
+    .fa-couch {
+      font-size: 1.8rem;
+    }
+    .seat {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+        text-align: center;
+        line-height: 30px;
+        border: 1px solid #000;
+        cursor: pointer;
+    }
+    #occupied {
+        color: red;
+        color: white;
+        cursor: not-allowed; /* Không cho phép nhấp vào ghế đã chiếm chỗ */
+    }
+    #available {
+        background-color: green;
+        color: white;
+    }
+    .selected {
+        color: black; /* Màu chữ khi đã chọn */
+    }
+    
+</style>
+
+<script>
+    let selectedSeats = [];
+    let totalPrice = 0;
+
+    function selectSeat(seatId, seatRow, seatColumn, seatStatus, seatPrice) {
+        const seatElement = document.getElementById("seat-" + seatId);
+        const seatLabel = `${seatRow}-${seatColumn}`; // Định dạng row-column
+
+        if (selectedSeats.some(seat => seat.id === seatId)) {
+            // Nếu ghế đã được chọn, bỏ chọn và trả về màu ban đầu
+            selectedSeats = selectedSeats.filter(seat => seat.id !== seatId);
+            seatElement.classList.remove("selected");
+            seatElement.style.color = seatStatus ? seatElement.getAttribute("data-original-color") : "red";
+            totalPrice -= seatPrice; // Trừ giá ghế khỏi tổng
+        } else {
+            // Nếu ghế chưa được chọn, chọn nó và đổi màu thành đen
+            selectedSeats.push({ id: seatId, label: seatLabel, price: seatPrice });
+            seatElement.classList.add("selected");
+            seatElement.setAttribute("data-original-color", seatElement.style.color); // Lưu màu ban đầu
+            seatElement.style.color = "black"; // Đổi sang màu đen
+            totalPrice += seatPrice; // Cộng giá ghế vào tổng
+        }
+
+        // Cập nhật hiển thị danh sách ghế đã chọn theo định dạng "row-column"
+        const selectedSeatLabels = selectedSeats.map(seat => seat.label).join(", ");
+        document.getElementById("seat_selected").innerText = selectedSeatLabels;
+
+        // Cập nhật hiển thị tổng giá
+        document.getElementById("price_selected").innerText = totalPrice.toLocaleString();
+
+        console.log("Selected seats: ", selectedSeats); // Kiểm tra danh sách ghế đã chọn
+    }
+
+    function bookSeats() {
+        // Lấy danh sách ghế đã chọn từ sessionStorage
+        const selectedSeatIds = JSON.parse(sessionStorage.getItem('selectedSeatIds'));
+    
+        if (selectedSeatIds) {
+            // Gửi POST request với dữ liệu ghế đã chọn
+            fetch('/concert/payment', {
+                method: 'POST',  // Đảm bảo dùng phương thức POST
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seatIds: selectedSeatIds }),  // Gửi dữ liệu qua body
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Lỗi server: ' + response.statusText);
+                }
+                return response.text(); // Xử lý dữ liệu trả về
+            })
+            .then(data => {
+                console.log("Dữ liệu từ server:", data);
+                // Sau khi nhận được dữ liệu, bạn có thể chuyển hướng tới trang thanh toán
+                window.location.href = "/concert/payment";
+            })
+            .catch(error => {
+                console.error("Lỗi khi gửi yêu cầu POST:", error);
+            });
+        } else {
+            console.error("Không có ghế nào được chọn!");
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+</script>

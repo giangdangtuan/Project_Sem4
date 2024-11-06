@@ -79,9 +79,10 @@ public class ConcertService {
                 seat.setSeat_column(String.valueOf(j));
                 seat.setSeat_row(i);
                 seat.setZone_id(1);
-                seat.setStatus(false);
+                seat.setStatus(true);
                 seat.setConcertZone_id(standardZoneId); // Đặt ID ConcertZone là ID của zone "standard"
-                seat.setConcert_id(concert.getId()); // Gán concert_id từ savedConcert
+                seat.setConcert_id(concert.getId());
+                seat.setBooked(false); // Gán concert_id từ savedConcert
                 seats.add(seat);
             }
         }

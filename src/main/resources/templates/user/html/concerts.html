@@ -1,239 +1,180 @@
-<div class="slideshow-container"  th:each="image, iterStat : ${ds.images}">
-
-  <div class="mySlides fade">
-    <img th:src="@{${image.img}}" alt="chua co anh" style="width:100%">
-  </div>
-  
-  <a class="prev" onclick="plusSlides(-1)">❮</a>
-  <a class="next" onclick="plusSlides(1)">❯</a>
-
-</div>
-<br>
- 
-<div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span>
-  <span class="dot" onclick="currentSlide(2)"></span>
-  <span class="dot" onclick="currentSlide(3)"></span>
-</div>
-
-<br>
-<div class="container" id="container" style="height: 314px">
-  <div class="Centered">
-    <div class="grid-container">
-      <div class="grid-item" th:each="concert : ${ds.concerts}" id="item">
-        <div class="grid-item" th:each="image : ${ds.images}">
-          <img th:src="@{${image.img}}" alt="Image" style="width: 100%; height: auto">
-          <div class="title" th:text="${concert.name}"></div>
-          <div class="detail" th:text="${concert.duration}"></div>
-          <div class="detail" th:text="${concert.startSale}"></div>
-          <div class="detail" th:text="${concert.endSale}"></div>
-          <a th:href="@{/concert/xem/{id}(id=${concert.id})}"><button>Buy now</button></a>
+<section class="section-highlight" style="background-color: black;">
+    <div class="inner">
+        <div class="row">
+            <!-- highlight v2 -->
+            <div class="box-herobanner">
+                <section class="herobanner">
+                    <!--fix slide the match 02-04-2022 -->
+                    <!-- begin event -->
+                    <div class="item"><a
+                            href="/performance/gaan-sa-daeng-kohn-dton-phaa-jak-ra-va-tarn.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=KhonPhraJakrawatarn"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/0013/3013/highlight_ttmevent_3013-66da798834aea.png"
+                                alt="การแสดงโขนมูลนิธิส่งเสริมศิลปาชีพฯ ตอน พระจักราวตาร"
+                                title="การแสดงโขนมูลนิธิส่งเสริมศิลปาชีพฯ ตอน พระจักราวตาร" style="display: block;"></a>
+                    </div>
+                    <!-- end event -->
+                    <!-- begin event -->
+                    <div class="item"><a
+                            href="/performance/uppoompat-fanmeet-2024-lets-grow-up-together.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=UppoompatFanmeet2024"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/0084/3084/highlight_ttmevent_3084-671a19c46d842.png"
+                                alt="GO HAIR ORIGINAL PRESENTS Uppoompat Fanmeet 2024 ตอน Let's Grow Up Together"
+                                title="GO HAIR ORIGINAL PRESENTS Uppoompat Fanmeet 2024 ตอน Let's Grow Up Together"
+                                style="display: block;"></a></div>
+                    <!-- end event -->
+                    <!-- begin merchandise -->
+                    <div class="item"><a
+                            href="https://shopping.thaiticketmajor.com/brand/5093_OfficialBandMerchandise/?utm_source=ttm-index&amp;utm_medium=banner&amp;utm_campaign=T-shirt-gigmerch-EDSHEERAN#band-ED%20SHEERAN"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/2570/2570/highlight_ttmevent_2570-65518f55e5030.jpg"
+                                alt="ED SHEERAN | Official Band Merchandise"
+                                title="ED SHEERAN | Official Band Merchandise" style="display: block;"></a></div>
+                    <!-- end merchandise -->
+                    <!-- begin event -->
+                    <div class="item"><a
+                            href="/concert/best-of-fujii-kaze-2020-2024-asia-tour-in-bangkok.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=BestOfFujiKaze20-24BKK"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/2988/2988/highlight_ttmevent_2988-66cc2bad851e7.jpg"
+                                alt="Best of Fujii Kaze 2020-2024 ASIA TOUR in Bangkok"
+                                title="Best of Fujii Kaze 2020-2024 ASIA TOUR in Bangkok" style="display: block;"></a>
+                    </div>
+                    <!-- end event -->
+                    <!-- begin event -->
+                    <div class="item show"><a
+                            href="/sport/one-170.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=ONE170"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/0090/3090/highlight_ttmevent_3090-671731ce5a954.jpg"
+                                alt="ONE 170" title="ONE 170" style="display: block;"></a></div>
+                    <!-- end event -->
+                    <!-- begin event -->
+                    <div class="item"><a
+                            href="/concert/soundabout-mountain-fest-2.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=SoundaboutMountainFest2"><img
+                                class="hb-img"
+                                src="/img_event/highlight/prefix_1/2968/2968/highlight_ttmevent_2968-66bb0d01189e0.png"
+                                alt="BBLAM presents Soundabout Mountain Fest 2"
+                                title="BBLAM presents Soundabout Mountain Fest 2" style="display: block;"></a></div>
+                    <!-- end event -->
+                </section>
+                <div class="hb-dots"><a class="item" href="javascript:void(0);" data-slide="0">1</a><a class="item"
+                        href="javascript:void(0);" data-slide="1">2</a><a class="item" href="javascript:void(0);"
+                        data-slide="2">3</a><a class="item" href="javascript:void(0);" data-slide="3">4</a><a
+                        class="item active" href="javascript:void(0);" data-slide="4">5</a><a class="item"
+                        href="javascript:void(0);" data-slide="5">6</a></div><button class="hb-arrow hb-prev"
+                    type="button"></button><button class="hb-arrow hb-next" type="button"></button>
+            </div>
+            <div class="box-side-banner">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <div class="banner-container">
+                        <div class="box-boombox">
+                            <!-- /116117570/TTM_R1 -->
+                            <div id="div-gpt-ad-1509596340131-0" style="height:250px; width:300px;">
+                                <script>
+                                    googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509596340131-0'); });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-12">
+                    <section class="subbanner slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <div class="slick-track"
+                                style="opacity: 1; width: 300px; transform: translate3d(0px, 0px, 0px);"><a
+                                    target="_blank" class="item slick-slide slick-current slick-active"
+                                    href="https://www.facebook.com/ThaiTicketMajor" data-slick-index="0"
+                                    aria-hidden="false" tabindex="0" style="width: 300px;"><img
+                                       
+                                        th:src="@{/image/highlight_ttmevent_48-5bd056d5795ca.jpg}"
+                                        alt="ติดตามอัพเดทข้อมูลข่าวสารได้ที่ facebook"
+                                        title="ติดตามอัพเดทข้อมูลข่าวสารได้ที่ facebook"></a></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</section>
+
+<div class="tabbox">
+    <div class="box-head-select-cate">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="tb-select head-event-select-cate">
+                        <li class="active"><a onclick="ga('send','event','Tab','click','HOT EVENTS');"
+                                href="javascript:void(0);"><span><img class="icon" th:src="@{/image/fire.svg}"
+                                        alt="fire"><span class="txt">Hot Sale</span></span></a></li>
+                        <li><a onclick="ga('send','event','Tab','click','COMING SOON');"
+                                href="javascript:void(0);"><span><img class="icon"
+                                    th:src="@{/image/coming-soon.svg}" alt="coming-soon"><span class="txt">On sale</span></span></a></li>
+                        <li><a href="javascript:;"><span><span class="icon"><img th:src="@{/image/ticket.svg}"
+                                            alt=""></span><span class="txt">TTM LIVE <span
+                                            class="badge badge-new txtSmaller v-top mt-1">NEW</span></span></span></a>
+                        </li>
+                        <!--li>
+                            <a href="javascript:;">
+                                <span>
+                                    <span class="icon"><img src="/assets/img/live/play.svg" alt=""></span><span class="txt">TTM LIVE <span class="badge badge-new txtSmaller v-top mt-1">NEW</span></span>
+                                </span>
+                            </a>
+                        </li-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Search Bar -->
+                <input type="text" id="searchInput" placeholder="Search events..." class="form-control mb-3">
+                <!-- HOT EVENTS -->
+                <div class="tb-item box-collapse expand active">
+                    <div class="row" id="eventGrid">
+                        <div class="col-6 col-md-4 col-lg-2 event-item" th:each="dl : ${ds}" id="item">
+                            <div class="event-item-content">
+                                <a class="box-img" th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                                    <img class="lazy" style="width: 100%; height: 100%;" th:src="@{/images/{imageName}(imageName=${dl.mainImage})}" alt="Banner Image">
+                                </a>
+                                <div class="box-txt">
+                                    <a class="title" th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                                        <div class="title" th:text="${dl.name}"></div>
+                                    </a>
+                                    <span class="datetime">
+                                        <span>
+                                            <div class="detail" th:text="${dl.startSale}"></div>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="box-btn">
+                                    <a th:href="@{/concert/detail/{id}(id=${dl.id})}" class="btn-buynow">
+                                        <small>Buy now</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TTM LIVE -->
+            </div>
+        </div>
+    </div>
+    
 </div>
-<button id="see-more">See More</button>
-
-<style>
-  * {
-    box-sizing: border-box
-  }
-
-  /* Slideshow container */
-  .slideshow-container {
-    max-width: 1000px;
-    position: relative;
-    margin: auto;
-  }
-
-
-  /* Next & previous buttons */
-  .prev,
-  .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-  }
-
-  /* Position the "next button" to the right */
-  .next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-  }
-
-  /* On hover, add a black background color with a little bit see-through */
-  .prev:hover,
-  .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  /* Caption text */
-  .text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Number text (1/3 etc) */
-  .numbertext {
-    color: #f2f2f2;
-    font-size: 12px;
-    padding: 8px 12px;
-    position: absolute;
-    top: 0;
-  }
-
-  /* The dots/bullets/indicators */
-  .dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-  }
-
-  .active,
-  .dot:hover {
-    background-color: #717171;
-  }
-
-  /* Fading animation */
-  .fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
-  }
-
-  @keyframes fade {
-    from {
-      opacity: .4
-    }
-
-    to {
-      opacity: 1
-    }
-  }
-
-  .title {
-    font-size: 24px;
-    /* Larger font for title */
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .detail {
-    font-size: 18px;
-    /* Slightly smaller for details */
-    color: #666;
-    margin-bottom: 8px;
-  }
-
-  .container {
-    padding: 20px;
-    overflow: hidden;
-  }
-
-
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    /* Optional: Adds space between grid items */
-  }
-
-  .grid-item {
-    width: 100%;
-    height: auto;
-    text-align: center;
-    overflow: hidden;
-    padding-bottom: 20px;
-  }
-
-  .buy-button {
-    background-color: #007bff;
-    /* Example color */
-    color: white;
-    border: none;
-    padding: 0.5em 1em;
-    text-decoration: none;
-  }
-
-  .buy-button:hover {
-    background-color: #0056b3;
-    /* Darker shade on hover */
-  }
-
-  #see-more {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-  }
-
-  #see-more:hover {
-    background-color: #0056b3;
-  }
-</style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var divHeight = document.getElementById("item").offsetHeight;
-    var button = document.getElementById('see-more');
-    var container = document.getElementById('container');
-    var initialHeight = container.offsetHeight;
-    var increment = divHeight; // Amount to increment the height by
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var filter = this.value.toLowerCase();
+        var eventItems = document.querySelectorAll('.event-item');
 
-    button.addEventListener('click', function () {
-      var currentHeight = container.offsetHeight;
-      container.style.height = (currentHeight + increment) + 'px';
+        eventItems.forEach(function(item) {
+            var title = item.querySelector('.title').innerText.toLowerCase();
+            if (title.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
     });
-  });
-
-  
-let slideIndex = 0;
-showSlides();
-
-function showSlides() {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 2000); // Change image every 2 seconds
-} // Change image every 5 
 </script>

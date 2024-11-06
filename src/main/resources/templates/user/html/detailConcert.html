@@ -1,240 +1,689 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Details</title>
-</head>
+<main class="main-container " role="main" th:object="${concert}">
+	<div class="event-billboard" style="padding-top: 300px;">
+		<div class="bg clear">
+			<div class="img">
+				<img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}">
+			</div>
+		</div>
+		<div class="content" style="background-color: rgba(0, 0, 0, 0.6);">
+			<div class="row justify-content-center" style="">
+				<div class="col-12 col-md col-img" style="margin-left: 10rem; position: relative;">
+					<div class="box-img" style="position: absolute; top: -300px ; width: 210px;">
+						<img style="height: 300px;" th:src="@{/images/{imageName}(imageName=${concert.mainImage})}"
+							alt="image">
+						<!-- countdown html -->
+						<div class="box-ten-countdown" style="display:none;">
+							<div class="box-num">
+								<div class="num"></div>
+							</div>
+						</div>
+						<!-- / countdown html -->
 
-<body>
-  <div class="content container">
-    <div class="container">
-      <div class="col-12 col-md col-img">
+					</div>
 
-        <div class="box-img">
-          <img src="https://www.imgonline.com.ua/examples/jpeg-artifacts.jpg" title="">
-        </div>
-      </div>
-      <div class="col-12 col-md">
-        <div class="box-txt">
-          <div class="row">
-            <div class="col-12">
-              <h1 class="title">Knock Knock Knock :<br>BUS 1st THAILAND FANCON TOUR</h1>
-            </div>
-          </div>
-          <div class="container2">
-            <div class="col-12 col-md">
-              <ul class="event-detail-list">
-                <li class="item">
-                  <i class="fa-regular fa-calendar-check"></i>
-                  <p class="txt">
-                    <small>วันที่แสดง</small>
-                    <span>hehe 29 กันยายน 2567 - hehe 27 ตุลาคม 2567</span>
-                  </p>
-                </li>
-                <li class="item">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="txt">
-                    <small>สถานที่แสดง</small>
-                    <span>ขอนแก่น / โคราช / สงขลา (หาดใหญ่) / ชลบุรี (ศรีราชา) / เชียงใหม่</span>
+					<div class="box-btn-ticket">
 
-                  </p>
-                </li>
-                <li class="item">
-                  <i class="fa-regular fa-clock"></i>
-                  <p class="txt">
-                    <small>ประตูเปิด</small>
-                    <span>ก่อนการแสดงเริ่มประมาณ 1 ชั่วโมง</span>
-                  </p>
-                </li>
-              </ul>
-            </div>
-            <div class="col-12 col-md-6 col-overlay" style="float: right;">
-              <ul class="event-detail-list">
-                <li class="item">
-                  <img class="icon" src="/assets/img/icon/calendar-sale-white.svg" alt="calendar-sale-white">
-
-                  <p class="txt">
-
-                    <small>วันเปิดจำหน่าย</small>
-
-                    <span>วันเสาร์ที่ 31 สิงหาคม 2567, 10:00 น.</span>
-                  </p>
-                </li>
-                <li class="item">
-                  <img class="icon" src="/assets/img/icon/price.svg" alt="price">
-                  <div class="txt">
-                    <a href="javascript:void(0);" onclick="$app.fn.goto('#section-event-round');">
-                      <small>ราคาบัตร</small>3,500 / 3,500 / 3,000 / 3,000 / 2,500 / 2,500 / 2,000 / 2,000 / 1,200 /
-                      1,200 <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-
-                  </div>
-                </li>
-                <li class="item">
-                  <img class="icon" src="/assets/img/icon/ticket-bold-white.svg" alt="ticket-bold-white">
-                  <p class="txt">
-                    <small>Ticket Status</small>
+						<a th:href="@{/concert/xem/{id}/map(id=${concert.id})}" onclick="$app.fn.goto('#section-event-round');"
+							class="btn-red btn-buynow btn-item">
+							<span>GET TICKET</span><i class="fa fa-angle-down icon right txtBig" aria-hidden="true"></i>
+						</a>
+					</div>
 
 
-                    <span class="ticket-status inline not-available"><span>SOLD OUT</span></span>
-
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-
-</html>
-
-<style>
-  .box-txt {
-    padding-left: 10%;
-  }
-
-  .container {
-    display: flex;
-    align-items: stretch;
-  }
-
-  .image {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .container2 {
-    display: flex;
-    align-items: stretch;
-  }
 
 
-  .footer {
-    display: flex;
-    flex-flow: row wrap;
-    padding: 30px 30px 20px 30px;
-    color: #ffffff;
-    background-color: #2f2f2f;
-    border-top: 1px solid #e5e5e5;
-  }
+				</div>
+				<div class="col-12 col-md">
+					<div class="box-txt">
+						<div class="row">
+							<div class="col-12">
+								<p><a href="/performance/"><small>performance</small></a></p>
+								<h1 class="title" th:text="${concert.name}"></h1>
+							</div>
+						</div>
+						<div class="row row-detail">
+							<div class="col-12 col-md">
+								<ul class="event-detail-list">
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/calendar-white.svg}"
+											alt="calendar-white">
+										<p class="txt">
+											<small>Show Date</small>
+											<span>Saturday 9 November 2024 - Sunday 10 November 2024</span>
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/pin-linear-white.svg}"
+											alt="pin-linear-white">
+										<p class="txt">
+											<small>Venue</small>
+											<span><a href="/venue/bravo-bkk.html" target="_blank">MGI HALL, BRAVO
+													BKK</a> / </span>
+											<span><a href="/venue/live-streaming-by-ttm-live.html" target="_blank">Live
+													Streaming by TTM LIVE</a> </span>
 
-  .footer>* {
-    flex: 1 100%;
-  }
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/clock-white.svg}" alt="clock-white">
+										<p class="txt">
+											<small>Gate Open</small>
+											<span>Approx. 1 hr. before show start.</span>
+										</p>
+									</li>
+								</ul>
+							</div>
+							<div class="col-12 col-md">
+								<ul class="event-detail-list">
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/calendar-sale-white.svg}"
+											alt="calendar-sale-white">
 
-  .footer__addr {
-    margin-right: 1.25em;
-    margin-bottom: 2em;
-  }
+										<p class="txt">
 
-  .footer__logo {
-    font-family: 'Pacifico', cursive;
-    font-weight: 0;
-    text-transform: lowercase;
-    font-size: 2rem;
-  }
+											<small>Public Sale</small>
 
-  .footer__addr h2 {
-    margin-top: 1.3em;
-    font-size: 50px;
-    font-weight: 400;
-  }
+											<span>Sunday 20 October 2024, 10:00</span>
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/price.svg}" alt="price">
+										<div class="txt">
+											<a href="javascript:void(0);"
+												onclick="$app.fn.goto('#section-event-round');">
+												<small>Ticket Price</small>MGI HALL 5,900 / 4,900 / 3,900 / 3,500 /
+												2,900 / 1,900<br>LIVE STREAMING 890 <i class="fa fa-angle-down"
+													aria-hidden="true"></i></a>
+
+										</div>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/ticket-bold-white.svg}"
+											alt="ticket-bold-white">
+										<p class="txt">
+											<small>Ticket Status</small>
 
 
-  .footer address {
-    font-style: normal;
-    color: #999;
-  }
+											<span class="ticket-status inline available"><span>ON SALE NOW</span></span>
 
-  .footer__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 36px;
-    max-width: max-content;
-    background-color: rgb(33, 33, 33, 0.07);
-    border-radius: 100px;
-    color: #2f2f2f;
-    line-height: 0;
-    margin: 0.6em 0;
-    font-size: 2rem;
-    padding: 0 1.3em;
-  }
+										</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-event-btn">
+			<div class="box-item box-share">
+				<div class="box">
+					<span>Share</span>
+					<a href="javascript:void(0);" class="item facebook" title="Facebook Share"
+						onclick="$app.fn.share('facebook');"></a>
+					<a href="javascript:void(0);" class="item twitter" title="Tweet"
+						onclick="$app.fn.share('twitter');"></a>
+					<a href="javascript:void(0);" class="item line" title="Line It"
+						onclick="$app.fn.share('line');"></a>
+				</div>
+			</div>
+			<div class="box-item box-btn-favorite">
+				<a href="javascript:void(0);" class="btn-favorite" data-btn="active" data-fav="6118"
+					onclick="$app.member.favorite('86190d272d2692391c5fdf3bbac1e165','6118',this);"
+					title="Favorite this Event"></a>
+			</div>
+		</div>
+	</div>
+	<div class="event-info-bar">
+		<div class="container">
+			<div class="row">
+				<div class="col-auto col-button align-self-center">
+					<div class="box-btn-ticket">
 
-  .footer ul {
-    list-style: none;
-    padding-left: 0;
-  }
+						<a href="javascript:;" onclick="$app.fn.goto('#section-event-round');"
+							class="btn-red btn-buynow btn-item">
+							<span>GET TICKET</span><i class="fa fa-angle-down icon right txtBig" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col col-info">
+					<div class="row">
+						<div class="col-title align-self-center">
+							<span class="title txt-item">Butterbear's 1st Fam Meeting Adventure Awaits!</span>
+						</div>
+						<div class="col-auto align-self-center">
+							<a class="txt-item" href="/venue/bravo-bkk.html" target="_blank"><img class="icon"
+									th:src="@{/image/icon/pin-linear-white.svg}" alt="MGI HALL, BRAVO BKK"
+									title="MGI HALL, BRAVO BKK">MGI HALL, BRAVO BKK</a>
+							<a class="txt-item" href="/venue/live-streaming-by-ttm-live.html" target="_blank"><img
+									class="icon" th:src="@{/image/icon/pin-linear-white.svg}"
+									alt="Live Streaming by TTM LIVE" title="Live Streaming by TTM LIVE">Live Streaming
+								by TTM LIVE</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-event-btn">
+			<div class="box-item box-share">
+				<div class="box">
+					<span>Share</span>
+					<a href="javascript:void(0);" class="item facebook" title="Facebook Share"
+						onclick="$app.fn.share('facebook');"></a>
+					<a href="javascript:void(0);" class="item twitter" title="Tweet"
+						onclick="$app.fn.share('twitter');"></a>
+					<a href="javascript:void(0);" class="item line" title="Line It"
+						onclick="$app.fn.share('line');"></a>
+				</div>
+			</div>
+			<div class="box-item box-btn-favorite">
+				<a href="javascript:void(0);" class="btn-favorite" data-btn="active" data-fav="6118"
+					onclick="$app.member.favorite('86190d272d2692391c5fdf3bbac1e165','6118',this);"
+					title="Favorite this Event"></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg-8">
+				<article class="event-detail">
 
-  .footer li {
-    line-height: 2em;
-  }
 
-  .footer a {
-    text-decoration: none;
-  }
+					<section class="section" id="section-event-round">
+						<h2 class="head">Seating Plan &amp; Show date </h2>
 
-  .footer__nav {
-    display: flex;
-    flex-flow: row wrap;
-  }
+						<div class="body">
+							<!-- EVENT ROUND -->
 
-  .footer__nav>* {
-    flex: 1 50%;
-    margin-right: 1.25em;
-  }
+				
+					
 
-  .nav__ul a {
-    color: #999;
-  }
 
-  .nav__ul--extra {
-    column-count: 2;
-    column-gap: 1.25em;
-  }
+						</div>
+					</section>
 
-  .legal {
-    display: flex;
-    flex-wrap: wrap;
-    color: #999;
-  }
+					<section class="section detail">
+						<h2 class="head">Detail</h2>
+						<div class="body">
+							<p>
+							</p>
+							<table border="1" cellpadding="0" cellspacing="0" style="width: 761px;" width="100%">
+								<tbody>
+									<tr>
+										<td style="width: 134px;">
+											Event Name</td>
+										<td style="width: 474px;" th:text="${concert.name}">
+											</td>
+									</tr>
+									<tr>
+										<td >
+											Show Date</td>
+										<td th:text="${concert.startSale}">
+											</td>
+									</tr>
+									<tr>
+										<td>
+											Show Time</td>
+										<td>
+											05:00 PM&nbsp;</td>
+									</tr>
+									<tr>
+										<td>
+											Venue</td>
+										<td>
+											MGI HALL, BRAVO BKK</td>
+									</tr>
+									<tr>
+										<td>
+											Sale date<br>
+											<br>
+											<br>
+											&nbsp;
+										</td>
+										<td>
+											Sunday 20 October 2024 from 10:00 AM onwards at www.thaiticketmajor.com
+											only<br>
+											Queue system on website start from 9.00 AM.<br>
+											<br>
+											and start selling at all counters on Monday 21 October 2024&nbsp;from 10.00
+											AM or Call Center +662-262-3456
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Ticket Price</td>
+										<td>
+											5,900 / 4,900 / 3,900 / 3,500 / 2,900 / 1,900&nbsp;</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<img alt="" src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20seating%20plan.jpg"
+								style="width: 800px; height: 1000px;"><br>
+							<br>
+							<img alt="" src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20fambenefit.jpg"
+								style="width: 800px; height: 1000px;"><br>
+							<br>
+							<img alt=""
+								src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20fambenefit%20condition%20ENG%20CH.jpg"
+								style="width: 800px; height: 1000px;"><br>
+							<div>
+								<br>
+								<img alt=""
+									src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20Guest%209%20Nov.jpg"
+									style="width: 800px; height: 1000px;"><br>
+								<br>
+								<strong><img alt=""
+										src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20Guest%2010%20Nov.jpg"
+										style="width: 800px; height: 1000px;"></strong><br>
+								<br>
+								<strong>Remarks:</strong><br>
+								- The maximum purchase per order is&nbsp;4 tickets.<br>
+								- &nbsp;You must provide the full name that matches the ID card or passport of each
+								attendee for every seat, and it must be in Thai or English only. The name provided will
+								be printed on the ticket. Please ensure the full name is accurate before making payment.
+								The name on the ticket cannot be changed under any circumstances.<br>
+								- Children over 100 cm tall must have a ticket to attend the show.<br>
+								<div>
+									<div>
+										- The ticket price above does not include 50 baht of the ticketing and plastic
+										ticket fee.</div>
+								</div>
+								<div>
+									- Payment method by credit card, debit card, Shopee Pay,True Wallet, Alipay, WeChat
+									Pay (There will be 3% of processing fee) / K Pay Plus, BBL iBanking (There will be
+									0.5% of c&nbsp;processing&nbsp;fee).</div>
+								- Use paper ticket to attend the show. Plastic ticket will be souvenir and pick up at
+								the venue on show date.<br>
+								- Please beware of swindler who may come in various ways including selling booking
+								information or booking code, selling the tickets from unofficial market or impersonating
+								to be a staff. This may be a fake ticket.<br>
+								- Using or distributing the tickets for advertising or publicity without the permission
+								of the Company is considered to be illegal.<br>
+								- For resell ticket in higher prices. If we check and find evidence of wrongdoing, the
+								company will cancel your reservation in case of unpaid or cancel your ticket in case of
+								paid and return the ticket to the system for resell.<br>
+								<br>
+								More info : Social Media Butterbear.th and 4NOLOGUE<br>
+								<br>
+								<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+									笔记 :</p>
+								- 购买限制：每单限购4件。<br>
+								-
+								您必须提供每位参与者的身份证或护照上的全名，以与每个座位匹配，并且必须仅使用泰语或英语。提供的姓名将打印在票上。在付款之前，请确保姓名的准确性。票上的姓名在任何情况下都不能更改。<br>
+								- 超过100厘米高的儿童必须购票入场。<br>
+								- 票价不包含卡片发放费和塑料卡发放费，每张卡50泰铢。<br>
+								- 可通过信用卡、借记卡、Shopee Pay、True Wallet、Alipay、WeChat Pay（手续费3%）、K Pay Plus、BBL
+								iBanking（手续费0.5%）进行付款。<br>
+								- 请使用纸质门票入场，并在活动现场领取纪念塑料票。<br>
+								- 请注意各种形式的诈骗，如接受票务预订、提供预订代码、在系统外买卖票、假冒公司员工等。<br>
+								- 未经公司许可，禁止转售或将卡片用于广告或宣传用途，否则视为违法。<br>
+								- 禁止以高于原价的价格转售门票，若检查发现有违法行为，公司有权在未付款的情况下取消预订，或在付款后作废该卡，并将其重新投放系统进行销售。<br>
+								<br>
+								<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+									如需进一步了解详情或咨询，请通过社交媒体联系 Butterbear.th 和 4NOLOGUE。</p>
+							</div>
+							<div>
+								<hr>
+							</div>
+							<div style="text-align: center;">
+								<br>
+								<strong>LIVE STREAMING &amp; RERUN</strong>
+							</div>
+							<div>
+								<table border="1" cellpadding="1" cellspacing="1" style="width: 100%">
+									<tbody>
+										<tr>
+											<td>
+												Streaming Platform<span style="white-space: pre;"> </span>:</td>
+											<td>
+												TTM LIVE</td>
+										</tr>
+										<tr>
+											<td>
+												Ticket Prices<span style="white-space: pre;"> </span>:</td>
+											<td>
+												<div>
+													890 Baht (Link and Code)<br>
+													910 Baht&nbsp;(Link and Code + Plastic souvenir card + Photocard)
+													(Delivery fee will be applied)</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Dates :</td>
+											<td>
+												9-10 November 2024</td>
+										</tr>
+										<tr>
+											<td>
+												Showtime :</td>
+											<td>
+												<div>
+													5 p.m. (ICT)</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<br>
+							<img alt="" src="https://www.thaiticketmajor.com/cmsimg/imgeditor/r%20Live%20streaming.jpg"
+								style="width: 800px; height: 1000px;"><br>
+							<br>
+							<div>
+								<strong>Ticket terms for Live Streaming:</strong>
+							</div>
+							<div>
+								1. The maximum purchase per order is 10 tickets.<br>
+								2. Customers who purchase tickets through any channel will receive a link and code for
+								watching Live show via email registered with Thai Ticket Major within 24 hours. Please
+								check your inbox or call 02 262 3456 if you have not received the email within 24
+								hours.<br>
+								3.&nbsp;Tickets are priced at 890 baht per show for the live streaming on either
+								Saturday 9th November 2024 or Sunday, 10th November 2024, with the performance starting
+								at 5:00 PM (ICT), depending on the date of your purchase. The viewing link will be
+								accessible at least 30 minutes before the showtime.<br>
+								4.&nbsp;Live streaming tickets must be watched at the specified time and are not
+								available for a rerun.<br>
+								5. Ticket prices exclude the Thai Ticket Major service fee of 30 baht per ticket. For a
+								plastic ticket and photocard, there will be an additional fee of 20 baht per ticket. The
+								purchaser is responsible for paying the shipping costs.<br>
+								6. Payment method by credit card, debit card, Shopee Pay,True Wallet, Alipay, WeChat Pay
+								(There will be 3% of processing fee) / K Pay Plus, BBL iBanking (There will be 0.5% of
+								c&nbsp;processing&nbsp;fee).<br>
+								7. Purchases/items with the status "Purchase" cannot be canceled or refunded.<br>
+								<br>
+								直播门票条款<br>
+								1. 每单最多可购买10张门票。<br>
+								2. 通过任何渠道购买门票的顾客，将在24小时内通过注册的Thai Ticket Major邮箱收到观看直播的链接和代码。请检查您的收件箱，若24小时内未收到邮件，请致电 02
+								262 3456。<br>
+								3.
+								门票价格为每场890泰铢，适用于2024年11月9日（星期六）或2024年11月10日（星期日）的直播表演，表演开始时间为当地时间下午5:00，具体取决于您的购买日期。观看链接将在演出开始前至少30分钟提供。<br>
+								4. 直播门票只能在指定时间观看，无法重播。<br>
+								5. 门票价格不包括每张票30泰铢的Thai Ticket Major服务费。如果需要塑料票和照片卡，每张票额外加收20泰铢，购买者需自行支付运费。<br>
+								6. 可通过信用卡、借记卡、Shopee Pay、True Wallet、Alipay、WeChat Pay支付（将收取3%的手续费），或通过K Pay Plus、BBL
+								iBanking支付（将收取0.5%的手续费）。<br>
+								7. 显示“已购买”状态的购买/项目无法取消或退款。
+							</div>
+							<br>
+							<div>
+								<strong>Instructions for watching Live Streaming</strong>
+							</div>
+							<div>
+								1. Customers can watch live streaming by following the link and code provided in the
+								email that the customer provides when purchasing the ticket.</div>
+							<div>
+								2. A single code can only be used to log in to one device at a time.</div>
+							<div>
+								3. Customers can watch via internet-connected devices such as mobile phones, computers,
+								and smart TVs.</div>
+							<div>
+								4. Please update your browser to the most recent version.</div>
+							<div>
+								5. Video quality is up to 1080p resolution.</div>
+							<div>
+								6. A minimum internet speed of 10Mbps is recommended for a smooth viewing experience.
+								Streaming over public sharing internet may result in interruptions even if the internet
+								speed is greater than 10Mbps.</div>
+							<div>
+								7. It is not permitted to record, republish, or live broadcast through channels other
+								than&nbsp;<a href="http://www.thaiticketmajor.com"
+									target="_blank">www.thaiticketmajor.com</a></div>
+							<div>
+								8. The viewing experience, including image and sound quality, may be affected by network
+								quality, user environment, and other external factors.<br>
+								<br>
+								观看直播说明<br>
+								1. 顾客可以通过购票时提供的电子邮件中的链接和代码观看直播。<br>
+								2. 一个代码一次只能用于一个设备登录。<br>
+								3. 顾客可以通过连接互联网的设备观看，如手机、电脑和智能电视。<br>
+								4. 请将您的浏览器更新到最新版本。<br>
+								5. 视频质量最高可达1080p分辨率。<br>
+								6. 建议使用至少10Mbps的网速以确保流畅观看。通过公共网络进行流媒体播放，即使网速超过10Mbps，也可能会导致中断。<br>
+								7. 禁止通过www.thaiticketmajor.com以外的渠道进行录制、重新发布或直播。<br>
+								8. 观看体验（包括图像和声音质量）可能会受到网络质量、用户环境和其他外部因素的影响。
+							</div>
+							<p></p>
 
-  .legal__links {
-    display: flex;
-    align-items: center;
-  }
+						</div>
+					</section>
+					<section class="section event-info">
+						<div class="group">
+							<ul class="box-tag">
+								<li>
+									<h3 class="head">Tags :</h3>
+								</li>
+								<li><a href="/tag/ผจญภัยไปกับเนย" class="tag">ผจญภัยไปกับเนย</a></li>
+								<li><a href="/tag/Butterbears1stFamMeeting" class="tag">Butterbears1stFamMeeting</a>
+								</li>
+								<li><a href="/tag/AdventureAwaits" class="tag">AdventureAwaits</a></li>
+								<li><a href="/tag/ด้อมน้องเนย" class="tag">ด้อมน้องเนย</a></li>
+								<li><a href="/tag/Butterbear" class="tag">Butterbear</a></li>
+								<li><a href="/tag/4NOLOGUE" class="tag">4NOLOGUE</a></li>
 
-  .heart {
-    color: #2f2f2f;
-  }
+							</ul>
+						</div>
 
-  @media screen and (min-width: 24.375em) {
-    .legal .legal__links {
-      margin-left: auto;
-    }
-  }
+						<div class="group">
+							<ul class="box-payment-channel">
+								<li>
+									<h3 class="head">Distribution Channel :</h3>
+								</li>
+								<li>
 
-  @media screen and (min-width: 40.375em) {
-    .footer__nav>* {
-      flex: 1;
-    }
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/faq.php#buy-website"
+										class="tag"><img th:src="@{/image/icon/desktop.svg}" alt="Website"
+											title="Website"><span class="txt">Website</span></a>
 
-    .nav__item--extra {
-      flex-grow: 2;
-    }
+								</li>
+								<li>
 
-    .footer__addr {
-      flex: 1 0px;
-    }
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php"
+										class="tag"><img src="/assets/img/logo_ttm.png" alt="Thaiticketmajor Outlets"
+											title="Thaiticketmajor Outlets"><span class="txt">Thaiticketmajor
+											Outlets</span></a>
 
-    .footer__nav {
-      flex: 2 0px;
-    }
-  }
-</style>
+								</li>
+								<li>
+
+									<a target="_blank"
+										href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-4"
+										class="tag"><img src="/assets/img/logo_thaipost.png" alt="Thai Post"
+											title="Thai Post"><span class="txt">Thai Post</span></a>
+
+								</li>
+								<li>
+
+									<a target="_blank"
+										href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-3"
+										class="tag"><img src="/assets/img/logo_major.png" alt="Major Cineplex Outlets"
+											title="Major Cineplex Outlets"><span class="txt">Major Cineplex
+											Outlets</span></a>
+
+								</li>
+								<li>
+
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/contact-us.php"
+										class="tag"><img th:src="@{/image/icon/call-center.svg}"
+											alt="Call Center TTM 02-2623456" title="Call Center TTM 02-2623456"><span
+											class="txt">Call Center TTM 02-2623456</span></a>
+
+								</li>
+								<li>
+
+									<a target="_blank"
+										href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-7"
+										class="tag"><img src="/assets/img/logo_bigc.png" alt="Big C" title="Big C"><span
+											class="txt">Big C</span></a>
+
+								</li>
+								<li>
+
+									<a href="javascript:void(0);" class="tag"><img src="/assets/img/logo_or.png"
+											alt="xplORe" title="xplORe"><span class="txt">xplORe</span></a>
+
+								</li>
+
+							</ul>
+						</div>
+					</section>
+
+
+
+
+					<section class="section banner-container">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="box-boombox">
+									<!-- /116117570/TTM_R7 -->
+									<div id="div-gpt-ad-1536565353572-0" style="height:250px; width:300px;">
+										<script>
+											googletag.cmd.push(function () { googletag.display('div-gpt-ad-1536565353572-0'); });
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="box-boombox">
+									<!-- /116117570/TTM_R3_300_250 -->
+									<div id="div-gpt-ad-1509597507078-0" style="height:250px; width:300px;">
+										<script>
+											googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509597507078-0'); });
+										</script>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</section>
+
+
+
+				</article>
+			</div>
+
+
+
+
+
+			<!-- SIDE BAR -->
+			<div class="col-12 col-lg-4">
+				<section class="event-detail-sidebar">
+					<!-- BOOMBOX -->
+					<div class="banner-container">
+						<div class="box-boombox">
+							<!-- /116117570/TTM_R1 -->
+							<div id="div-gpt-ad-1509596340131-0" style="height:250px; width:300px;">
+								<script>
+									googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509596340131-0'); });
+								</script>
+							</div>
+						</div>
+					</div>
+					<!-- BOOMBOX -->
+					<!-- SHOPPING -->
+					<!-- / SHOPPING -->
+					<!-- DOUBLE BOOMBOX -->
+					<!-- / DOUBLE BOOMBOX -->
+					<!-- TRAVEL -->
+					<!-- / TRAVEL -->
+					<!-- BOOMBOX -->
+					<div class="banner-container">
+						<div class="col-12">
+							<div class="box-boombox">
+								<!-- /116117570/TTM_R2 -->
+								<div id="div-gpt-ad-1509597274858-0" style="height:250px; width:300px;">
+									<script>
+										googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509597274858-0'); });
+									</script>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- BOOMBOX -->
+				</section>
+			</div>
+			<!-- / SIDE BAR -->
+
+
+
+
+
+		</div>
+	</div>
+
+
+
+
+	<!-- SECTION PROMOTION -->
+	<!-- / SECTION PROMOTION -->
+
+
+
+
+	<!-- SECTION RECENTLY VIEWED -->
+
+	<section class="section-personalize">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-3 col-lg-2 box-header-section">
+					<div class="header-section side">
+						<h2 class="head">RECENTLY<br>VIEWED</h2>
+					</div>
+				</div>
+				<div class="col-12 col-md-9 col-lg-10">
+					<div class="event-container dark event-personalize-slider slick-initialized slick-slider">
+						<div class="slick-list draggable">
+							<div class="slick-track"
+								style="opacity: 1; width: 332px; transform: translate3d(0px, 0px, 0px);">
+								<div class="col slick-slide slick-current slick-active" data-slick-index="0"
+									aria-hidden="false" tabindex="0" style="width: 166px;">
+									<div class="event-item no-mg no-bg">
+										<a class="box-img"
+											href="https://www.thaiticketmajor.com/performance/butterbears-1st-fam-meeting-adventure-awaits.html"
+											tabindex="0">
+											<img alt="Butterbear's 1st Fam Meeting Adventure Awaits!" class=""
+												src="/img_poster/prefix_1/0118/6118/butterbears-1st-fam-meeting-adventure-awaits-670f277fc5de2-l.jpg"
+												style="opacity: 1;">
+										</a>
+										<div class="box-txt">
+											<a class="title"
+												href="https://www.thaiticketmajor.com/performance/butterbears-1st-fam-meeting-adventure-awaits.html"
+												tabindex="0">Butterbear's 1st Fam Meeting Adventure Awaits!</a>
+										</div>
+									</div>
+								</div>
+								<div class="col slick-slide slick-active" data-slick-index="1" aria-hidden="false"
+									tabindex="0" style="width: 166px;">
+									<div class="event-item no-mg no-bg">
+										<a class="box-img"
+											href="https://www.thaiticketmajor.com/concert/thailand-phil-2024-25-season.html"
+											tabindex="0">
+											<img alt="Thailand Phil 2024-2025 Season" class=""
+												src="/img_poster/prefix_1/0123/6123/thailand-phil-2024-25-season-6710bddbd89f9-l.jpg"
+												style="opacity: 1;">
+										</a>
+										<div class="box-txt">
+											<a class="title"
+												href="https://www.thaiticketmajor.com/concert/thailand-phil-2024-25-season.html"
+												tabindex="0">Thailand Phil 2024-2025 Season</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		$(document).ready(function () {
+			$app.slider.eventPersonalize();
+		});
+	</script>
+	<iframe id="favorite-animation" src="https://www.thaiticketmajor.com/animation/favorite/index.html" width="100%"
+		height="100%" frameborder="0" style="display:none;"></iframe>
+</main>

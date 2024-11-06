@@ -25,30 +25,45 @@ public class ApplicationInitConfig {
     private RoleRepository roleRepository;
 
     @Bean
-ApplicationRunner applicationRunner(UserRepository userRepository) {
-    return args -> {
-        // Kiểm tra nếu người dùng admin chưa tồn tại
-        if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
-            // Tìm role "SUPER_ADMIN" dựa trên tên
+    ApplicationRunner applicationRunner(UserRepository userRepository) {
+        return args -> {
             Optional<Role> superAdminRoleOpt = roleRepository.findByName("SUPER_ADMIN");
-            Role superAdminRole = superAdminRoleOpt.orElseThrow(() -> 
-                new RuntimeException("Role 'SUPER_ADMIN' not found")
-            );
+            if (superAdminRoleOpt.isEmpty()) {
+                Role superAdminRole = new Role();
+                superAdminRole.setName("SUPER_ADMIN");
+                roleRepository.save(superAdminRole);
+                log.info("Role 'SUPER_ADMIN' has been created.");
+            }
 
-            // Tạo người dùng admin mới
-            User user = new User();
-            user.setEmail("admin@gmail.com");
-            user.setPassword(passwordEncoder.encode("admin")); // Mã hóa mật khẩu
- // Gán vai trò cho người dùng
-            user.setDob(LocalDate.now()); // Đặt ngày sinh (nếu cần)
-            user.setRole_id(1L);
-            user.setPhoneNo("099999999"); // Đặt số điện thoại (nếu cần)
-            user.setStatus(true); // Đặt trạng thái (nếu cần)
+            Optional<Role> UserRoleOpt = roleRepository.findByName("USER");
+            if (UserRoleOpt.isEmpty()) {
+                Role userRole = new Role();
+                userRole.setName("USER");
+                roleRepository.save(userRole);
+                log.info("Role 'USER' has been created.");
+            }
 
-            // Lưu người dùng vào cơ sở dữ liệu
-            userRepository.save(user);
-            log.warn("Admin user has been created. Please ensure to change the default password.");
-        }
-    };
-}
+            // Kiểm tra nếu người dùng admin chưa tồn tại
+            if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
+                // Tìm role "SUPER_ADMIN" dựa trên tên
+                Role superAdminRole = superAdminRoleOpt
+                        .orElseThrow(() -> new RuntimeException("Role 'SUPER_ADMIN' not found"));
+
+                // Tạo người dùng admin mới
+                User user = new User();
+                user.setEmail("admin@gmail.com");
+                user.setPassword(passwordEncoder.encode("admin")); // Mã hóa mật khẩu
+                // Gán vai trò cho người dùng
+                user.setDob(LocalDate.now()); // Đặt ngày sinh (nếu cần)
+                user.setCreated_at(LocalDate.now());
+                user.setRole_id(superAdminRole.getId());
+                user.setPhoneNo("099999999"); // Đặt số điện thoại (nếu cần)
+                user.setStatus(true); // Đặt trạng thái (nếu cần)
+
+                // Lưu người dùng vào cơ sở dữ liệu
+                userRepository.save(user);
+                log.warn("Admin user has been created. Please ensure to change the default password.");
+            }
+        };
+    }
 }

@@ -1,5 +1,6 @@
 package web.thaiticketmajor.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -139,14 +140,14 @@ public class CategoryController
     }
 
     @PostMapping("/category/them")
-    public String postThem(@ModelAttribute("Category") Category dl, RedirectAttributes redirectAttributes) {
+    public String postThem(@ModelAttribute("Category") Category cat, RedirectAttributes redirectAttributes) {
         // System.out.print("save action...");
         
         //@todo sửa chỗ này đi
-        //dl.setNgayTao(LocalDate.now());
-        //dl.setNgaySua(LocalDate.now());
+        cat.setCreated_at(LocalDate.now());
+        // dl.setNgaySua(LocalDate.now());
         
-        dvl.lưuCategory(dl);
+        dvl.lưuCategory(cat);
 
         // Gửi thông báo thành công từ view Add/Edit sang view List
         session.setAttribute("message", "Đã hoàn tất việc thêm mới !");
@@ -169,14 +170,12 @@ public class CategoryController
         return "admin/pages/sua-cat-modal.html"; // layout.html
     }
     @PostMapping("/category/sua")
-    public String postSua(@ModelAttribute("Category") Category dl) 
+    public String postSua(@ModelAttribute("Category") Category cat) 
     {
-        
-        dvl.lưuCategory(dl);
-        // dvl.luu(dl);
+        cat.setCreated_at(cat.getCreated_at());
+        cat.setUpdate_at(LocalDate.now());
 
-        // Gửi thông báo thành công từ view Add/Edit sang view List
-        session.setAttribute("message", "Đã hoàn tất việc cập nhật !");
+        dvl.lưuCategory(cat);
 
         return "redirect:/category/duyet";
     }

@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" th:action="@{/user/add}" th:object="${dl}" id="formAddUser">
+        <form method="post" th:action="@{/admin/add-user}" th:object="${dl}" id="formAddUser">
           <input type="hidden" th:field="*{id}"/>
           <div class="row">
             <div class="col-md-6" style="padding: 16px">
@@ -84,16 +84,6 @@
     }
   });
 
-  // Xác minh mật khẩu cho form Update User
-  document.getElementById("formUpdateUser").addEventListener("submit", function(event) {
-    const password = document.getElementById("updatePassword").value;
-    const confirmPassword = document.getElementById("updateConfirmPassword").value;
-
-    if (password !== confirmPassword) {
-      event.preventDefault(); // Ngăn không cho form submit
-      alert("Password và Confirm Password phải giống nhau.");
-    }
-  });
 </script>
 
 
@@ -127,7 +117,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form role="form" action="/user/delete" method="post" id="delete-user" th:object="${dl}">
+        <form role="form" action="/admin/delete-user" method="post" id="delete-user" th:object="${dl}">
           <input type="hidden" name="id" value="id của bản ghi mình cần xóa" />
           <p>
               Bạn có chắc muốn xóa ?

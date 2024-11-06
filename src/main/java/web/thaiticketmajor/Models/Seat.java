@@ -38,11 +38,21 @@ public class Seat
     @JoinColumn(name = "concertZone_id",insertable=false,updatable=false)
     private ConcertZone concertZone;
 
+    private boolean booked;
+
     public String getColor() {
         return this.concertZone.getZone().getColor();
     }
     
     public int getConcertZone() {
         return this.concertZone_id;
+    }
+
+    public double getPrice() {
+        return this.concertZone.getPrice();
+    }
+
+    public String getConcert() {
+        return this.concert.getName();
     }
 }

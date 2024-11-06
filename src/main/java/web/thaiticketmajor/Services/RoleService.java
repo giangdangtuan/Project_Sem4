@@ -43,6 +43,26 @@ public class RoleService {
         return roleRepository.findById(id); // Sử dụng Optional để tránh NullPointerException
     }
 
+    public Role findByName(String name) {
+
+        Role role = null;
+
+        Optional<Role> optional = roleRepository.findByName(name);
+
+        if// nếu
+        (optional.isPresent()) // tìm thấy bản ghi trong kho
+        {
+            role = optional.get();
+        } else// ngược lại
+        {
+            //throw new RuntimeException("Không tìm thấy thú cưng ! Ko tim thay thu cung !");
+        }
+
+        return role; 
+        
+        // Sử dụng Optional để tránh NullPointerException
+    }
+
     public Role update(Role role) {
         // Kiểm tra xem role có tồn tại không trước khi cập nhật
         if (!roleRepository.existsById(role.getId())) {

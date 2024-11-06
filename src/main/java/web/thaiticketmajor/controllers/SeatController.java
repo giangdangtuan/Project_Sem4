@@ -39,10 +39,6 @@ public class SeatController {
         return ResponseEntity.ok().build();
     }
 
-    
-
-
-
 
     @PostMapping("/add")
     public ResponseEntity<Void> addSeats(@RequestParam int rows, @RequestParam int columns) {

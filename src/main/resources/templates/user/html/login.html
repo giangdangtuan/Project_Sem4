@@ -22,24 +22,36 @@
 <div class="container" id="container">
 
     <div class="form-container sign-up-container">
-        <form th:action="@{/user/them}" method="post" enctype="multipart/form-data" th:object="${loginRequest}">
+        <form th:action="@{/user/signup}" method="post" th:object="${loginRequest}" enctype="multipart/form-data" id="UserSignUp">
             <h1>Create Account</h1>
-            <input type="hidden" th:field="*{id}" />
-            <input type="text" name="username" th:field="*{email}" id="username" placeholder="username" class="form-control" required/>
+            <input type="email" name="username" th:field="*{email}" id="username" placeholder="Email" class="form-control" required/>
             <span class="form-message"></span>
             <input type="password" name="password" th:field="*{password}" id="password" placeholder="Password" class="form-control" required minlength="5">
+            <input type="password" name="password" id="confirmPassword" placeholder="Confirm Password" class="form-control" required minlength="5">
             <input type="submit" value="Sign Up" id="b1">
         </form>
-
-
-
+        <script>
+            // Xác minh mật khẩu cho form Add User
+            document.getElementById("UserSignUp").addEventListener("submit", function(event) {
+              const password = document.getElementById("password").value;
+              const confirmPassword = document.getElementById("confirmPassword").value;
+          
+              if (password !== confirmPassword) {
+                event.preventDefault(); // Ngăn không cho form submit
+                alert("Password và Confirm Password phải giống nhau.");
+              }
+            });
+        </script>
     </div>
     <div class="form-container sign-in-container">
 
-        <form id="loginForm" th:action="@{/user/login}" method="post" th:object="${loginRequest}" enctype="multipart/form-data" class="form">
+        <form id="loginForm" th:action="@{/user/login}" method="post" th:object="${loginRequest}" class="form">
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}"></span>
+            </div>
             <h1>Sign in</h1>
             <span>or use your account</span>
-            <input name="email" id="email" type="text" placeholder="Email" th:field="*{email}" class="form-group">
+            <input name="email" id="email" type="email" placeholder="Email" th:field="*{email}" class="form-group">
             <input name="password" id="password" type="password" placeholder="password" th:field="*{password}">
             <a href="ForgotPassword.php">Forgot your password?</a>
             <input type="submit" id="b1" value="Sign in">

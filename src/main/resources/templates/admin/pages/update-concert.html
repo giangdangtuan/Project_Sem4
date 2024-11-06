@@ -130,17 +130,15 @@
             <div class="container">
               <ul class="list-group">
                   <li class="list-group-item border-0 d-flex flex-column align-items-center p-4 mb-2 mt-3 bg-gray-100 border-radius-lg">
-                    <div class="mb-3">
-                      <label for="zoneSelect" class="form-label">Chọn Zone:</label>
-                      <select id="zoneSelect" class="form-select" aria-label="Chọn Zone">
-                        <option selected disabled>Chọn một zone</option>
+                    <div class="input-group input-group-static mb-4" style="width: 7rem;">
+                      <select id="zoneSelect" class="form-control" aria-label="Chọn Zone" style="text-align: center;">
+                        <option selected disabled>Choose a zone</option>
                         <th:block th:each="concertZone : ${concertZones}">
                             <option th:value="${concertZone.id}" th:text="'Zone ' + ${concertZone.zone_id}"></option>
                         </th:block>
-                    </select>                      
-                      
-                  </div>
-                      <h2 style="margin-bottom: 3rem;">Sân Khấu</h2>
+                    </select>  
+                    </div>
+                      <h2 style="margin-bottom: 3rem;">Stage</h2>
 
                       <div th:fragment="seats">
                         <div id="seats">

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import web.thaiticketmajor.Models.Category;
 import web.thaiticketmajor.Models.Concert;
@@ -28,6 +30,7 @@ import web.thaiticketmajor.Repositories.SeatRepository;
 import web.thaiticketmajor.Services.CategoryService;
 import web.thaiticketmajor.Services.ConcertService;
 import web.thaiticketmajor.Services.ConcertZoneService;
+import web.thaiticketmajor.Services.SeatService;
 import web.thaiticketmajor.Services.ZoneService;
 import web.thaiticketmajor.dto.request.ChangeZoneRequest;
 
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.function.Consumer;
 import java.io.IOException;
 
@@ -74,6 +78,9 @@ public class ConcertController {
 
     @Autowired
     private ConcertZoneRepository concertZoneRepository;
+
+    @Autowired
+    private SeatService seatService;
 
     @GetMapping({
             "/concert",
@@ -147,6 +154,7 @@ public class ConcertController {
             model.addAttribute("listCategory", this.categoryService.dsCategory());
             return "seat.html"; // Quay lại form thêm concert
         }
+        concert.setCreated_at(LocalDate.now());
         Concert savedConcert = concertRepository.save(concert);
 
         if (zoneIds != null && prices != null) {
@@ -195,13 +203,32 @@ public class ConcertController {
     }
 
     // Hiển thị chi tiết concert
-    @GetMapping("/concertDetail/{id}")
+    @GetMapping("/concert/detail/{id}")
     public String showConcertDetail(@PathVariable int id, Model model) {
         Concert concert = concertService.getConcertById(id);
         List<Seat> seats = concertService.getSeatsByConcertId(id);
         model.addAttribute("concert", concert);
         model.addAttribute("seats", seats);
-        return "concertdetail.html"; // Trả về tệp concertDetail.html
+        model.addAttribute("content", "user/html/detailConcert.html");
+        return "layout.html"; // Trả về tệp concertDetail.html
+    }
+
+    @GetMapping("/concert/xem/{id}/map")
+    public String getMap(Model model, @PathVariable int id) {
+
+        Concert concert = concertService.getConcertById(id);
+        List<Seat> seats = concertService.getSeatsByConcertId(id);
+        List<Zone> listZone = zoneService.getAllZones();
+        List<ConcertZone> concertZoneList = concertZoneService.getConcertZonesByConcertId(id);
+
+        model.addAttribute("concert", concert);
+        model.addAttribute("concertZones", concertZoneList);
+        model.addAttribute("seats", seats);
+        model.addAttribute("listZone", listZone);
+
+        model.addAttribute("content", "user/html/seatmap.html");
+
+        return "layout.html";
     }
 
     @PostMapping("/concert/updateSeats")
@@ -265,6 +292,85 @@ public class ConcertController {
 
         return "admin/pages/update-concert :: seats"; // Trả về fragment seats
     }
+
+//     @GetMapping("/concert/payment")
+// public String showPaymentPage(HttpServletRequest request, Model model) {
+//     // Lấy danh sách ghế đã chọn từ sessionStorage
+//     String selectedSeatIdsStr = (String) request.getSession().getAttribute("selectedSeatIds");
+    
+//     // Chuyển chuỗi seatIds thành mảng các ID ghế
+//     String[] seatIdsArray = selectedSeatIdsStr.split(",");
+    
+//     List<Seat> listSeat = new ArrayList<>();
+//     for (String seatId : seatIdsArray) {
+//         // Tìm từng ghế theo seatId
+//         Seat seat = seatService.findById(Integer.parseInt(seatId));
+//         if (seat != null) {
+//             listSeat.add(seat);
+//         }
+//     }
+
+//     // Thêm danh sách ghế vào model để hiển thị trong view
+//     model.addAttribute("listSeat", listSeat);
+
+//     return "user/html/payment"; // Trả về trang thanh toán (Thymeleaf template)
+// }
+
+
+
+
+
+
+
+@PostMapping("/concert/payment")
+public String handlePayment(@RequestBody Map<String, List<Integer>> requestBody, HttpSession session) {
+    // Lấy danh sách seatIds từ body của request
+    List<Integer> seatIds = requestBody.get("seatIds");
+
+    if (seatIds == null || seatIds.isEmpty()) {
+        return "errorPage";  // Trang lỗi nếu không có ghế nào được chọn
+    }
+
+    // Lưu ghế vào session
+    session.setAttribute("selectedSeatIds", seatIds);
+
+    return "redirect:/concert/payment";  // Chuyển hướng tới trang thanh toán
+}
+
+@GetMapping("/concert/payment")
+public String showPaymentPage(HttpSession session, Model model) {
+    // Lấy danh sách seatIds từ session
+    List<Integer> seatIds = (List<Integer>) session.getAttribute("selectedSeatIds");
+
+    if (seatIds == null || seatIds.isEmpty()) {
+        return "errorPage";  // Trang lỗi nếu không có ghế nào được chọn
+    }
+
+
+    List<Seat> listSeat = new ArrayList<>();
+    for (Integer seatId : seatIds) {
+        // Tìm từng ghế theo seatId
+        Seat seat = seatService.findById(seatId);
+        if (seat != null) {
+            listSeat.add(seat);
+        }
+    }
+
+    double totalAmount = listSeat.stream()
+        .mapToDouble(Seat::getPrice)  // Lấy giá tiền của từng ghế
+        .sum();  // Tính tổng
+
+    // Thêm tổng tiền vào model
+    model.addAttribute("totalAmount", totalAmount);
+
+    // Thêm danh sách ghế vào model để hiển thị trong view
+    model.addAttribute("listSeat", listSeat);
+
+    return "user/html/payment";  // Trả về trang thanh toán
+}
+
+
+
 
     @PostMapping("/concert/update")
     public String updateConcert(
@@ -333,6 +439,9 @@ public class ConcertController {
             // Nếu không chọn file mới, giữ lại file cũ
             concert.setSubImage2(existingConcert.getSubImage2());
         }
+
+        concert.setCreated_at(concert.getCreated_at());
+        concert.setUpdate_at(LocalDate.now());
         concertService.updateConcert(concert);
 
         // Tìm ID của zone có tên "standard"
@@ -397,70 +506,6 @@ public class ConcertController {
         return "redirect:/concert/list"; // Chuyển hướng về danh sách concert sau khi cập nhật
     }
 
-    // @PostMapping("/concert/update")
-    // public String updateConcert(
-    // @ModelAttribute("concert") Concert concert,
-    // @RequestParam(required = false) List<Integer> zoneIds, // Danh sách zone được
-    // chọn
-    // @RequestParam(required = false) List<Double> prices, // Danh sách giá tương
-    // ứng với zone
-    // RedirectAttributes redirectAttributes) {
-
-    // // Cập nhật thông tin concert
-    // concertService.updateConcert(concert);
-
-    // // Lấy danh sách các ConcertZone hiện có cho concert
-    // List<ConcertZone> existingConcertZones =
-    // concertZoneService.getConcertZonesByConcertId(concert.getId());
-
-    // // Tạo một tập hợp các zoneId đã chọn để dễ dàng kiểm tra
-    // Set<Integer> selectedZoneIds = new HashSet<>(zoneIds != null ? zoneIds :
-    // Collections.emptyList());
-
-    // // Xử lý cập nhật hoặc xóa ConcertZone
-    // for (ConcertZone existingConcertZone : existingConcertZones) {
-    // Integer zoneId = existingConcertZone.getZone_id();
-
-    // if (selectedZoneIds.contains(zoneId)) {
-    // // Nếu zoneId đã được chọn, cập nhật giá
-    // int index = zoneIds.indexOf(zoneId);
-    // if (index != -1 && prices.size() > index) {
-    // Double price = prices.get(index);
-    // existingConcertZone.setPrice(price);
-    // concertZoneService.save(existingConcertZone); // Cập nhật vào cơ sở dữ liệu
-    // }
-    // } else {
-    // // Nếu zoneId không được chọn, xóa ConcertZone
-    // concertZoneService.deleteConcertZone(existingConcertZone.getId());
-    // }
-    // }
-
-    // // Thêm mới các ConcertZone nếu cần
-    // if (zoneIds != null && prices != null) {
-    // for (int i = 0; i < zoneIds.size(); i++) {
-    // Integer zoneId = zoneIds.get(i);
-    // Double price = prices.get(i);
-
-    // // Kiểm tra nếu ConcertZone đã tồn tại thì bỏ qua
-    // boolean exists = existingConcertZones.stream()
-    // .anyMatch(cz -> cz.getZone_id() == zoneId);
-
-    // if (!exists) {
-    // // Nếu không tồn tại thì thêm mới
-    // ConcertZone newConcertZone = new ConcertZone();
-    // newConcertZone.setConcert_id(concert.getId());
-    // newConcertZone.setZone_id(zoneId);
-    // newConcertZone.setPrice(price);
-    // concertZoneService.save(newConcertZone); // Lưu vào cơ sở dữ liệu
-    // }
-    // }
-    // }
-
-    // redirectAttributes.addFlashAttribute("successMessage", "Concert đã được cập
-    // nhật thành công.");
-    // return "redirect:/concert/list"; // Chuyển hướng về danh sách concert sau khi
-    // cập nhật
-    // }
 
     // Phương thức để xóa ảnh cũ
     private void deleteOldImage(String folder, String oldImageName) {

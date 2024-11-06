@@ -1,6 +1,5 @@
-<form method="post" th:action="@{/user/sua}" th:object="${dl}" id="formUpdateUser">
+<form method="post" th:action="@{/admin/update-user}" th:object="${dl}" id="formUpdateUser">
   <input type="hidden" th:field="*{id}" />
-  <input type="hidden" th:field="*{password}" />
   <div class="row">
     <div class="col-md-6" style="padding: 16px">
       <div class="input-group input-group-static mb-4">

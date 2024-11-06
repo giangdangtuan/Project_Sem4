@@ -1,6 +1,9 @@
 package web.thaiticketmajor.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,8 +20,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import web.thaiticketmajor.Models.Role;
 import web.thaiticketmajor.Models.User;
+import web.thaiticketmajor.Models.Concert;
 import web.thaiticketmajor.Services.AuthenticationService;
+import web.thaiticketmajor.Services.ConcertService;
 import web.thaiticketmajor.Services.RoleService;
 import web.thaiticketmajor.Services.UserService;
 import web.thaiticketmajor.dto.request.AuthenticationRequest;
@@ -37,9 +43,12 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private ConcertService concertService;
+
     @GetMapping({
-            "/user",
-            "/user/duyet"
+            "/admin",
+            "/admin/duyet"
     })
     public String getDuyet(Model model) {
         // Authentication authentication =
@@ -70,7 +79,7 @@ public class UserController {
     // return "admin/pages/add-user.html";
     // }
 
-    @GetMapping("/user/updateajax")
+    @GetMapping("/admin/update-user")
     public String getSua(Model model, @RequestParam("id") int id) {
         var dl = userService.xemUser(id);
 
@@ -81,7 +90,7 @@ public class UserController {
         return "admin/pages/update_user.html";
     }
 
-    @GetMapping("/user/xoa")
+    @GetMapping("/admin/user-delete")
     public String getXoa(Model model, @RequestParam(value = "id") int id) {
         User user = userService.tìmUserTheoId(id);
 
@@ -100,57 +109,25 @@ public class UserController {
         return "layout.html";
     }
 
-    @PostMapping("/user/add")
-    public String postThem(@ModelAttribute("User") User dl) {
-        // System.out.print("save action...");
-
-        // @todo sửa chỗ này đi
-        // dl.setNgayTao(LocalDate.now());
-        // dl.setNgaySua(LocalDate.now());
-
-        userService.saveUser(dl);
-
-        // Gửi thông báo thành công từ view Add/Edit sang view List
-        // Gửi thông báo thành công từ giao diện Thêm Mới sang giao diện Duyệt
-
-        return "redirect:/user/duyet";
+    @GetMapping("/index")
+    public String getMethodName(Model model) {
+        List<Concert> list = concertService.dsConcert();
+        model.addAttribute("ds", list);
+        model.addAttribute("content", "user/html/concerts.html");
+        return "layout.html";
     }
 
-    @PostMapping("/user/sua")
-    public String postSua(@ModelAttribute("User") User user, RedirectAttributes redirectAttributes) {
-
-        // @todo sửa chỗ này đi
-
-        // dl.setNgaySua(LocalDate.now());
-
-        userService.updateUser(user);
-
-        // Gửi thông báo thành công từ view Add/Edit sang view List
-        redirectAttributes.addFlashAttribute("THONG_BAO_OK", "Đã sửa thành công !");
-
-        return "redirect:/user/duyet";
-    }
-
-    @PostMapping("/user/delete")
-    public String postXoa(Model model, @RequestParam("id") int id) // request param phải khớp với name="Id" của thẻ html
-                                                                   // input
-    {
-
-        this.userService.xóaUser(id);
-        return "redirect:/user/duyet";
-    }
-
-    @GetMapping("/user/login")
+    @GetMapping("/admin/login")
     public String vaotrang(Model model) {
         User user = new User();
         model.addAttribute("loginRequest", user);
 
-        return "user/html/login.html";
+        return "admin/pages/login-admin.html";
     }
 
     @PostMapping("/user/login")
     public String login(@Valid @ModelAttribute("loginRequest") AuthenticationRequest request, Model model,
-            HttpServletResponse response) {
+            HttpServletResponse response, HttpServletRequest httpRequest, RedirectAttributes redirectAttributes) {
         log.info("Vào phương thức login với người dùng: {}", request.getEmail());
         try {
             // Gọi service để thực hiện xác thực
@@ -160,6 +137,7 @@ public class UserController {
             log.info("Đăng nhập thành công cho người dùng: {}", request.getEmail());
 
             log.info("Token nhận được: {}", authResponse.getToken());
+            User user = userService.findUserByEmail(request.getEmail());
 
             // Lưu token vào cookie
             Cookie cookie = new Cookie("auth_token", authResponse.getToken());
@@ -167,17 +145,26 @@ public class UserController {
             cookie.setPath("/"); // Đảm bảo cookie có thể truy cập trên toàn bộ ứng dụng
             cookie.setMaxAge(3600); // Thời gian sống của cookie (1 giờ)
             response.addCookie(cookie); // Thêm cookie vào phản hồi HTTP
-            log.info("Quyền của người dùng: {}",
-                    SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-            // Chuyển hướng đến một trang khác
-            return "redirect:/category/duyet"; // Ví dụ: chuyển đến trang home
+
+            if (user.getRole().getName().equals("USER")) {
+                return "redirect:/index";
+            } else {
+                return "redirect:/category/duyet";
+            }
+
         } catch (AppException e) {
-            model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác.");
-            return "user/html/login.html"; // Nếu không thành công, trở về form đăng nhập
+            String refererUrl = httpRequest.getHeader("Referer");
+
+            // Thêm thông báo lỗi để hiển thị trên trang trước đó
+            redirectAttributes.addFlashAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác.");
+
+            // Quay về trang trước đó nếu có URL, nếu không thì về trang login mặc định
+            return "redirect:" + (refererUrl);
         }
+
     }
 
-    @PostMapping("/user/logout")
+    @PostMapping("/admin/logout")
     public String logout(HttpServletResponse response, HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
         log.info("Thực hiện đăng xuất người dùng.");
@@ -198,6 +185,72 @@ public class UserController {
         redirectAttributes.addFlashAttribute("logoutMessage", "Đăng xuất thành công!");
 
         // Chuyển hướng về trang đăng nhập hoặc trang chủ
+        return "redirect:/admin/login";
+    }
+
+    @PostMapping("/admin/add-user")
+    public String postThem(@ModelAttribute("User") User user) {
+        // System.out.print("save action...");
+
+        // @todo sửa chỗ này đi
+        user.setCreated_at(LocalDate.now());
+        // dl.setNgaySua(LocalDate.now());
+
+        userService.saveUser(user);
+
+        // Gửi thông báo thành công từ view Add/Edit sang view List
+        // Gửi thông báo thành công từ giao diện Thêm Mới sang giao diện Duyệt
+
+        return "redirect:/admin/duyet";
+    }
+
+    @PostMapping("/admin/update-user")
+    public String postSua(@ModelAttribute("User") User user, RedirectAttributes redirectAttributes) {
+
+        // @todo sửa chỗ này đi
+        user.setPassword(user.getPassword());
+        user.setCreated_at(user.getCreated_at());
+        user.setUpdate_at(LocalDate.now());
+
+        userService.updateUser(user);
+
+        // Gửi thông báo thành công từ view Add/Edit sang view List
+        redirectAttributes.addFlashAttribute("THONG_BAO_OK", "Đã sửa thành công !");
+
+        return "redirect:/admin/duyet";
+    }
+
+    @PostMapping("/admin/delete-user")
+    public String postXoa(Model model, @RequestParam("id") int id) // request param phải khớp với name="Id" của thẻ html
+                                                                   // input
+    {
+
+        this.userService.xóaUser(id);
+        return "redirect:/admin/duyet";
+    }
+
+    // User
+    @GetMapping("/user/login")
+    public String LoginUser(Model model) {
+        User user = new User();
+        model.addAttribute("loginRequest", user);
+
+        return "user/html/login.html";
+    }
+
+    @PostMapping("/user/signup")
+    public String postAdd(@ModelAttribute("User") User user) {
+
+        Role role = roleService.findByName("USER");
+        user.setCreated_at(LocalDate.now());
+        user.setRole_id(role.getId());
+        // dl.setNgaySua(LocalDate.now());
+
+        userService.saveUser(user);
+
+        // Gửi thông báo thành công từ view Add/Edit sang view List
+        // Gửi thông báo thành công từ giao diện Thêm Mới sang giao diện Duyệt
+
         return "redirect:/user/login";
     }
 

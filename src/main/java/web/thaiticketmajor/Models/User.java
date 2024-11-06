@@ -42,6 +42,12 @@ public class User {
     String phoneNo;
     boolean status;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate created_at;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate update_at;
+
     Long role_id;
     @ManyToOne @JoinColumn(name="role_id",insertable=false,updatable=false)
     Role role; // Đảm bảo Role có trường "name" tương ứng
