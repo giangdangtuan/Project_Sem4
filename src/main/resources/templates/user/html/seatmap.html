@@ -238,6 +238,10 @@
         // Cập nhật hiển thị tổng giá
         document.getElementById("price_selected").innerText = totalPrice.toLocaleString();
 
+        // Lưu danh sách ghế đã chọn vào sessionStorage
+        const selectedSeatIds = selectedSeats.map(seat => seat.id);
+        sessionStorage.setItem('selectedSeatIds', JSON.stringify(selectedSeatIds));
+
         console.log("Selected seats: ", selectedSeats); // Kiểm tra danh sách ghế đã chọn
     }
 

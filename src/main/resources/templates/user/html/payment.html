@@ -112,7 +112,7 @@
                                 <span class="d-block p-2" th:text="${seat.seat_column + '-' + seat.seat_row}">1</span>
                             </div>
                             <div class="col-3 p-0 text-end h8" >
-                                <span class="d-block py-2 " th:text="${seat.Zone.getName()}">400</span>
+                                <span class="d-block py-2 " th:text="${seat.getZone()}">400</span>
                             </div>
                             <div class="col-2 p-0 text-end" style="left: 6px;">
                                 <span class="d-block py-2 " th:text="${seat.getPrice()}">

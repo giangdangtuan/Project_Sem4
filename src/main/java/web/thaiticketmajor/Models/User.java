@@ -40,6 +40,8 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd") // Định dạng phù hợp với input type="date"
     LocalDate dob;
     String phoneNo;
+    String gender;
+    String address;
     boolean status;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

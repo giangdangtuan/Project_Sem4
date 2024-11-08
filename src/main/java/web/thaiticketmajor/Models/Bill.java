@@ -18,12 +18,13 @@ public class Bill
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private int id;
 
+    private int user_id;
     @ManyToOne @JoinColumn(name="user_id",insertable=false,updatable=false)
     private User user;
 
-    @ManyToOne @JoinColumn(name="detail_id",insertable=false,updatable=false)
-    private Concert Concert;
+    private double total;
 
-    private int total;
-    private boolean status;
+    public String getUserEmail(){
+        return this.user.getEmail();
+    }
 }  

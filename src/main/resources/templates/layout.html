@@ -26,6 +26,7 @@
   <link rel="stylesheet" th:href="@{/css/user/support.css}">
   <link rel="stylesheet" th:href="@{/css/user/_font-awesome.min.css}">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script th:src="@{/js/core/jquery.easing.js}"></script>
   <script th:src="@{/js/core/jquery.mousewheel.js}"></script>
   <script th:src="@{/js/core/detect.min.js}"></script>
@@ -209,8 +210,7 @@
               <a href="/all-event/" class="dropdown-item txtC small"><small class="txt-gray">All Event</small></a>
             </div>
           </div>
-
-          <button class="btn-signin item d-none d-lg-inline-block" onclick="$app.popup.signin();">Sign In</button>
+          <button class="btn-signin item d-none d-lg-inline-block" onclick="$app.popup.signin();" style="display: none;" th:text="${email}">Sign In</button>
         </div>
       </div>
     </div>

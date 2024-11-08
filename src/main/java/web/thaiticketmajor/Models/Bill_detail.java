@@ -17,8 +17,24 @@ public class Bill_detail
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private    int id;
+
+    private int bill_id;
     @ManyToOne @JoinColumn(name="bill_id",insertable=false,updatable=false)
-    private Bill Bill;
-    @ManyToOne @JoinColumn(name="ticket_id",insertable=false,updatable=false)
-    private Ticket Ticket;
+    private Bill bill;
+
+    private int seat_id;
+    @ManyToOne @JoinColumn(name="seat_id",insertable=false,updatable=false)
+    private Seat seat;
+
+    public String getConcert(){
+        return this.seat.getConcert();
+    }
+
+    public String getZone() {
+        return this.seat.getZone();
+    }
+
+    public double getPrice() {
+        return this.seat.getPrice();
+    }
 }

@@ -40,6 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 import java.io.IOException;
 
@@ -48,8 +49,9 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Collections;
-
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ArrayList;
 
 import java.util.Optional;
@@ -92,13 +94,38 @@ public class ConcertController {
         // String email = authentication.getName();
 
         // model.addAttribute("email", email);
-        List<Concert> list = concertService.dsConcert();
+        List<Concert> lists = concertService.dsConcert();
 
-        model.addAttribute("ds", list);
+        model.addAttribute("ds", lists);
         model.addAttribute("content", "admin/pages/concert-manager.html"); // duyet.html
 
         return "admin/index.html";
 
+    }
+
+    @GetMapping("/index")
+    public String getMethodName(Model model) {
+        List<Concert> lists = concertService.dsConcert();
+        List<Concert> listAvailable = new ArrayList<>();
+        List<Concert> listComingSoon = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        for (Concert concert : lists) {
+            if(concert.getStartSale().isAfter(now)) {
+                listComingSoon.add(concert);
+            }
+        }
+
+        for (Concert concert : lists) {
+            if(concert.getEndSale().isAfter(now) && concert.getStartSale().isBefore(now)) {
+                listAvailable.add(concert);
+            }
+        }
+
+        model.addAttribute("ds", listAvailable);
+        model.addAttribute("listComingSoon", listComingSoon);
+        model.addAttribute("content", "user/html/concerts.html");
+        return "layout.html";
     }
 
     @GetMapping("/addConcertAndSeats")
@@ -207,8 +234,34 @@ public class ConcertController {
     public String showConcertDetail(@PathVariable int id, Model model) {
         Concert concert = concertService.getConcertById(id);
         List<Seat> seats = concertService.getSeatsByConcertId(id);
+        List<ConcertZone> concertZones = concert.getConcertZones();
+        // List<Double> prices = new ArrayList<>();
+        // for (ConcertZone concertZone : concertZones) {
+        //     prices.add(concertZone.getPrice());
+        // }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM yyyy", Locale.ENGLISH);
+        String formattedStartDate = concert.getStartDate().format(formatter);
+        String formattedStartSale = concert.getStartSale().format(formatter);
+
+        Boolean statusConcert = null;
+        LocalDate now = LocalDate.now();
+
+        if(concert.getStartSale().isAfter(now)) {
+            statusConcert = false;
+        }
+
+        if(concert.getEndSale().isAfter(now) && concert.getStartSale().isBefore(now)) {
+            statusConcert = true;
+        }
+
+
         model.addAttribute("concert", concert);
         model.addAttribute("seats", seats);
+        model.addAttribute("concertZones", concertZones);
+        model.addAttribute("statusConcert", statusConcert);
+
+        model.addAttribute("formattedStartDate", formattedStartDate);
+        model.addAttribute("formattedStartSale", formattedStartSale);
         model.addAttribute("content", "user/html/detailConcert.html");
         return "layout.html"; // Trả về tệp concertDetail.html
     }

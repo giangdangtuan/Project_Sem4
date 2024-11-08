@@ -1,67 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
 <section class="section-highlight" style="background-color: black;">
     <div class="inner">
         <div class="row">
             <!-- highlight v2 -->
             <div class="box-herobanner">
-                <section class="herobanner">
-                    <!--fix slide the match 02-04-2022 -->
-                    <!-- begin event -->
-                    <div class="item"><a
-                            href="/performance/gaan-sa-daeng-kohn-dton-phaa-jak-ra-va-tarn.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=KhonPhraJakrawatarn"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/0013/3013/highlight_ttmevent_3013-66da798834aea.png"
-                                alt="การแสดงโขนมูลนิธิส่งเสริมศิลปาชีพฯ ตอน พระจักราวตาร"
-                                title="การแสดงโขนมูลนิธิส่งเสริมศิลปาชีพฯ ตอน พระจักราวตาร" style="display: block;"></a>
+                <div id="carouselExampleIndicators" class="carousel slide" style="width: 700px;height:300px">
+                    
+                    <div class="carousel-inner" th:each="dl : ${ds}">
+                        <a  th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                      <div class="carousel-item active">
+                        <img  th:src="@{/images/{imageName}(imageName=${dl.mainImage})}" class="d-block w-100" alt="..." style="height: 100%;width: 100%;">
+                      </div>
+                    </a>
                     </div>
-                    <!-- end event -->
-                    <!-- begin event -->
-                    <div class="item"><a
-                            href="/performance/uppoompat-fanmeet-2024-lets-grow-up-together.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=UppoompatFanmeet2024"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/0084/3084/highlight_ttmevent_3084-671a19c46d842.png"
-                                alt="GO HAIR ORIGINAL PRESENTS Uppoompat Fanmeet 2024 ตอน Let's Grow Up Together"
-                                title="GO HAIR ORIGINAL PRESENTS Uppoompat Fanmeet 2024 ตอน Let's Grow Up Together"
-                                style="display: block;"></a></div>
-                    <!-- end event -->
-                    <!-- begin merchandise -->
-                    <div class="item"><a
-                            href="https://shopping.thaiticketmajor.com/brand/5093_OfficialBandMerchandise/?utm_source=ttm-index&amp;utm_medium=banner&amp;utm_campaign=T-shirt-gigmerch-EDSHEERAN#band-ED%20SHEERAN"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/2570/2570/highlight_ttmevent_2570-65518f55e5030.jpg"
-                                alt="ED SHEERAN | Official Band Merchandise"
-                                title="ED SHEERAN | Official Band Merchandise" style="display: block;"></a></div>
-                    <!-- end merchandise -->
-                    <!-- begin event -->
-                    <div class="item"><a
-                            href="/concert/best-of-fujii-kaze-2020-2024-asia-tour-in-bangkok.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=BestOfFujiKaze20-24BKK"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/2988/2988/highlight_ttmevent_2988-66cc2bad851e7.jpg"
-                                alt="Best of Fujii Kaze 2020-2024 ASIA TOUR in Bangkok"
-                                title="Best of Fujii Kaze 2020-2024 ASIA TOUR in Bangkok" style="display: block;"></a>
-                    </div>
-                    <!-- end event -->
-                    <!-- begin event -->
-                    <div class="item show"><a
-                            href="/sport/one-170.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=ONE170"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/0090/3090/highlight_ttmevent_3090-671731ce5a954.jpg"
-                                alt="ONE 170" title="ONE 170" style="display: block;"></a></div>
-                    <!-- end event -->
-                    <!-- begin event -->
-                    <div class="item"><a
-                            href="/concert/soundabout-mountain-fest-2.html?utm_source=highlight&amp;utm_medium=banner&amp;utm_campaign=SoundaboutMountainFest2"><img
-                                class="hb-img"
-                                src="/img_event/highlight/prefix_1/2968/2968/highlight_ttmevent_2968-66bb0d01189e0.png"
-                                alt="BBLAM presents Soundabout Mountain Fest 2"
-                                title="BBLAM presents Soundabout Mountain Fest 2" style="display: block;"></a></div>
-                    <!-- end event -->
-                </section>
-                <div class="hb-dots"><a class="item" href="javascript:void(0);" data-slide="0">1</a><a class="item"
-                        href="javascript:void(0);" data-slide="1">2</a><a class="item" href="javascript:void(0);"
-                        data-slide="2">3</a><a class="item" href="javascript:void(0);" data-slide="3">4</a><a
-                        class="item active" href="javascript:void(0);" data-slide="4">5</a><a class="item"
-                        href="javascript:void(0);" data-slide="5">6</a></div><button class="hb-arrow hb-prev"
-                    type="button"></button><button class="hb-arrow hb-next" type="button"></button>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="background-color: transparent;border: none;">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" style="background-color: transparent;border: none;">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+               
             </div>
             <div class="box-side-banner">
                 <div class="col-12 col-md-6 col-lg-12">
@@ -102,23 +65,12 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="tb-select head-event-select-cate">
-                        <li class="active"><a onclick="ga('send','event','Tab','click','HOT EVENTS');"
+                        <li class="active"><a
                                 href="javascript:void(0);"><span><img class="icon" th:src="@{/image/fire.svg}"
-                                        alt="fire"><span class="txt">Hot Sale</span></span></a></li>
-                        <li><a onclick="ga('send','event','Tab','click','COMING SOON');"
+                                        alt="fire"><span class="txt">Available</span></span></a></li>
+                        <li><a
                                 href="javascript:void(0);"><span><img class="icon"
-                                    th:src="@{/image/coming-soon.svg}" alt="coming-soon"><span class="txt">On sale</span></span></a></li>
-                        <li><a href="javascript:;"><span><span class="icon"><img th:src="@{/image/ticket.svg}"
-                                            alt=""></span><span class="txt">TTM LIVE <span
-                                            class="badge badge-new txtSmaller v-top mt-1">NEW</span></span></span></a>
-                        </li>
-                        <!--li>
-                            <a href="javascript:;">
-                                <span>
-                                    <span class="icon"><img src="/assets/img/live/play.svg" alt=""></span><span class="txt">TTM LIVE <span class="badge badge-new txtSmaller v-top mt-1">NEW</span></span>
-                                </span>
-                            </a>
-                        </li-->
+                                    th:src="@{/image/coming-soon.svg}" alt="coming-soon"><span class="txt">Coming Soon</span></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -130,7 +82,7 @@
                 <!-- Search Bar -->
                 <input type="text" id="searchInput" placeholder="Search events..." class="form-control mb-3">
                 <!-- HOT EVENTS -->
-                <div class="tb-item box-collapse expand active">
+                <div class="tb-item box-collapse expand active" id="hot-sale-concert" style="">
                     <div class="row" id="eventGrid">
                         <div class="col-6 col-md-4 col-lg-2 event-item" th:each="dl : ${ds}" id="item">
                             <div class="event-item-content">
@@ -157,6 +109,29 @@
                     </div>
                 </div>
                 <!-- TTM LIVE -->
+                <div class="tb-item active" id="coming-soon-concert" style="display: none;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 col-md-3 col-lg-2" th:each="concert : ${listComingSoon}">
+                                <div class="event-item">
+                                    <a class="box-img" th:href="@{/concert/detail/{id}(id=${concert.id})}">
+                                        <img class="lazy" style="width: 100%; height: 100%;" th:src="@{/images/{imageName}(imageName=${concert.mainImage})}" alt="I'll make you proud Concert" title="I'll make you proud Concert">
+                                    </a>
+                                    <div class="box-txt">
+                                        <a class="title" th:href="@{/concert/detail/{id}(id=${concert.id})}" th:text="${concert.name}">I'll make you proud Concert</a>
+                                            <span class="datetime" th:text="${concert.startSale}"><span>30 NOV 2024</span></span>
+                                        <a class="venue" href="/_venue.php?venue_id=12240"><span>Lido Hall 2, Lido Connect</span></a>
+                                    </div>
+                                    <div class="box-btn">
+                                        <a th:href="@{/concert/detail/{id}(id=${concert.id})}" class="btn-buynow linear">
+                                            <small>Coming Soon</small>
+                                        </a>
+                                    </div>                          
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -174,6 +149,27 @@
                 item.style.display = '';
             } else {
                 item.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".tb-select li a").click(function() {
+            // Xóa lớp 'active' khỏi tất cả các 'li' và 'tb-item'
+            $(".tb-select li").removeClass("active");
+            $(".tb-item").each(function() {
+                $(this).css("display", "none");
+            });
+    
+            // Thêm lớp 'active' vào 'li' được chọn và hiển thị phần tử tương ứng
+            $(this).closest("li").addClass("active");
+    
+            // Dùng một điều kiện để chọn phần tử div tương ứng và hiển thị nó
+            if ($(this).closest("li").index() === 0) { // Hot Sale
+                $("#hot-sale-concert").css("display", "block");
+            } else if ($(this).closest("li").index() === 1) { // On Sale
+                $("#coming-soon-concert").css("display", "block");
             }
         });
     });

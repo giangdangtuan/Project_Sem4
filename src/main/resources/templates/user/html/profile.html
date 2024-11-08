@@ -1,0 +1,107 @@
+<main class="main-container" role="main">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg-3">
+	<div class="member-sidebar">
+		<div class="box-member-info">
+			<div class="form-row justify-content-center txtC">
+				<div class="col-12">
+					<p class="my-2">
+						<strong class="txtBig" th:text="${user.email}">giang  dang tuan</strong><br>
+					</p>
+				</div>
+			</div>
+		</div>
+		<p class="d-block d-lg-none text-center">
+			<a class="btn-linear-round-black btn-small" href="javascript:void(0);" onclick="$app.popup.memberMenu('#member-nav');">Member Menu</a>
+		</p>
+		<div class="divider-h gray d-block d-lg-none"></div>
+		<nav class="member-nav mt-0 mt-lg-4" role="menu" id="member-nav">
+			<div class="inner popup-menu-list">
+				<a class="item" href="/user/myticket.php?urId=c5338d30f0124a76f012a5fd7450d2ab">
+					<i class="mr-3 fa fa-ticket" aria-hidden="true"></i>My Ticket</a>
+				<a class="item" href="/user/history.php?urId=c5338d30f0124a76f012a5fd7450d2ab">
+					<i class="mr-3 fa fa-history" aria-hidden="true"></i>Purchase History</a>
+								<div class="divider-h gray d-none d-lg-block"></div>
+				<a class="item" href="/user/editprofile.php?urId=c5338d30f0124a76f012a5fd7450d2ab">
+					<i class="mr-3 fa fa-pencil" aria-hidden="true"></i>Edit Profile				</a>
+				<a class="item" href="/user/changePassword">
+					<i class="mr-3 fa fa-lock" aria-hidden="true"></i>Change Password				</a>
+				<div class="divider-h gray d-none d-lg-block"></div>
+				<a class="item" href="/user/logout.php">
+					<i class="mr-3 fa fa-sign-out" aria-hidden="true"></i>Sign Out				</a>
+				<a class="item d-block d-lg-none" href="javascript:void(0);" onclick="$.fancybox.close();"><span class="txt-red">Close</span></a>
+			</div>
+		</nav>
+	</div>
+</div>
+<div class="col-auto d-none d-lg-block"><div class="divider-v gray h-100"></div></div>			<div class="col-12 col-md-4">
+				<div class="member-body">
+					<form th:object="${user}" action="/user/update-profile" method="post" class="form frm-edit-profile" id="frm-edit-profile" autocomplete="off" novalidate="">
+						<div class="row-frm">
+							<div class="header-section">
+								<h2 class="head"><strong>Edit Profile</strong></h2>
+							</div>
+						</div>
+						<div class="row-frm">
+							<div class="box-input">
+								<label class="input-group active" for="mbFName">
+									<input class="input-txt" type="text" name="mbFName" id="mbFName" th:value="${user.email}" readonly>
+									<span class="txt-label">Email</span>
+								</label>
+								<div class="txt-error"></div>
+							</div>
+						</div>
+						<div class="row-frm">
+							<div class="box-input">
+								<label class="input-group active" for="mbLName">
+									<input class="input-txt" type="text" name="mbLName" id="mbLName" th:field="${user.phoneNo}">
+										<span class="txt-label">Phone Number</span>
+									<div class="txt-error"></div>
+								</label>
+							</div>
+						</div>
+						<div class="row-frm">
+							<div class="box-input">
+								<label class="input-group active" for="gender">
+									<select class="input-txt dropdown valid" name="gender" id="gender" th:field="*{gender}">
+										<option value="M" th:selected="${user.gender == null || user.gender == 'M'}">Male</option>
+										<option value="F" th:selected="${user.gender == 'F'}">Female</option>
+										<option value="other" th:selected="${user.gender == 'other'}">Other</option>
+									</select>
+									<span class="txt-label">Gender</span>
+								</label>
+								<div class="txt-error"></div>
+							</div>
+						</div>
+						<div class="row-frm">
+							<div class="box-input">
+								<label class="input-group active" for="mbLName">
+									<input class="input-txt" type="date" name="mbLName" id="mbLName" th:field="${user.dob}">
+										<span class="txt-label">Date Of BirthBirth</span>
+									<div class="txt-error"></div>
+								</label>
+							</div>
+						</div>
+						<div class="row-frm">
+							<div class="box-input">
+								<label class="input-group active" for="address">
+									<textarea class="input-txt" type="text" name="address" id="address" th:text="${user.address}"></textarea>
+									<span class="txt-label">Home No,Room No,Apartment/Village Name,Sub-District</span>
+								</label>
+								<div class="txt-error"></div>
+							</div>
+						</div>
+						<div class="row-frm">
+							<p class="txtL"><small>* Please complete this registration form truly. The company reserves the right in providing service if the information is not completed. The company committed to keep your information as confidential to prevent against fraud or falsely.</small></p>
+						</div>
+						<div class="row-frm">
+							<br>
+							<button type="submit" class="btn-red btn-update-profile"><span>Save Changes</span></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

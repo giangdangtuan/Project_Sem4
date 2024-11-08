@@ -20,7 +20,7 @@ import web.thaiticketmajor.Services.AuthenticationService;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/user/login", "/concert/payment", "/user/signup", "/admin/login", "user/them", "/category/them", "/images/**", "/css/admin/assets/**"};
+    private final String[] PUBLIC_ENDPOINTS = { "/index","/css/user/**","/user/login", "/concert/payment", "/user/signup", "/admin/login", "user/them", "/category/them", "/images/**","/image/**", "/css/admin/assets/**"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;

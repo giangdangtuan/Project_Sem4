@@ -109,14 +109,6 @@ public class UserController {
         return "layout.html";
     }
 
-    @GetMapping("/index")
-    public String getMethodName(Model model) {
-        List<Concert> list = concertService.dsConcert();
-        model.addAttribute("ds", list);
-        model.addAttribute("content", "user/html/concerts.html");
-        return "layout.html";
-    }
-
     @GetMapping("/admin/login")
     public String vaotrang(Model model) {
         User user = new User();
@@ -141,10 +133,21 @@ public class UserController {
 
             // Lưu token vào cookie
             Cookie cookie = new Cookie("auth_token", authResponse.getToken());
-            cookie.setHttpOnly(true); // Giúp ngăn chặn JavaScript truy cập cookie
             cookie.setPath("/"); // Đảm bảo cookie có thể truy cập trên toàn bộ ứng dụng
             cookie.setMaxAge(3600); // Thời gian sống của cookie (1 giờ)
             response.addCookie(cookie); // Thêm cookie vào phản hồi HTTP
+
+            Cookie userIdCookie = new Cookie("user_id", String.valueOf(user.getId()));
+            Cookie userEmailCookie = new Cookie("user_email", user.getEmail());
+
+            userIdCookie.setMaxAge(3600); // 1 tuần
+            userEmailCookie.setMaxAge(3600);
+
+            userIdCookie.setPath("/");
+            userEmailCookie.setPath("/");
+
+            response.addCookie(userIdCookie);
+            response.addCookie(userEmailCookie);
 
             if (user.getRole().getName().equals("USER")) {
                 return "redirect:/index";
@@ -172,7 +175,6 @@ public class UserController {
         // Xóa cookie auth_token
         Cookie cookie = new Cookie("auth_token", null);
         cookie.setPath("/"); // Đảm bảo cookie được xóa trên toàn bộ ứng dụng
-        cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // Thiết lập thời gian sống là 0 để xóa cookie
         response.addCookie(cookie); // Thêm cookie vào phản hồi để xóa
 
@@ -238,6 +240,93 @@ public class UserController {
         return "user/html/login.html";
     }
 
+    @GetMapping("/user/profile")
+    public String ProfileUser(HttpServletRequest request, Model model) {
+        int userid = getUserFromCookies(request);
+        User user = userService.tìmUserTheoId(userid);
+
+        model.addAttribute("user", user);
+        model.addAttribute("content", "user/html/profile.html");
+        return "layout.html";
+    }
+
+    @GetMapping("/user/changePassword")
+    public String ChangePasswordUser(HttpServletRequest request, Model model) {
+        int userid = getUserFromCookies(request);
+        User user = userService.tìmUserTheoId(userid);
+
+        model.addAttribute("user", user);
+        model.addAttribute("content", "user/html/change-password.html");
+        return "layout.html";
+    }
+
+    @PostMapping("/user/update-profile")
+    public String postUpdateProfile(@ModelAttribute("user") User user, HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+        // Lấy thông tin user từ cookie hoặc session
+        int userId = getUserFromCookies(request);
+
+        // Tìm user hiện tại từ cơ sở dữ liệu bằng ID
+        User existingUser = userService.tìmUserTheoId(userId);
+
+        if (existingUser != null) {
+            // Cập nhật các thông tin cần thiết
+            existingUser.setPhoneNo(user.getPhoneNo());
+            existingUser.setAddress(user.getAddress());
+            existingUser.setGender(user.getGender());
+            existingUser.setDob(user.getDob());
+            existingUser.setUpdate_at(LocalDate.now());
+
+            // Lưu lại thông tin đã cập nhật
+            userService.updateUser(existingUser);
+
+            // Thêm thông báo thành công
+            redirectAttributes.addFlashAttribute("THONG_BAO_OK", "Cập nhật thành công!");
+
+            // Quay lại trang profile người dùng sau khi cập nhật
+            return "redirect:/user/profile";
+        }
+
+        // Nếu không tìm thấy người dùng, thông báo lỗi
+        redirectAttributes.addFlashAttribute("THONG_BAO_LOI", "Không tìm thấy người dùng để cập nhật!");
+        return "redirect:/index";
+    }
+
+    @PostMapping("/user/changePassword")
+    public String handleChangePassword(
+            HttpServletRequest request,
+            @RequestParam("old_password") String oldPassword,
+            @RequestParam("new_password") String newPassword,
+            @RequestParam("confirm_password") String confirmPassword,
+            Model model) {
+
+        int userId = getUserFromCookies(request);
+        User user = userService.tìmUserTheoId(userId);
+
+        // Kiểm tra mật khẩu cũ
+        if (!userService.checkOldPassword(user, oldPassword)) {
+            model.addAttribute("error", "Old password is incorrect.");
+            return "user/html/change-password.html"; // Quay lại trang thay đổi mật khẩu với thông báo lỗi
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "New password and confirm password do not match.");
+            return "user/html/change-password.html"; // Quay lại trang thay đổi mật khẩu với thông báo lỗi
+        }
+
+        // Đổi mật khẩu
+        boolean isPasswordChanged = userService.updatePassword(user, newPassword);
+
+        if (isPasswordChanged) {
+            model.addAttribute("success", "Password changed successfully.");
+            return "redirect:/user/profile"; // Redirect về trang profile hoặc một trang khác phù hợp
+        } else {
+            model.addAttribute("error", "Failed to change password. Please try again.");
+            return "user/html/change-password.html"; // Quay lại trang thay đổi mật khẩu với thông báo lỗi
+        }
+    }
+
     @PostMapping("/user/signup")
     public String postAdd(@ModelAttribute("User") User user) {
 
@@ -252,6 +341,20 @@ public class UserController {
         // Gửi thông báo thành công từ giao diện Thêm Mới sang giao diện Duyệt
 
         return "redirect:/user/login";
+    }
+
+    private int getUserFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("user_id".equals(cookie.getName())) {
+                    String userId = cookie.getValue();
+                    // Tìm người dùng theo userId từ cơ sở dữ liệu
+                    return Integer.parseInt(userId); // Giả sử bạn có phương thức findById trong userService
+                }
+            }
+        }
+        return (Integer) null; // Trả về null nếu không tìm thấy người dùng từ cookie
     }
 
 }// end class

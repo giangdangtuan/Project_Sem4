@@ -1,15 +1,15 @@
 
 <main class="main-container " role="main" th:object="${concert}">
-	<div class="event-billboard" style="padding-top: 300px;">
+	<div class="event-billboard" style="padding-top: 200px;">
 		<div class="bg clear">
-			<div class="img">
+			<div class="img" style="display: flex; justify-content: center;">
 				<img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}">
 			</div>
 		</div>
 		<div class="content" style="background-color: rgba(0, 0, 0, 0.6);">
 			<div class="row justify-content-center" style="">
 				<div class="col-12 col-md col-img" style="margin-left: 10rem; position: relative;">
-					<div class="box-img" style="position: absolute; top: -300px ; width: 210px;">
+					<div class="box-img" style="position: absolute; top: -315px ; width: 210px;">
 						<img style="height: 300px;" th:src="@{/images/{imageName}(imageName=${concert.mainImage})}"
 							alt="image">
 						<!-- countdown html -->
@@ -22,8 +22,7 @@
 
 					</div>
 
-					<div class="box-btn-ticket">
-
+					<div class="box-btn-ticket" th:if="${statusConcert}" th:style="'margin-top: 0px;'">
 						<a th:href="@{/concert/xem/{id}/map(id=${concert.id})}" onclick="$app.fn.goto('#section-event-round');"
 							class="btn-red btn-buynow btn-item">
 							<span>GET TICKET</span><i class="fa fa-angle-down icon right txtBig" aria-hidden="true"></i>
@@ -50,7 +49,7 @@
 											alt="calendar-white">
 										<p class="txt">
 											<small>Show Date</small>
-											<span>Saturday 9 November 2024 - Sunday 10 November 2024</span>
+											<span th:text="${formattedStartDate}">Saturday 9 November 2024</span>
 										</p>
 									</li>
 									<li class="item">
@@ -84,7 +83,7 @@
 
 											<small>Public Sale</small>
 
-											<span>Sunday 20 October 2024, 10:00</span>
+											<span th:text="${formattedStartSale}">Sunday 20 October 2024, 10:00</span>
 										</p>
 									</li>
 									<li class="item">
@@ -92,9 +91,15 @@
 										<div class="txt">
 											<a href="javascript:void(0);"
 												onclick="$app.fn.goto('#section-event-round');">
-												<small>Ticket Price</small>MGI HALL 5,900 / 4,900 / 3,900 / 3,500 /
-												2,900 / 1,900<br>LIVE STREAMING 890 <i class="fa fa-angle-down"
-													aria-hidden="true"></i></a>
+												<small>Ticket Price</small>
+												<span style="display: flex;">
+												<span th:each="concertZone, iterStat  : ${concertZones}" style="display: flex;">
+													<span th:text="${concertZone.getZoneName()}"></span>
+													<span>:&nbsp;</span>
+													<span th:text="${#numbers.formatDecimal(concertZone.price, 0, concertZone.price % 1 == 0 ? 0 : 2)}"></span>
+													<span th:if="${!iterStat.last}">&nbsp;/&nbsp;</span>
+												</span></span>
+											</a>
 
 										</div>
 									</li>
@@ -105,7 +110,9 @@
 											<small>Ticket Status</small>
 
 
-											<span class="ticket-status inline available"><span>ON SALE NOW</span></span>
+											<span th:class="${statusConcert} ? 'ticket-status inline available' : 'ticket-status inline coming-soon'">
+												<span th:text="${statusConcert} ? 'ON SALE NOW' : 'COMING SOON'"></span>
+											</span>
 
 										</p>
 									</li>

@@ -48,6 +48,10 @@ public class Seat
         return this.concertZone_id;
     }
 
+    public String getZone() {
+        return this.concertZone.getZoneName();
+    }
+
     public double getPrice() {
         return this.concertZone.getPrice();
     }

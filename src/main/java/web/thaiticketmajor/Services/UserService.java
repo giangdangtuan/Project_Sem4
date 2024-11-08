@@ -129,4 +129,26 @@ public class UserService
         this.userRepository.deleteById(id);
     }
 
+    public boolean checkOldPassword(User user, String oldPassword) {
+        // Kiểm tra nếu mật khẩu cũ do người dùng cung cấp trùng khớp với mật khẩu đã mã hóa trong cơ sở dữ liệu
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+    
+    public boolean updatePassword(User user, String newPassword) {
+        try {
+            // Mã hóa mật khẩu mới
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            // Cập nhật mật khẩu của người dùng
+            user.setPassword(encodedPassword);
+            // Lưu người dùng đã cập nhật vào cơ sở dữ liệu
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            // Xử lý lỗi khi cập nhật mật khẩu
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+
 }

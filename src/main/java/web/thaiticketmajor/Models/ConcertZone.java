@@ -1,5 +1,7 @@
 package web.thaiticketmajor.Models;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,4 +30,8 @@ public class ConcertZone {
     private Zone zone;
 
     private double price;
+
+    public String getZoneName() {
+        return this.zone.getName();
+    }
 }
