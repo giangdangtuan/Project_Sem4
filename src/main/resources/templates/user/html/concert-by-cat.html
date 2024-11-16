@@ -1,0 +1,210 @@
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var itemsPerPage = 6;
+        var $items = $('#event-container .event-item');
+        var numItems = $items.length;
+        var numPages = Math.ceil(numItems / itemsPerPage);
+
+        function showPage(page) {
+            $items.hide();
+            $items.slice((page - 1) * itemsPerPage, page * itemsPerPage).show();
+        }
+
+        function setupPagination() {
+            $('#prevPage').click(function (e) {
+                e.preventDefault();
+                var currentPage = getCurrentPage();
+                if (currentPage > 1) {
+                    showPage(currentPage - 1);
+                    setCurrentPage(currentPage - 1);
+                }
+            });
+
+            $('#nextPage').click(function (e) {
+                e.preventDefault();
+                var currentPage = getCurrentPage();
+                if (currentPage < numPages) {
+                    showPage(currentPage + 1);
+                    setCurrentPage(currentPage + 1);
+                }
+            });
+        }
+
+        function getCurrentPage() {
+            return parseInt($('.pagination').attr('data-current-page'), 10);
+        }
+
+        function setCurrentPage(page) {
+            $('.pagination').attr('data-current-page', page);
+        }
+
+        // Initialize pagination
+        setCurrentPage(1);
+        showPage(1);
+        setupPagination();
+    });
+
+</script>
+<nav class="event-nav">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <a href="/index" style="width: 128px;" class="active">ALL EVENTS</a>
+            <div th:each="category : ${listCategory}">
+                <a th:href="@{/concert/category/{id}(id=${category.id})}" style="width: 128px;" th:text="${category.catname}" class="active">ALL EVENTS</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<section class="section-highlight section-event-cate" th:style="'background: url('+ @{/image/bg_blur-gradient.jpg} +');'">
+    <div class="inner">
+        <div class="row">
+            <!-- highlight v2 -->
+            <div class="box-herobanner">
+                <div id="carouselExampleIndicators" class="carousel slide" style="width: 700px;height:300px" data-bs-ride="carousel" data-bs-interval="2000" data-bs-wrap="true">
+
+                    <div class="carousel-inner">
+                        <div th:each="dl, iterStat : ${listsConcert}" class="carousel-item" th:classappend="${iterStat.index == 0 ? ' active' : ''}">
+                            <a th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                                <img th:src="@{/images/{imageName}(imageName=${dl.mainImage})}" class="d-block w-100"
+                                     alt="..." style="height: 100%; width: 100%;">
+                            </a>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev" style="background-color: transparent;border: none;top: 25%">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next" style="background-color: transparent;border: none;top:25%">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="box-side-banner">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <div class="banner-container">
+                        <div class="box-boombox">
+                            <!-- /116117570/TTM_R1 -->
+                            <div id="div-gpt-ad-1509596340131-0" style="height:250px; width:300px;">
+                                <script>
+                                    googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509596340131-0'); });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-12">
+                    <section class="subbanner slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <div class="slick-track"
+                                style="opacity: 1; width: 300px; transform: translate3d(0px, 0px, 0px);"><a
+                                    target="_blank" class="item slick-slide slick-current slick-active"
+                                    href="https://www.facebook.com/ThaiTicketMajor" data-slick-index="0"
+                                    aria-hidden="false" tabindex="0" style="width: 300px;"><img
+                                        th:src="@{/image/highlight_ttmevent_48-5bd056d5795ca.jpg}"
+                                        alt="ติดตามอัพเดทข้อมูลข่าวสารได้ที่ facebook"
+                                        title="ติดตามอัพเดทข้อมูลข่าวสารได้ที่ facebook"></a></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="tabbox">
+    <div class="container">
+        <div class="header-section header-event-cate">
+            <div class="row align-items-center" style="margin-top: 30px;" >
+                <h1 class="head col" th:text="${category.catname}"></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Search Bar -->
+                <input type="text" id="searchInput" placeholder="Search events..." class="form-control mb-3">
+                <!-- HOT EVENTS -->
+                <div class="container">
+                    <div id="event-container" >
+                        <div class="tb-item box-collapse expand active" id="hot-sale-concert" style="">
+                            <div class="row" id="eventGrid">
+                                <div class="col-6 col-md-4 col-lg-2 event-item" th:each="dl : ${listsConcert}" id="item">
+                                    <div class="event-item-content">
+                                        <a class="box-img" th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                                            <img class="lazy" style="width: 100%; height: 100%;"
+                                                th:src="@{/images/{imageName}(imageName=${dl.mainImage})}"
+                                                alt="Banner Image">
+                                        </a>
+                                        <div class="box-txt">
+                                            <a class="title" th:href="@{/concert/detail/{id}(id=${dl.id})}">
+                                                <div class="title" th:text="${dl.name}"></div>
+                                            </a>
+                                            <span class="datetime" th:with="formattedDate=${#dates.format(#dates.create(dl.startSale.year, dl.startSale.monthValue, dl.startSale.dayOfMonth), 'EEE d MMM yyyy')}">
+                                                <span>
+                                                    <div class="detail" th:utext="${formattedDate}"></div>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="box-btn" th:if="${dl.endSale.isAfter(now)} and ${dl.startSale.isBefore(now)}">
+                                            <a th:href="@{/concert/detail/{id}(id=${dl.id})}" class="btn-buynow">
+                                                <small>Buy now</small>
+                                            </a>
+                                        </div>
+                                        <div class="box-btn" th:if="${dl.startSale.isAfter(now)}">
+                                            <a th:href="@{/concert/detail/{id}(id=${dl.id})}" class="btn-buynow linear">
+                                                <small>Coming Soon</small>
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <nav aria-label="Page navigation" style="padding-bottom: 100px;"> <ul class="pagination justify-content-center" > <li class="page-item"><a class="page-link" href="#" id="prevPage">Previous</a></li> <li class="page-item"><a class="page-link" href="#" id="nextPage">Next</a></li> </ul> </nav>
+              
+                        </div>
+                       
+                    </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        var filter = this.value.toLowerCase();
+        var eventItems = document.querySelectorAll('.event-item');
+
+        eventItems.forEach(function (item) {
+            var title = item.querySelector('.title').innerText.toLowerCase();
+            if (title.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    const links = document.querySelectorAll('.event-nav a');
+    const currentUrl = window.location.href;
+      
+        links.forEach(link => {
+          // Kiểm tra nếu href của liên kết trùng với URL hiện tại
+          if (currentUrl.includes(link.href)) {
+            // Xóa class 'active' khỏi các liên kết khác
+            links.forEach(l => l.classList.remove('active'));
+            // Thêm class 'active' cho liên kết khớp
+            link.classList.add('active');
+          }
+    });
+</script>

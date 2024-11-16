@@ -1,0 +1,155 @@
+
+
+<div class="modal fade" id="modalSua" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Update Zone</h5>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn bg-gradient-primary" form="formUpdateZone">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="modal fade" id="modalXoa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Confirm deletion of Zone</h5>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="/zone/delete" method="post" id="delete-zone" th:object="${zone}">
+            <input type="hidden" name="id" value="id của bản ghi mình cần xóa" />
+            <p>
+                Bạn có chắc muốn xóa ?
+            </p>
+            <p th:text="${zone.name}"></p>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn bg-gradient-danger" form="delete-zone">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+      <div class="col-md-6 mt-4">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Zone table</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Zone Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Zone Color</th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="zonee : ${listZone}">
+                    <td>
+                      <div class="d-flex px-3 py-1">
+                        <span class="text-xs font-weight-bold mb-0" th:text="${zonee.id}"></span>
+                      </div>
+                    </td>
+                    <td>
+                          <p class="text-xs font-weight-bold mb-0" th:text="${zonee.name}"></p>
+                    </td>
+                    <td>
+                        <p class="text-xs font-weight-bold mb-0" th:text="${zonee.color}" th:style="|background-color: ${zonee.color}|"></p> <!-- Hiển thị màu -->
+                    </td>
+                    <td class="align-middle">
+                      <a type="button" class="text-secondary font-weight-bold text-xs" th:data-id="${zonee.id}" data-toggle="modal" href="#modalSua"
+                          data-target="#modalSua" data-original-title="Edit user">
+                        Edit
+                      </a>
+                      &nbsp;
+                      <script>
+                        // https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
+                        // triggered when modal is about to be shown
+                        $('#modalSua').on('show.bs.modal', function (e) {
+  
+                            //get data-id attribute of the clicked element
+                            var id = $(e.relatedTarget).data('id');
+
+                            $('#modalSua .modal-body').load("/zone/update?id="+id);
+
+    
+                            //populate the textbox
+                            // $(e.currentTarget).find('input[name="id"]').val(id);
+                        });
+                      </script>
+                      <a type="button" class="text-secondary font-weight-bold text-xs" data-toggle="modal" data-target="#modalXoa" href="#modalXoa"
+                      th:data-id="${zonee.id}">
+                        Delete
+                      </a>
+                      <script>
+                        // https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
+                        //triggered when modal is about to be shown
+                        $('#modalXoa').on('show.bs.modal', function (e) {
+  
+                            //get data-id attribute of the clicked element
+                            var id = $(e.relatedTarget).data('id');
+  
+                            //populate the textbox
+                            $(e.currentTarget).find('input[name="id"]').val(id);
+                        });
+                    </script>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 mt-5">
+          <div class="card mb-4">
+            <div class="card-header pb-2 px-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="mb-0">Add Zone</h6>
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-4 p-3">
+              <form role="form" method="post" th:action="@{/zone/add}" th:object="${zone}">
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Zone Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                  <div class="form-group">
+                    <label for="example-color-input" class="form-control-label">Color</label>
+                    <input class="form-control" type="color" th:field="*{color}" value="#5e72e4" id="example-color-input">
+                    </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Submit</button>
+                  </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  

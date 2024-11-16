@@ -1,0 +1,536 @@
+
+<script> var firstSeatLabel = 1;
+
+    $(document).ready(function() {
+        var $cart = $('#selected-seats'),
+            $counter = $('#counter'),
+            $total = $('#total'),
+            sc = $('#seat-map').seatCharts({
+            map: [
+    'ppppppppppppppppppppppppppppppppppppp_______________________',
+                '',
+    'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk',
+    'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',
+    '',
+    '___________iiiiiiiiiiiiiiiiiiiii',
+    '___________hhhhhhhhhhhhhhhhhhhhh',
+    '___________ggggggggggggggggggggg',
+    '', 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+            ],
+            seats: {
+    p: {
+                    price   : 5000,
+                    classes : 'vip-class',
+                    category: 'VIP Ticket'
+                },
+    k: {
+                    price   : 2500,
+                    classes : 'standard-balcony-class',
+                    category: 'Standard Ticket (Balcony)'
+                },
+    j: {
+                    price   : 2500,
+                    classes : 'standard-balcony-class',
+                    category: 'Standard Ticket (Balcony)'
+                },
+    i: {
+                    price   : 2500,
+                    classes : 'standard-ground-class',
+                    category: 'Standard Ticket (Ground)'
+                },
+    h: {
+                    price   : 2500,
+                    classes : 'standard-ground-class',
+                    category: 'Standard Ticket (Ground)'
+                },
+    g: {
+                    price   : 2500,
+                    classes : 'standard-ground-class',
+                    category: 'Standard Ticket (Ground)'
+                },
+    c: {
+                    price   : 1250,
+                    classes : 'student-class',
+                    category: 'Student Ticket'
+                },
+            
+            },
+            naming : {
+    rows: ['P','','K','J','','I','H','G','','C'],
+                top : false,
+                getLabel : function (character, row, column) {
+      if (row == 'P') {
+        return column;
+      } else if (row == 'K' || row == 'J') {
+        return column;
+      } else if (row == 'I' || row == 'H' || row == 'G') {
+        return column;
+      } else if (row == 'C') {
+        return column;
+      }
+                },
+            },
+            legend : {
+                node : $('#legend'),
+                items : [
+        [ 'p', 'available',   'VIP Ticket' ],
+        [ 'k', 'available',   'Standard Ticket (Balcony)' ],
+        [ 'i', 'available',   'Standard Ticket (Ground)'],
+        [ 'c', 'available', 'Student Ticket'],
+        [ 'f', 'unavailable', 'Already Booked']
+                ]					
+            },
+            click: function () {
+                if (this.status() == 'available') {
+                    //let's create a new <li> which we'll add to the cart items
+                    $('<li>'+this.data().category+' Seat # '+this.settings.label+': <b>Rs.'+this.data().price+'</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
+                        .attr('id', 'cart-item-'+this.settings.id)
+                        .data('seatId', this.settings.id)
+                        .appendTo($cart);
+                    
+                    /*
+                     * Lets update the counter and total
+                     *
+                     * .find function will not find the current seat, because it will change its stauts only after return
+                     * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+                     */
+                    $counter.text(sc.find('selected').length+1);
+                    $total.text(recalculateTotal(sc)+this.data().price);
+                    
+                    return 'selected';
+                } else if (this.status() == 'selected') {
+                    //update the counter
+                    $counter.text(sc.find('selected').length-1);
+                    //and total
+                    $total.text(recalculateTotal(sc)-this.data().price);
+                
+                    //remove the item from our cart
+                    $('#cart-item-'+this.settings.id).remove();
+                
+                    //seat has been vacated
+                    return 'available';
+                } else if (this.status() == 'unavailable') {
+                    //seat has been already booked
+                    return 'unavailable';
+                } else {
+                    return this.style();
+                }
+            }
+        });
+
+        //this will handle "[cancel]" link clicks
+        $('#selected-seats').on('click', '.cancel-cart-item', function () {
+            //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
+            sc.get($(this).parents('li:first').data('seatId')).click();
+        });
+
+        //let's pretend some seats have already been booked
+        sc.get(['1_2', '4_1', '7_1', '7_2']).status('unavailable');
+
+});
+
+function recalculateTotal(sc) {
+    var total = 0;
+
+    //basically find every selected seat and sum its price
+    sc.find('selected').each(function () {
+        total += this.data().price;
+    });
+    
+    return total;
+}
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<main class="main-container" role="main">
+
+    <form id="frm" name="frm">
+        <div class="booking">
+            <div class="booking-header">
+                <div class="box-bg">
+                    <div class="bg"
+                        style="background-image: url('/img_poster/prefix_1/0080/6080/jung-hae-in-fan-meeting-our-time-in-bangkok-2024-66de6593d94fe-l.jpeg');">
+                    </div>
+                </div>
+                <div class="content" style="background-color: rgb(57, 44, 44);">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-lg-3 status-bar">
+                                <div class="inner">
+                                    <h2 class="text-center text-lg-right">STEP <br class="d-none d-lg-block">
+                                        <span>1/4</span> Select Round &amp;<br class="d-none d-lg-block"> Zone
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-7">
+                                <div class="event-thumb align-self-center">
+                                    <div class="row row-s">
+                                        <div class="col-auto">
+                                            <div class="poster">
+                                                <img class="lazy"
+                                                    src="/img_poster/prefix_1/0080/6080/jung-hae-in-fan-meeting-our-time-in-bangkok-2024-66de6593d94fe-l.jpeg"
+                                                    alt="" style="display: block;">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <h1 class="title">2024 JUNG HAE IN FAN MEETING ่OUR TIME ่ IN BANGKOK</h1>
+                                            <a href="#popup-event-detail" class="fancybox"><small><u>Detail</u> <i
+                                                        class="fa fa-angle-right" aria-hidden="true"></i></small></a>
+                                            <div class="divider-h"></div>
+                                            <div class="row-select-round form-row">
+                                                <div class="col-12 col-md-auto align-self-center">
+                                                    <span>Show Round</span>
+                                                </div>
+                                                <div class="col-auto align-self-center">
+                                                    <select class="selectbox" id="rdId" style="width:280px;" name="rdId"
+                                                        onchange="round_change();">
+                                                        <option value="79321" selected="">Sat 02 Nov 2024 18:00</option>
+                                                    </select>
+                                                </div>
+                                                <div style="display: block;">
+                                                    <div class="col-auto align-self-center">
+                                                        <button type="button" class="btn fancybox"
+                                                            href="#popup-event-zone" id="popup-avail">Seats
+                                                            Available</button>
+                                                        <!-- <button type="button" class="btn" href="#" id="load-test">Test</button> -->
+                                                        <script>
+                                                            $(function () {
+                                                                $("#load-test").bind('click', function (e) {
+                                                                    $("#frm").loading();
+                                                                    setInterval(() => {
+                                                                        $("#loading-c").hide();
+                                                                    }, 5000);
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-body bg-dark">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="zone-container" style="height: 670px;">
+
+
+                                <style>
+                                    .split-container {
+                                        display: flex;
+                                        flex-wrap: nowrap;
+                                        height: 100vh;
+                                    }
+
+                                    .price-container,
+                                    .map-container {
+                                        flex: 1;
+                                        max-width: 50%;
+                                        box-sizing: border-box;
+                                        padding: 20px;
+                                    }
+
+                                    .price-container img {
+                                        width: 100%;
+                                        height: 500px;
+                                    }
+                                </style>
+                                </head>
+
+                                <body>
+                                    <div class="split-container">
+                                        <div class="price-container"> <img th:src="@{/image/price.jpg}"
+                                                alt="Price Image"> </div>
+                                        <div class="map-container">
+                                            <div class="seat-map">
+                                                <div class="seat"
+                                                    style="width: 100%; height: 100px; background-color: red; margin: 10px;"
+                                                    data-toggle="modal" data-target="#seatModalA1">A1</div>
+                                                <div class="seat"
+                                                    style="width: 100%; height: 100px; background-color: blue; margin: 10px;"
+                                                    data-toggle="modal" data-target="#seatModalA2">A2</div>
+                                                <div class="seat"
+                                                    style="width: 100%; height: 100px; background-color: green; margin: 10px;"
+                                                    data-toggle="modal" data-target="#seatModalA3">A3</div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Modal for Seat A1 -->
+                                    <div class="modal fade" id="seatModalA1" tabindex="-1" role="dialog"
+                                        aria-labelledby="seatModalLabelA1" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="seatModalLabelA1">Seat A1 Details</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">		<div class="wrapper">
+                                                    <div>
+                                                <div class="seat-chart-wrapper">
+                                                  <div id="seat-map">
+                                                    <div class="front-indicator">Front</div>
+                                                  </div>
+                                                </div>
+                                                <br/>
+                                                <div class='seat-stat-wrapper'>
+                                                  <div id="legend"></div>
+                                                  <div class="booking-details">
+                                                    <h2>Booking Details</h2>
+                                        
+                                                    <h3> Selected Seats (<span id="counter">0</span>):</h3>
+                                                    <ul id="selected-seats"></ul>
+                                        
+                                                    <h4>Total: Rs.<span id="total">0</span><h4>
+                                        
+                                                    <button class="checkout-button">Checkout &raquo;</button>
+                                                  </div>
+                                                </div>
+                                                    </div>
+                                                </div></div>
+                                                <div class="modal-footer"> <button type="button"
+                                                        class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Modal for Seat A2 -->
+                                    <div class="modal fade" id="seatModalA2" tabindex="-1" role="dialog"
+                                        aria-labelledby="seatModalLabelA2" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="seatModalLabelA2">Seat A2 Details</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">Details about seat A2...</div>
+                                                <div class="modal-footer"> <button type="button"
+                                                        class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Modal for Seat A3 -->
+                                    <div class="modal fade" id="seatModalA3" tabindex="-1" role="dialog"
+                                        aria-labelledby="seatModalLabelA3" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="seatModalLabelA3">Seat A3 Details</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">Details about seat A3...</div>
+                                                <div class="modal-footer"> <button type="button"
+                                                        class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:none">
+                <div class="popup-event-detail" id="popup-event-detail">
+                    <div class="box-content">
+                        <p class="poster">
+                            <img src="/img_poster/prefix_1/0080/6080/jung-hae-in-fan-meeting-our-time-in-bangkok-2024-66de6593d94fe-l.jpeg"
+                                alt="">
+                        </p>
+                        <h1>2024 JUNG HAE IN FAN MEETING ่OUR TIME ่ IN BANGKOK</h1>
+                        <h2>Venue</h2>
+                        <p>
+                            BHIRAJ HALL, BITEC BANGNA
+                        </p>
+                        <h2>Promoter</h2>
+                        <p>
+                            บริษัท เดอะ ดรีม แอนด์ เดสทินี จำกัด
+                        </p>
+                    </div>
+                    <div class="box-bg">
+                        <div class="bg"
+                            style="background-image: url('/img_poster/prefix_1/0080/6080/jung-hae-in-fan-meeting-our-time-in-bangkok-2024-66de6593d94fe-l.jpeg');">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="popup-normal" id="popup-event-zone" style="display: none; width: 360px; min-height: 560px;">
+            </div>
+            <input type="hidden" name="k" value="47d5c9c207cca57d0fc560882f7b1a258121a579">
+            <input type="hidden" name="tk" value="7a9d4c2b2a1737a21d2e2718f4b60b939be400133403f5ec27b3c13b7d89c3e2">
+            <input type="hidden" name="query" value="627">
+    </form>
+</main>
+
+<style>
+    .seat-map {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .seat {
+        width: 50px;
+        height: 50px;
+        background-color: #ccc;
+        text-align: center;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    .seat.selected {
+        background-color: #f00;
+    }
+</style>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+
+a {
+	color: #b71a4c;
+}
+.front-indicator {
+	width: 100%;
+	margin: 5px 32px 15px 32px;
+	background-color: #f6f6f6;	
+	color: #adadad;
+	text-align: center;
+	padding: 3px;
+	border-radius: 5px;
+}
+.wrapper {
+/* 	width: 400px; */
+}
+.container {
+	margin: 0 auto;
+/* 	width: 500px; */
+	text-align: left;
+}
+.seat-stat-wrapper {
+  width: 100%;
+}
+#legend {
+  width: 49%;
+  margin: 0 auto;
+  float: left;
+}
+.booking-details {
+  display: inline-block;
+	text-align: right;
+	font-size: 12px;
+  width: 49%;
+  margin: 0 auto;
+}
+@media screen and (max-width: 550px) {
+  #legend {
+    width: 100%;
+  }
+  .booking-details {
+    width: 100%;
+    text-align: left;
+  }
+}
+.booking-details h2 {
+	margin: 25px 0 20px 0;
+	font-size: 17px;
+}
+.booking-details h3 {
+	margin: 5px 5px 0 0;
+	font-size: 14px;
+}
+div.seatCharts-cell {
+	color: #182C4E;
+	height: 25px;
+	width: 25px;
+	line-height: 25px;
+	
+}
+div.seatCharts-seat {
+	color: #FFFFFF;
+	cursor: pointer;	
+}
+div.seatCharts-row {
+	height: 35px;
+}
+div.seatCharts-seat.available {
+	background-color: #B9DEA0;
+
+}
+div.seatCharts-seat.available.vip-class {
+	background-color: #3a78c3;
+}
+div.seatCharts-seat.available.standard-ground-class {
+	background-color: orange;
+}
+div.seatCharts-seat.available.standard-balcony-class {
+	background-color: purple;
+}
+div.seatCharts-seat.available.student-class {
+	background-color: blue;
+}
+div.seatCharts-seat.focused {
+	background-color: #76B474;
+}
+div.seatCharts-seat.selected {
+	background-color: #E6CAC4;
+}
+div.seatCharts-seat.unavailable {
+	background-color: #472B34;
+}
+.seat-chart-wrapper {
+/*   width: 600px; */
+  overflow: scroll;
+}
+div.seatCharts-container {
+	border-right: 1px dotted #adadad;
+	width: 1767px;
+	padding: 20px;
+  
+/* 	float: left; */
+}
+div.seatCharts-legend {
+  display: inline-block;
+}
+
+div.seatCharts-legend li {
+  text-align: left;
+}
+
+ul.seatCharts-legendList {
+	padding-left: 0px;
+}
+span.seatCharts-legendDescription {
+	margin-left: 5px;
+	line-height: 30px;
+}
+.checkout-button {
+/* 	display: block; */
+	margin: 10px 0;
+	font-size: 14px;
+}
+#selected-seats {
+	overflow-y: scroll;
+	overflow-x: none;
+}
+</style>

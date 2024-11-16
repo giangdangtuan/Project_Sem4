@@ -1,0 +1,7 @@
+<form id="formSua" role="form" method="post" th:action="@{/category/sua}" th:object="${dl}">
+    <input type="hidden" th:field="*{id}" />
+    <div class="input-group input-group-outline mb-3">
+      <input type="text" th:field="*{catname}" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)">
+    </div>
+
+</form>

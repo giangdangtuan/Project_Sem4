@@ -1,0 +1,514 @@
+
+<main class="main-container " role="main" th:object="${concert}">
+	<div class="event-billboard" style="padding-top: 200px;">
+		<div class="bg clear">
+			<div class="img" style="display: flex; justify-content: center;">
+				<img th:src="@{/images/{imageName}(imageName=${concert.mainImage})}">
+			</div>
+		</div>
+		<div class="content" style="background-color: rgba(0, 0, 0, 0.6);">
+			<div class="row justify-content-center" >
+				<div class="col-12 col-md col-img" style="margin-left: 10rem; position: relative;">
+					<div class="box-img" style="position: absolute; top: -315px ; width: 210px;">
+						<img style="height: 300px;" th:src="@{/images/{imageName}(imageName=${concert.mainImage})}"
+							alt="image">
+						
+					</div>
+
+					<div class="box-btn-ticket" th:if="${statusConcert}" th:style="'margin-top: 0px;'">
+						<a th:href="@{/concert/xem/{id}/map(id=${concert.id})}" onclick="$app.fn.goto('#section-event-round');"
+							class="btn-red btn-buynow btn-item">
+							<span>GET TICKET</span></i>
+						</a>
+					</div>
+
+
+
+
+				</div>
+				<div class="col-12 col-md">
+					<div class="box-txt">
+						<div class="row">
+							<div class="col-12">
+								<p><a href="/performance/"><small>performance</small></a></p>
+								<h1 class="title" th:text="${concert.name}"></h1>
+							</div>
+						</div>
+						<div class="row row-detail">
+							<div class="col-12 col-md">
+								<ul class="event-detail-list">
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/calendar-white.svg}"
+											alt="calendar-white">
+										<p class="txt">
+											<small>Show Date</small>
+											<span th:text="${formattedStartDate}">Saturday 9 November 2024</span>
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/pin-linear-white.svg}"
+											alt="pin-linear-white">
+										<p class="txt">
+											<small>Venue</small>
+											<span><a href="/venue/bravo-bkk.html" target="_blank">MGI HALL, BRAVO
+													BKK</a> / </span>
+											<span><a href="/venue/live-streaming-by-ttm-live.html" target="_blank">Live
+													Streaming by TTM LIVE</a> </span>
+
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/clock-white.svg}" alt="clock-white">
+										<p class="txt">
+											<small>Gate Open</small>
+											<span>Approx. 1 hr. before show start.</span>
+										</p>
+									</li>
+								</ul>
+							</div>
+							<div class="col-12 col-md">
+								<ul class="event-detail-list">
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/calendar-sale-white.svg}"
+											alt="calendar-sale-white">
+
+										<p class="txt">
+
+											<small>Public Sale</small>
+
+											<span th:text="${formattedStartSale}">Sunday 20 October 2024, 10:00</span>
+										</p>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/price.svg}" alt="price">
+										<div class="txt">
+											<a href="javascript:void(0);"
+												onclick="$app.fn.goto('#section-event-round');">
+												<small>Ticket Price</small>
+												<span style="display: flex;">
+												<span th:each="concertZone, iterStat  : ${concertZones}" style="display: flex;">
+													<span th:text="${concertZone.getZoneName()}"></span>
+													<span>:&nbsp;</span>
+													<span th:text="${#numbers.formatDecimal(concertZone.price, 0, concertZone.price % 1 == 0 ? 0 : 2)}"></span>
+													<span th:if="${!iterStat.last}">&nbsp;/&nbsp;</span>
+												</span></span>
+											</a>
+
+										</div>
+									</li>
+									<li class="item">
+										<img class="icon" th:src="@{/image/icon/ticket-bold-white.svg}"
+											alt="ticket-bold-white">
+										<p class="txt">
+											<small>Ticket Status</small>
+
+
+											<span th:class="${statusConcert} ? 'ticket-status inline available' : 'ticket-status inline coming-soon'">
+												<span th:text="${statusConcert} ? 'ON SALE NOW' : 'COMING SOON'"></span>
+											</span>
+
+										</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-event-btn">
+			<div class="box-item box-share">
+				<div class="box">
+					<span>Share</span>
+					<a href="javascript:void(0);" class="item facebook" title="Facebook Share"
+						onclick="$app.fn.share('facebook');"></a>
+					<a href="javascript:void(0);" class="item twitter" title="Tweet"
+						onclick="$app.fn.share('twitter');"></a>
+					<a href="javascript:void(0);" class="item line" title="Line It"
+						onclick="$app.fn.share('line');"></a>
+				</div>
+			</div>
+			<div class="box-item box-btn-favorite">
+				<a href="javascript:void(0);" class="btn-favorite" data-btn="active" data-fav="6118"
+					onclick="$app.member.favorite('86190d272d2692391c5fdf3bbac1e165','6118',this);"
+					title="Favorite this Event"></a>
+			</div>
+		</div>
+	</div>
+	<div class="event-info-bar">
+		<div class="container">
+			<div class="row">
+				<div class="col-auto col-button align-self-center">
+					<div class="box-btn-ticket">
+
+						<a href="javascript:;" onclick="$app.fn.goto('#section-event-round');"
+							class="btn-red btn-buynow btn-item">
+							<span>GET TICKET</span><i class="fa fa-angle-down icon right txtBig" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col col-info">
+					<div class="row">
+						<div class="col-title align-self-center">
+							<span class="title txt-item">Butterbear's 1st Fam Meeting Adventure Awaits!</span>
+						</div>
+						<div class="col-auto align-self-center">
+							<a class="txt-item" href="/venue/bravo-bkk.html" target="_blank"><img class="icon"
+									th:src="@{/image/icon/pin-linear-white.svg}" alt="MGI HALL, BRAVO BKK"
+									title="MGI HALL, BRAVO BKK">MGI HALL, BRAVO BKK</a>
+							<a class="txt-item" href="/venue/live-streaming-by-ttm-live.html" target="_blank"><img
+									class="icon" th:src="@{/image/icon/pin-linear-white.svg}"
+									alt="Live Streaming by TTM LIVE" title="Live Streaming by TTM LIVE">Live Streaming
+								by TTM LIVE</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-event-btn">
+			<div class="box-item box-share">
+				<div class="box">
+					<span>Share</span>
+					<a href="javascript:void(0);" class="item facebook" title="Facebook Share"
+						onclick="$app.fn.share('facebook');"></a>
+					<a href="javascript:void(0);" class="item twitter" title="Tweet"
+						onclick="$app.fn.share('twitter');"></a>
+					<a href="javascript:void(0);" class="item line" title="Line It"
+						onclick="$app.fn.share('line');"></a>
+				</div>
+			</div>
+			<div class="box-item box-btn-favorite">
+				<a href="javascript:void(0);" class="btn-favorite" data-btn="active" data-fav="6118"
+					onclick="$app.member.favorite('86190d272d2692391c5fdf3bbac1e165','6118',this);"
+					title="Favorite this Event"></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg-8">
+				<article class="event-detail">
+
+
+					<section class="section" id="section-event-round">
+						<h2 class="head">Seating Plan &amp; Show date </h2>
+
+						<div class="body">
+							<!-- EVENT ROUND -->
+
+				
+					
+
+
+						</div>
+					</section>
+
+					<section class="section detail">
+						<h2 class="head">Detail</h2>
+						<div class="body">
+							<p>
+							</p>
+							<table border="1" cellpadding="0" cellspacing="0" style="width: 761px;" width="100%">
+								<tbody>
+									<tr>
+										<td style="width: 134px;">
+											Event Name</td>
+										<td style="width: 474px;" th:text="${concert.name}">
+											</td>
+									</tr>
+									<tr>
+										<td >
+											Show Date</td>
+										<td th:text="${concert.startSale}">
+											</td>
+									</tr>
+									<tr>
+										<td>
+											Show Time</td>
+										<td th:text="${concert.startDate}">
+											&nbsp;</td>
+									</tr>
+									
+									<tr>
+										<td>
+											Ticket Price</td>
+										<td >
+											<span th:each="concertZone, iterStat  : ${concertZones}">
+											<span th:text="${#numbers.formatDecimal(concertZone.price, 0, concertZone.price % 1 == 0 ? 0 : 2)}"></span>
+											<span>/</span>
+										</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<img alt="" th:src="@{/images/{imageName}(imageName=${concert.subImage1})}"
+								style="width: 800px; height: 1000px;"><br>
+							<br>
+							<img alt="" th:src="@{/images/{imageName}(imageName=${concert.subImage2})}"
+								style="width: 800px; height: 1000px;"><br>
+							<br>
+							
+								<br>
+								<strong>Remarks:</strong><br>
+								- The maximum purchase per order is&nbsp;4 tickets.<br>
+								- &nbsp;You must provide the full name that matches the ID card or passport of each
+								attendee for every seat, and it must be in Thai or English only. The name provided will
+								be printed on the ticket. Please ensure the full name is accurate before making payment.
+								The name on the ticket cannot be changed under any circumstances.<br>
+								- Children over 100 cm tall must have a ticket to attend the show.<br>
+								<div>
+									<div>
+										- The ticket price above does not include 50 baht of the ticketing and plastic
+										ticket fee.</div>
+								</div>
+								<div>
+									- Payment method by credit card, debit card, Shopee Pay,True Wallet, Alipay, WeChat
+									Pay (There will be 3% of processing fee) / K Pay Plus, BBL iBanking (There will be
+									0.5% of c&nbsp;processing&nbsp;fee).</div>
+								- Use paper ticket to attend the show. Plastic ticket will be souvenir and pick up at
+								the venue on show date.<br>
+								- Please beware of swindler who may come in various ways including selling booking
+								information or booking code, selling the tickets from unofficial market or impersonating
+								to be a staff. This may be a fake ticket.<br>
+								- Using or distributing the tickets for advertising or publicity without the permission
+								of the Company is considered to be illegal.<br>
+								- For resell ticket in higher prices. If we check and find evidence of wrongdoing, the
+								company will cancel your reservation in case of unpaid or cancel your ticket in case of
+								paid and return the ticket to the system for resell.<br>
+								<br>
+								More info : Social Media Butterbear.th and 4NOLOGUE<br>
+								<br>
+								<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+									笔记 :</p>
+								- 购买限制：每单限购4件。<br>
+								-
+								您必须提供每位参与者的身份证或护照上的全名，以与每个座位匹配，并且必须仅使用泰语或英语。提供的姓名将打印在票上。在付款之前，请确保姓名的准确性。票上的姓名在任何情况下都不能更改。<br>
+								- 超过100厘米高的儿童必须购票入场。<br>
+								- 票价不包含卡片发放费和塑料卡发放费，每张卡50泰铢。<br>
+								- 可通过信用卡、借记卡、Shopee Pay、True Wallet、Alipay、WeChat Pay（手续费3%）、K Pay Plus、BBL
+								iBanking（手续费0.5%）进行付款。<br>
+								- 请使用纸质门票入场，并在活动现场领取纪念塑料票。<br>
+								- 请注意各种形式的诈骗，如接受票务预订、提供预订代码、在系统外买卖票、假冒公司员工等。<br>
+								- 未经公司许可，禁止转售或将卡片用于广告或宣传用途，否则视为违法。<br>
+								- 禁止以高于原价的价格转售门票，若检查发现有违法行为，公司有权在未付款的情况下取消预订，或在付款后作废该卡，并将其重新投放系统进行销售。<br>
+								<br>
+								<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+									如需进一步了解详情或咨询，请通过社交媒体联系 Butterbear.th 和 4NOLOGUE。</p>
+							</div>
+							<div>
+								<hr>
+							</div>
+							<div style="text-align: center;">
+								<br>
+								<strong>LIVE STREAMING &amp; RERUN</strong>
+							</div>
+							<div>
+								<table border="1" cellpadding="1" cellspacing="1" style="width: 100%">
+									<tbody>
+										<tr>
+											<td>
+												Streaming Platform<span style="white-space: pre;"> </span>:</td>
+											<td>
+												TTM LIVE</td>
+										</tr>
+										<tr>
+											<td>
+												Ticket Prices<span style="white-space: pre;"> </span>:</td>
+											<td>
+												<div>
+													890 Baht (Link and Code)<br>
+													910 Baht&nbsp;(Link and Code + Plastic souvenir card + Photocard)
+													(Delivery fee will be applied)</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Dates :</td>
+											<td>
+												9-10 November 2024</td>
+										</tr>
+										<tr>
+											<td>
+												Showtime :</td>
+											<td>
+												<div>
+													5 p.m. (ICT)</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<br>
+							
+							<br>
+							
+
+						</div>
+					</section>
+					<section class="section event-info">
+						<div class="group">
+							<ul class="box-tag">
+								<li>
+									<h3 class="head">Tags :</h3>
+								</li>
+								<li><a href="/tag/ผจญภัยไปกับเนย" class="tag">ผจญภัยไปกับเนย</a></li>
+								<li><a href="/tag/Butterbears1stFamMeeting" class="tag">Butterbears1stFamMeeting</a>
+								</li>
+								<li><a href="/tag/AdventureAwaits" class="tag">AdventureAwaits</a></li>
+								<li><a href="/tag/ด้อมน้องเนย" class="tag">ด้อมน้องเนย</a></li>
+								<li><a href="/tag/Butterbear" class="tag">Butterbear</a></li>
+								<li><a href="/tag/4NOLOGUE" class="tag">4NOLOGUE</a></li>
+
+							</ul>
+						</div>
+
+						<div class="group">
+							<ul class="box-payment-channel">
+								<li>
+									<h3 class="head">Distribution Channel :</h3>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/faq.php#buy-website" class="tag">
+										<img th:src="@{/image/desktop.svg}" alt="Website" title="Website">
+									</a>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php" class="tag">
+										<img th:src="@{/image/logo_ttm.png}" alt="Thaiticketmajor Outlets" title="Thaiticketmajor Outlets">
+										
+									</a>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-4" class="tag">
+										<img th:src="@{/image/logo_thaipost.png}" alt="Thai Post" title="Thai Post">
+										
+									</a>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-3" class="tag">
+										<img th:src="@{/image/logo_major.png}" alt="Major Cineplex Outlets" title="Major Cineplex Outlets">
+										
+									</a>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/contact-us.php" class="tag">
+										<img th:src="@{/image/icon/call-center.svg}" alt="Call Center TTM 02-2623456" title="Call Center TTM 02-2623456">
+										
+									</a>
+								</li>
+								<li>
+									<a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php#heading-7" class="tag">
+										<img th:src="@{/image/logo_bigc.png}" alt="Big C" title="Big C">
+										
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="tag">
+										<img th:src="@{/image/logo_or.png}" alt="xplORe" title="xplORe">
+										
+									</a>
+								</li>
+							</ul>
+						</div>
+						
+					</section>
+
+
+
+
+					<section class="section banner-container">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="box-boombox">
+									<!-- /116117570/TTM_R7 -->
+									<div id="div-gpt-ad-1536565353572-0" style="height:250px; width:300px;">
+										<script>
+											googletag.cmd.push(function () { googletag.display('div-gpt-ad-1536565353572-0'); });
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="box-boombox">
+									<!-- /116117570/TTM_R3_300_250 -->
+									<div id="div-gpt-ad-1509597507078-0" style="height:250px; width:300px;">
+										<script>
+											googletag.cmd.push(function () { googletag.display('div-gpt-ad-1509597507078-0'); });
+										</script>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</section>
+
+
+
+				</article>
+			</div>
+
+
+
+
+
+			
+
+
+
+
+
+		</div>
+	</div>
+
+
+
+
+	<script>
+		$(document).ready(function () {
+			$app.slider.eventPersonalize();
+		});
+	</script>
+	<iframe id="favorite-animation" src="https://www.thaiticketmajor.com/animation/favorite/index.html" width="100%"
+		height="100%" frameborder="0" style="display:none;"></iframe>
+</main>
+
+<style>
+	.group {
+    margin: 20px 0;
+}
+
+.box-payment-channel {
+    display: flex;               /* Arrange the list items in a horizontal row */
+    flex-wrap: wrap;             /* Allow wrapping to the next line if necessary */
+    justify-content: space-evenly; /* Distribute space evenly between the items */
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.box-payment-channel li {
+    display: flex;
+    align-items: center;         /* Align items vertically centered */
+    justify-content: center;     /* Center content inside the li */
+    margin: 10px;                /* Add some spacing between items */
+}
+
+.box-payment-channel .tag {
+    display: block;
+    text-align: center;
+}
+
+.box-payment-channel img {
+    width: 60px;                /* Set a fixed width for all images */
+    height: 60px;               /* Set a fixed height for all images */
+    object-fit: contain;        /* Preserve aspect ratio while filling the space */
+    margin-bottom: 5px;         /* Space between the image and the text (if any) */
+}
+
+.box-payment-channel .txt {
+    font-size: 12px;             /* Adjust the font size for the text */
+    display: block;              /* Make the text appear below the image */
+}
+
+</style>
