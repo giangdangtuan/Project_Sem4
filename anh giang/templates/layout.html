@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BossTicket</title>
+  <link rel="stylesheet" href="../static/css/layout.css" />
+  <!-- For Brands -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css">
+  <!-- For Regular -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/regular.min.css">
+  <!-- For Solid -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/css/user/main.css}">
+  <link rel="stylesheet" th:href="@{/css/user/_reset.css}">
+  <link rel="stylesheet" th:href="@{/css/user/croppie.css}">
+  <link rel="stylesheet" th:href="@{/css/user/css2.css}">
+  <link rel="stylesheet" th:href="@{/css/user/easy-autocomplete.min.css}">
+  <link rel="stylesheet" th:href="@{/css/user/easy-autocomplete.themes.min.css}">
+  <link rel="stylesheet" th:href="@{/css/user/intlTelInput.min.css}">
+  <link rel="stylesheet" th:href="@{/css/user/m=el_main_css.css}">
+  <link rel="stylesheet" th:href="@{/css/user/support.css}">
+  <link rel="stylesheet" th:href="@{/css/user/_font-awesome.min.css}">
+
+</head>
+<header class="main-header">
+  <div class="container">
+    <div class="row">
+      <div class="mh-col col-12 col-xl-auto">
+        <a href="https://www.thaiticketmajor.com" class="logo">
+          <img th:src="@{/image/logo-removebg-preview.png}" alt="THAITICKETMAJOR" style="width: 100px;height: 70px;">
+        </a>
+      </div>
+      <div class="mh-col col-12 col-xl-auto">
+        <nav class="main-nav" role="navigation">
+          <ul class="menu">
+            <li class="mn-item d-block d-lg-none">
+              <a href="javascript:void(0);" onclick="$app.popup.signin();">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/sign-in.svg"
+                    width="24"></span>
+                <span class="txt">Sign In/Sign Up</span>
+              </a>
+            </li>
+            <li class="mn-item">
+              <a href="https://www.thaiticketmajor.com/index.html">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/home.svg"
+                    width="24"></span>
+                <span class="txt">HOME</span>
+              </a>
+            </li>
+            <li class="mn-item dropdown">
+              <a href="/all-event/">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/ticket.svg"
+                    width="24"></span>
+                <span class="txt">EVENTS</span>
+              </a>
+              <ul class="submenu">
+                <li><a href="/live/">TTM LIVE <span class="badge badge-new v-top txtSmall">NEW</span></a></li>
+                <li><a href="/concert/">CONCERTS</a></li>
+                <li><a href="/performance/">LIVE SHOWS</a></li>
+                <li><a href="/sport/">SPORTS</a></li>
+                <li><a href="/exhibition/">EXHIBITIONS</a></li>
+              </ul>
+            </li>
+            <li class="mn-item">
+              <a href="http://shopping.thaiticketmajor.com" target="_blank">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/shopping-bag.svg"
+                    width="24"></span>
+                <span class="txt">MERCHANDISE</span>
+              </a>
+            </li>
+            <li class="mn-item">
+              <a href="https://www.thaiticketmajor.com/variety/" target="_blank">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/news.svg"
+                    width="24"></span>
+                <span class="txt">VARIETY</span>
+              </a>
+            </li>
+            <li class="mn-item dropdown">
+              <a href="javascript:void(0);" class="default">
+                <span class="icon"><img src="https://m.thaiticketmajor.com/assets/img/icon/mobile/promotion.svg"
+                    width="24"></span>
+                <span class="txt">PRIVILEGE</span>
+              </a>
+              <ul class="submenu">
+                <li><a href="/privilege/">PRIVILEGE</a></li>
+                <li><a href="/promotion/">PROMOTION</a></li>
+                <li><a href="/ttmcard/">TTM MEMBER CARD</a></li>
+              </ul>
+            </li>
+            <li class="mn-item d-block d-lg-none">
+              <a href="http://www.thaiticketmajor.com/delivery/delivery.php">
+                <span class="icon"><img th:src="@{/image/logo-removebg-preview.png}" width="24"></span>
+                <span class="txt">Delivery Status Check</span>
+              </a>
+            </li>
+            <li class="mn-item d-block d-lg-none">
+              <div class="box-social">
+                <a class="item" title="Facbook Fanpage" href="https://www.facebook.com/ThaiTicketMajor"
+                  target="_blank"><img src="/assets/img/icon/facebook-circle.svg" alt="Facebook"></a>
+                <a class="item" title="Line" href="https://line.me/R/ti/p/%40gaw9520p" target="_blank"><img
+                    th:src="@{/image/line-circle.svng}" alt="Line"></a>
+                <a class="item" title="Instagram" href="https://instagram.com/thaiticketmajor" target="_blank"><img
+                    src="/assets/img/icon/instagram-circle.svg" alt="Instagram"></a>
+                <a class="item" title="Youtube" href="https://www.youtube.com/channel/UCIIP01HQDYGpc4qxNsqTMjw"
+                  target="_blank"><img src="/assets/img/icon/youtube-circle.svg" alt="Youtube"></a>
+                <a class="item" title="X" href="https://x.com/ThaiTicketMajor" target="_blank"><img
+                    src="/assets/img/icon/x-circle.png" alt="X"></a>
+              </div>
+            </li>
+          </ul>
+          
+        </nav>
+      </div>
+      <div class="mh-col col-12 col-xl">
+        <div class="box-btn-header">
+          <div class="box-search item">
+            <a href="javascript:void(0);" class="btn-show-search">
+              <span><img th:src="@{/image/ticket.svg}">
+              </span>
+            </a>
+            <i class="tooltip-title">Check ticket</i>
+          </div>
+
+          
+          <a class="item btn-check-delivery d-none d-lg-inline-block" href="/delivery/bell.php" target="_blank"><img th:src="@{/image/bell.svg}" style="color: red;">
+            <i class="tooltip-title">Notification</i>
+          </a>
+          <div class="box-noti box-dropdown item">
+            
+           
+            
+
+            <div class="dropdown-menu">
+              <div class="noti-body">
+
+
+                <a href="/concert/h-m-blues.html" target="_blank" class="dropdown-item noti-item">
+                  <span class="box-img">
+                    <img class="lazy"
+                      src="https://www.thaiticketmajor.com/img_poster/prefix_1/0140/6140/h-m-blues-67235fa050434-m.png"
+                      alt="H.M.BLUES" style="">
+                  </span>
+                  <span class="box-txt">
+                    <strong>H.M.BLUES</strong>
+                    <small>H.M.BLUES</small>
+                  </span>
+                </a>
+
+
+                <a href="/sport/international-exhibition-match.html" target="_blank" class="dropdown-item noti-item">
+                  <span class="box-img">
+                    <img class="lazy"
+                      src="https://www.thaiticketmajor.com/img_poster/prefix_1/0138/6138/international-exhibition-match-6721b68c0f628-m.png"
+                      alt="International Exhibition Match" style="">
+                  </span>
+                  <span class="box-txt">
+                    <strong>International Exhibition Match</strong>
+                    <small>International Exhibition Match</small>
+                  </span>
+                </a>
+
+
+                <a href="/concert/seventeen-right-here-world-tour-in-bangkok.html" target="_blank"
+                  class="dropdown-item noti-item">
+                  <span class="box-img">
+                    <img class="lazy"
+                      src="https://www.thaiticketmajor.com/img_poster/prefix_1/0137/6137/seventeen-right-here-world-tour-in-bangkok-67209e1cf1450-m.png"
+                      alt="SEVENTEEN [RIGHT HERE] WORLD TOUR IN BANGKOK" style="">
+                  </span>
+                  <span class="box-txt">
+                    <strong>SEVENTEEN [RIGHT HERE] WORLD TOUR<br> IN BANGKOK</strong>
+                    <small>SEVENTEEN [RIGHT HERE] WORLD TOUR IN BANGKOK</small>
+                  </span>
+                </a>
+
+
+                <a href="/performance/addicted-heroin-the-special-episode.html" target="_blank"
+                  class="dropdown-item noti-item">
+                  <span class="box-img">
+                    <img class="lazy"
+                      src="https://www.thaiticketmajor.com/img_poster/prefix_1/0136/6136/addicted-heroin-the-special-episode-67208ab61eb0a-m.jpg"
+                      alt="ADDICTED HEROIN THE SPECIAL EPISODE" style="">
+                  </span>
+                  <span class="box-txt">
+                    <strong>ADDICTED HEROIN THE SPECIAL EPISODE</strong>
+                    <small>ADDICTED HEROIN THE SPECIAL EPISODE</small>
+                  </span>
+                </a>
+
+
+              </div>
+              <div class="dropdown-divider"></div>
+              <a href="/all-event/" class="dropdown-item txtC small"><small class="txt-gray">All Event</small></a>
+            </div>
+          </div>
+
+          <button class="btn-signin item d-none d-lg-inline-block" onclick="$app.popup.signin();">Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="btn-menu" href="javascript:void(0);">
+    <span class="hamburger"></span>
+    <span class="x"></span>
+  </a>
+  <div style="display:none;">
+    <div class="popup" id="popup-member-menu">
+      <div class="popup-menu-list">
+        <a class="item" href="/user/myticket.php?urId="><i class="mr-3 fa fa-ticket" aria-hidden="true"></i>My
+          Ticket</a>
+        <a class="item" href="/user/history.php?urId=">
+          <i class="mr-3 fa fa-history" aria-hidden="true"></i>Purchase History</a>
+        <div class="divider-h gray d-none d-md-block"></div>
+        <a class="item" href="/user/editprofile.php?urId=">
+          <i class="mr-3 fa fa-pencil" aria-hidden="true"></i>Edit Profile </a>
+        <a class="item" href="/user/changepassword.php?urId=">
+          <i class="mr-3 fa fa-lock" aria-hidden="true"></i>Change Password </a>
+        <div class="divider-h gray d-none d-md-block"></div>
+        <a class="item" href="/user/logout.php">
+          <i class="mr-3 fa fa-sign-out" aria-hidden="true"></i>Sign Out </a>
+        <a class="item d-block d-md-none" href="javascript:void(0);" onclick="$.fancybox.close();"><span
+            class="txt-red">Close</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div>
+  <i th:replace="${content}">
+  </i>
+</div>
+
+
+
+<footer class="main-footer">
+  <div class="footer-container container">
+    <div class="row">
+      <div class="col-12 col-lg-3 col-xl-4 d-none d-lg-block">
+        <address class="box-address">
+          <a href="/">
+            <img class="ttm-logo" th:src="@{/image/logo-removebg-preview.png}" alt="THAITICKETMAJOR">
+          </a>
+          <p>
+            <span class="txtMed">THAITICKETMAJOR Company Limited</span>
+          </p>
+          <p>
+            3199 Maleenont Tower, 27th Floor, Rama IV Road,<br>
+            Klongton , Klongtoey, Bangkok 10110 </p>
+          <p>
+            Call : <a href="tel:022623456">02 262 3456</a><br>
+            E-mail : <a href="mailto:cs@thaiticketmajor.com">cs@thaiticketmajor.com</a>
+          </p>
+        </address>
+      </div>
+      <div class="col-12 col-lg-2">
+        <div class="menu-group">
+          <h3 class="menu-head">THAITICKETMAJOR</h3>
+          <ul class="menu-list">
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/about-us.php"
+                title="About Us">About Us</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/privacy-policies.php"
+                title="Privacy Policy">Privacy Policy</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/policies.php"
+                title="Terms of use">Terms of use</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/outlet-location.php"
+                title="Distribution Channel">Distribution Channel</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/advertisement.php"
+                title="Advertising">Advertising</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/job.php"
+                title="Jobs &amp; career">Jobs &amp; career</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-lg-2">
+        <div class="menu-group">
+          <h3 class="menu-head">Service</h3>
+          <ul class="menu-list">
+            <li class="menu-item"><a href="/all-event/" title="Events">EVENTS</a></li>
+            <li class="menu-item"><a target="_blank" href="http://shopping.thaiticketmajor.com/"
+                title="Shopping">MERCHANDISE</a></li>
+            <li class="menu-item"><a target="_blank" href="/variety/" title="News">VARIETY</a></li>
+            <li class="menu-item"><a href="/promotion/" title="Promotion">Promotion</a></li>
+            <li class="menu-item"><a
+                href="https://www.thaiticketmajor.com/ticketprotect/?utm_source=TTM_webfooter&amp;utm_medium=textlink&amp;utm_campaign=ticketprotect"
+                title="Ticket Protect" target="_blank">Ticket Protect</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-lg-2">
+        <div class="menu-group">
+          <h3 class="menu-head">Help</h3>
+          <ul class="menu-list">
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/contact-us.php"
+                title="Contact Us">Contact Us</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/faq.php"
+                title="Faq">Faq</a></li>
+            <li class="menu-item"><a target="_blank" href="https://corporate.thaiticketmajor.com/how-to-pay.php"
+                title="Payment Method">Payment Method</a></li>
+            <!--li class="menu-item"><a href="/ajax/popup-feedback-en.php" class="btn-popup-ajax" title="Customer Service">Customer Service</a></li-->
+            <li class="menu-item"><a href="https://www.thaiticketmajor.com/regis/unsub.htm"
+                title="Subscribe/Unsubscribe" target="_blank">Subscribe/Unsubscribe</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 col-xl-2">
+        <div class="contact-group">
+          <p>
+            <span class="d-inline-block d-lg-block">
+              <small class="d-none d-lg-block">Call center</small>
+              <i class="fa fa-phone d-inline-block d-lg-none" aria-hidden="true"></i>
+              <span class="txt-callcenter"><a href="tel:022623456">02 262 3456</a></span>
+            </span>
+            <span class="d-inline-block d-lg-none">
+              <i class="fa fa-envelope ml-1" aria-hidden="true"></i>
+              <span><a href="mailto:cs@thaiticketmajor.com">cs@thaiticketmajor.com</a></span>
+            </span>
+          </p>
+          <p class="box-social">
+            <a class="item" title="Facbook Fanpage" href="https://www.facebook.com/ThaiTicketMajor" target="_blank"><img
+                th:src="@{/image/facebook-circle.svg}" alt="Facebook"></a>
+            <a class="item" title="Line" href="https://line.me/R/ti/p/%40gaw9520p" target="_blank"><img
+              th:src="@{/image/instagram-circle.svg}" alt="Line"></a>
+            <a class="item" title="Instagram" href="https://instagram.com/thaiticketmajor" target="_blank"><img
+              th:src="@{/image/line-circle.svg}" alt="Instagram"></a>
+            <a class="item" title="Youtube" href="https://www.youtube.com/channel/UCIIP01HQDYGpc4qxNsqTMjw"
+              target="_blank"><img th:src="@{/image/x-circle.png}" alt="Youtube"></a>
+            <a class="item" title="X" href="https://x.com/ThaiTicketMajor" target="_blank"><img
+              th:src="@{/image/youtube-circle.svg}" alt="X"></a>
+          </p>
+          <p>
+            <small class="copyright">
+              © 2024 <a href="/">THAITICKETMAJOR</a>
+            </small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</html>

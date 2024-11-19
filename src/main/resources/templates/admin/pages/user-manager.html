@@ -1,0 +1,377 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- Custom Script File -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Add User</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" th:action="@{/admin/add-user}" th:object="${dl}" id="formAddUser">
+          <input type="hidden" th:field="*{id}"/>
+          <div class="row">
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Email</label>
+                <input type="email" class="form-control" th:field="*{email}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group input-group-static my-3">
+                <label>Date of birth</label>
+                <input type="date" class="form-control" th:field="*{dob}">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group input-group-static mb-4">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" th:field="*{phoneNo}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group input-group-static mb-4">
+                <label for="exampleFormControlSelect1" class="ms-0">Role</label>
+                <select class="form-control" th:field="*{role_id}">
+                  <option th:each="rl : ${listRole}" th:value="${rl.id}" th:text="${rl.name}"></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Password</label>
+                <input type="password" class="form-control" th:field="*{password}" id="password">
+              </div>
+            </div>
+            <div class="col-md-6" style="padding: 16px">
+              <div class="input-group input-group-static mb-4">
+                <label>Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" th:field="*{status}">
+                <label class="custom-control-label" for="customCheck1">Account active</label>
+              </div>
+            </div>
+          </div>
+        </form>      
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn bg-gradient-primary" form="formAddUser">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Xác minh mật khẩu cho form Add User
+  document.getElementById("formAddUser").addEventListener("submit", function(event) {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (password !== confirmPassword) {
+      event.preventDefault(); // Ngăn không cho form submit
+      alert("Password và Confirm Password phải giống nhau.");
+    }
+  });
+
+</script>
+
+
+<div class="modal fade" id="modalSua" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Update User</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn bg-gradient-primary" form="formUpdateUser">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalXoa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Confirm deletion of category</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" action="/admin/delete-user" method="post" id="delete-user" th:object="${dl}">
+          <input type="hidden" name="id" value="id của bản ghi mình cần xóa" />
+          <p>
+              Bạn có chắc muốn xóa ?
+          </p>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn bg-gradient-danger" form="delete-user">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">User table</h6>
+          </div>
+        </div>
+        <div th:if="${roleadvice == 'SUPER_ADMIN'}">
+          <button type="submit" class="btn btn-secondary" style="max-width: 200px; margin: 20px 0 10px 40px" data-toggle="modal" href="#modalAddUser"
+          data-target="#modalAddUser" data-original-title="Add user">Add User</button>
+          <script>
+            $('#modalAddUser').on('show.bs.modal', function (e) {
+
+
+                //populate the textbox
+                // $(e.currentTarget).find('input[name="id"]').val(id);
+            });
+          </script>
+        </div>
+        <div class="card-body px-0 pb-2" style="padding: 0;">
+          <div class="table-responsive p-0">
+
+            <table id="myTable" class="table table-striped" style="table-layout: fixed; width: 100%;">
+              <thead>
+                <tr>
+                  <th >ID</th>
+                  <th>Email</th>
+                  <th>Date of birth</th>
+                  <th>Phone</th>
+                  <th style="text-align: center;">Status</th>
+                  <th style="text-align: center;">Edit</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr th:each="dl : ${ds}">
+                  <td>
+                    <div class="d-flex px-3 py-1">
+                      <span class="text-xs font-weight-bold mb-0" th:text="${dl.id}"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.email}" style="overflow: hidden;"></p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.dob}"></p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.phoneNo}"></p>
+                  </td>
+                  <td class="align-middle text-center">
+                    
+                      <span class="badge badge-sm"
+                        th:classappend="${dl.status == false ? 'bg-gradient-danger' : 'bg-gradient-success'}"
+                        th:text="${dl.status ? 'Active' : 'Disabled'}"></span>
+                    
+                  </td>
+                 
+                  <td class="align-middle" style="text-align: center;">
+                    <a class="text-secondary font-weight-bold text-xs" th:href="@{/user/update/{id}(id=${dl.id})}">
+                      <i class="fa-solid fa-wrench" style="font-size: 20px; color: green"></i>
+                    </a>
+
+                    &nbsp;
+                    <a type="button" class="text-secondary font-weight-bold text-xs" data-toggle="modal"
+                      data-target="#modalXoa" href="#modalXoa" th:data-id="${dl.id}">
+                      <i class="fa-solid fa-trash-can" style="font-size: 20px; color: red;" ></i>
+                    </a>
+                    <script>
+                      function setupDeleteButton() {
+                        $('#modalXoa').off('click', '.btn.bg-gradient-danger').on('click', '.btn.bg-gradient-danger', function () {
+                          $('#modalXoa').modal('hide'); // Ẩn modal
+                          var id = $('#modalXoa').find('input[name="id"]').val();
+
+                          $.ajax({
+                            url: '/user/delete',
+                            type: 'POST',
+                            data: {
+                              id: id
+                            },
+                            success: function (response) {
+                              alert(response); // Thông báo xóa thành công
+                              $('tr:has(td:contains("' + id + '"))').remove(); // Tìm hàng có ID tương ứng và xóa
+                              $('#modalXoa').modal('hide');
+                            },
+                            error: function (xhr, status, error) {
+                              alert("Error deleting user: " + error);
+                            }
+                          });
+                        });
+                      }
+
+                      $('#modalXoa').on('show.bs.modal', function (e) {
+                        var id = $(e.relatedTarget).data('id');
+                        $(e.currentTarget).find('input[name="id"]').val(id);
+                        setupDeleteButton(); // Gọi hàm để thiết lập sự kiện mỗi khi modal mở
+                      });
+
+                    </script>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('#myTable').dataTable();
+    });
+  </script>
+
+<style>
+  /* Style the DataTables length menu (the dropdown) */
+  .dataTables_length select {
+    width: 75px;
+    padding: 5px;
+    margin: 5px 0;
+  }
+
+  /* Style the search input box */
+  .dataTables_filter input {
+    margin-left: 10px;
+  }
+
+  /* Style the table buttons (Export, etc.) */
+  .dataTables_wrapper .dt-buttons {
+    margin: 15px 0;
+  }
+
+  .dt-button {
+    background-color: #5bc0de;
+    border: 1px solid #5bc0de;
+    color: white;
+    padding: 6px 12px;
+    margin-right: 5px;
+    font-size: 14px;
+  }
+
+  .dt-button:hover {
+    background-color: #31b0d5;
+    border-color: #31b0d5;
+  }
+
+  .dataTables_filter {
+    display: none;
+  }
+</style>
+
+<script>
+
+
+  // Initialize DataTable
+  $('#myTable').DataTable({
+    "lengthMenu": [5, 10, 15],
+
+  });
+
+</script>
+
+<style>
+  /* Giữ padding cho các ô trong bảng để tạo không gian xung quanh nội dung */
+  #myTable td {
+    padding: 10px;
+    /* Tạo khoảng cách giữa nội dung và viền của ô */
+  }
+
+  /* Căn chỉnh các ảnh trong các ô để chúng không bị dính sát vào lề trên */
+  #myTable td img {
+    display: block;
+    /* Làm cho ảnh thành block để dễ dàng căn chỉnh */
+    margin: 0 auto;
+    /* Căn giữa ảnh */
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  /* Căn chỉnh chữ trong các ô (bao gồm cả chữ và các phần tử con khác) */
+  #myTable td p,
+  #myTable td span {
+    display: block;
+    /* Đảm bảo chữ được hiển thị dưới dạng block để có thể căn chỉnh */
+    margin-top: 5px;
+    /* Tạo khoảng cách giữa chữ và các phần tử khác, ví dụ ảnh */
+    vertical-align: middle;
+    /* Căn chỉnh văn bản theo chiều dọc */
+  }
+
+  /* Căn chỉnh các ô có ảnh và văn bản được căn giữa dọc */
+  #myTable td {
+    vertical-align: middle;
+    /* Căn chỉnh tất cả nội dung theo chiều dọc */
+  }
+
+  /* Đảm bảo các ô có ảnh và văn bản có khoảng cách hợp lý */
+  #myTable td img+p,
+  #myTable td img+span {
+    margin-top: 5px;
+    /* Tạo khoảng cách giữa ảnh và văn bản */
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script> $(document).ready(function () {
+    $('#searchInput').on('keyup', function () {
+      var value = $(this).val().toLowerCase();
+      $('#tableBody tr').filter(function () {
+        $(this).toggle($(this).find('td:eq(1)').text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  }); </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+  .input {
+    background-color: #ffffff;
+    max-width: 190px;
+    height: 40px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+  }
+
+  .input:focus {
+    color: rgb(0, 0, 0);
+    background-color: white;
+    transition: .1s;
+    transition-property: box-shadow;
+  }
+</style>

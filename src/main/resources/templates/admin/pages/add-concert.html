@@ -1,0 +1,144 @@
+<div class="row">
+    <div class="col-md-8 mt-4">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Add Concert</h6>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <form method="post" th:action="@{/addConcertAndSeats}" id="formAddConcert" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-6" style="padding-top:16px">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Concert Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static my-3">
+                    <label>Duration (Minutes)</label>
+                    <input type="number" class="form-control" id="duration" name="duration" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Start Sale</label>
+                    <input type="date" class="form-control" id="startSale" name="startSale" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>End Sale</label>
+                    <input type="date" class="form-control" id="endSale" name="endSale" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Video Link</label>
+                    <input type="text" class="form-control" id="videoLink" name="videoLink">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label for="exampleFormControlSelect1" class="ms-0">Category</label>
+                    <select class="form-control" name="category_id">
+                      <option th:each="cl : ${listCategory}" th:value="${cl.id}" th:text="${cl.catname}"></option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Main Photo</label>
+                    <input type="file" class="form-control" id="mainImageFile" name="mainImageFile">
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 30px;">
+                  <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Sub Photo 1</label>
+                      <input type="file" class="form-control" id="subImageFile1" name="subImageFile1">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Sub Photo 2</label>
+                      <input type="file" class="form-control" id="subImageFile2" name="subImageFile2">
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <label></label>
+                    <input type="hidden" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="status" name="status">
+                    <label class="custom-control-label" for="customCheck1">Concert active</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="input-group input-group-dynamic">
+                    <textarea class="form-control" rows="5" placeholder="Description" spellcheck="false" id="moTa" name="moTa"></textarea>
+                  </div>
+                </div>
+              </div>
+              <h6 class="mb-0">Add Seats</h6>
+              <div class="row" style="margin-top: 15px;">
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Total Rows</label>
+                      <input type="number" class="form-control" id="rows" name="rows" required>
+                    </div>
+                  </div>
+                <div class="col-md-6">
+                    <div class="input-group input-group-static mb-4">
+                        <label>Total Columns</label>
+                        <input type="number" class="form-control" id="columns" name="columns" required>
+                      </div>
+                </div>
+              </div>
+              
+              <h4>Enter zone and price</h4>
+              <div class="container">
+              <div class="row" th:each="zone, zoneStat : ${listZone}">
+                <div class="form-check col-sm-4" style="margin-top: 2px;">
+                  <input class="form-check-input" type="checkbox" th:name="zoneIds" th:value="${zone.id}"
+                      th:checked="${zone.name == 'standard'}" 
+                      th:disabled="${zone.name == 'standard'}" />
+                  <label class="custom-control-label" th:text="${zone.name}">Zone Name</label>
+                </div>
+                <div class="input-group input-group-static col-sm">
+                  <input type="number" class="form-control" th:name="prices" 
+                      placeholder="Enter price for zone" 
+                      min="0" step="1000" 
+                      th:value="${zone.name == 'standard' ? null : ''}" /> <!-- Cho phép Enter price for zone standard -->
+                      <!-- Trường ẩn cho zone "standard" để lưu giá trị ID -->
+                  <input type="hidden" th:name="zoneIds" th:value="${zone.id}" 
+                  th:if="${zone.name == 'standard'}" />
+                </div>
+            </div>
+          </div>
+                    
+            </form>
+            <button type="submit" class="btn bg-gradient-primary" form="formAddConcert" style="margin-top: 20px;">Save changes</button>
+          </div>
+        </div>
+    </div>
+</div>

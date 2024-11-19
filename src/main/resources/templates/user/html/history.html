@@ -1,0 +1,135 @@
+<main class="main-container" role="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-3">
+                <div class="member-sidebar">
+                    <div class="box-member-info">
+                        <div class="form-row justify-content-center txtC">
+                            <div class="col-12">
+                                <p class="my-2">
+                                    <strong class="txtBig" th:text="${user.email}">giang dang tuan</strong><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="d-block d-lg-none text-center">
+                        <a class="btn-linear-round-black btn-small" href="javascript:void(0);"
+                            onclick="$app.popup.memberMenu('#member-nav');">Member Menu</a>
+                    </p>
+                    <div class="divider-h gray d-block d-lg-none"></div>
+                    <nav class="member-nav mt-0 mt-lg-4" role="menu" id="member-nav">
+                        <div class="inner popup-menu-list">
+                            <a class="item" href="/user/history">
+                                <i class="mr-3 fa fa-history" aria-hidden="true"></i>Purchase History</a>
+                            <div class="divider-h gray d-none d-lg-block"></div>
+                            <a class="item" href="/user/profile">
+                                <i class="mr-3 fa fa-pencil" aria-hidden="true"></i>Edit Profile </a>
+                            <a class="item" href="/user/changePassword">
+                                <i class="mr-3 fa fa-lock" aria-hidden="true"></i>Change Password </a>
+                            <div class="divider-h gray d-none d-lg-block"></div>
+                            <a class="item"  onclick="logout()" type="button">
+                                <i class="mr-3 fa fa-sign-out" aria-hidden="true"></i>Sign Out </a>
+                            <a class="item d-block d-lg-none" href="javascript:void(0);"
+                                onclick="$.fancybox.close();"><span class="txt-red">Close</span></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <div class="divider-v gray h-100"></div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="member-body">
+                    <form class="form box-select-date" id="frmMyticket">
+                        <div class="header-section">
+                            <h2 class="head"><strong>My Ticket</strong></h2>
+
+                        </div>
+
+                        <div class="member-content" id="response">
+                            <ul class="" th:each="dl : ${bills}">
+                                <li>
+                                    <div class="card-item-mobile">
+                                        <div class="py-2 px-2 py-md-3 px-md-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-8">
+                                                            <strong class="d-block txtBig text-md-left my-1"  th:text="${dl.getConcertName()}"> </strong>
+                                                            <div class="d-md-block">
+                                                                <span class="d-block my-1"><strong class="d-inline">
+                                                                        Order no : </strong> <span
+                                                                        th:text="${dl.id}"></span> </span>
+                                                                        Seat id : </strong><span
+                                                                        th:each="detail : ${billDetails}"
+                                                                        th:if="${detail.bill_id == dl.id}"><span
+                                                                            th:text="${detail.seat_id}"></span>/</span>
+                                                                </span>
+                                                                <span class="d-block my-1"><strong class="d-inline">
+                                                                        Price : </strong> <span
+                                                                        th:text="${#numbers.formatDecimal(dl.total, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                                    $</span>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-auto align-self-center"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="urId" id="urId" value="86190d272d2692391c5fdf3bbac1e165">
+                        <input type="hidden" name="urIdx" id="urIdx" value="86190d272d2692391c5fdf3bbac1e165">
+                        <!-- <input type="hidden" name="checkx" id="checkx" value="" /> -->
+                        <input type="hidden" name="ylang" id="ylang" value="en">
+                        <input type="hidden" name="googlewallet_url" id="googlewallet_url"
+                            value="https://pds3srxsb77yqayymjufzepfde0nqylg.lambda-url.ap-southeast-1.on.aws/">
+                        <input type="hidden" name="time" id="time" value="Time Out">
+                        <input type="hidden" name="time2" id="time2" size="0" value="179000">
+                        <input type="hidden" name="peak_time_flag" id="peak_time_flag" value="N">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Xác minh mật khẩu cho form Add User
+        document.getElementById("frm-change-password").addEventListener("submit", function (event) {
+            const password = document.getElementById("new_password").value;
+            const confirmPassword = document.getElementById("confirm_password").value;
+
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Ngăn không cho form submit
+                alert("Password và Confirm Password phải giống nhau.");
+            }
+        });
+
+        // Lấy tất cả các trường input trong form
+        const inputs = document.querySelectorAll('.input-txt');
+
+        inputs.forEach(input => {
+            // Kiểm tra nếu input có dữ liệu khi tải trang
+            toggleActiveClass(input);
+
+            // Lắng nghe sự kiện khi người dùng nhập hoặc thay đổi giá trị
+            input.addEventListener('input', () => {
+                toggleActiveClass(input);
+            });
+        });
+
+        function toggleActiveClass(input) {
+            const label = input.closest('label');
+            if (input.value.trim() !== '') {
+                label.classList.add('active');
+            } else {
+                label.classList.remove('active');
+            }
+        }
+
+
+    </script>
+</main>

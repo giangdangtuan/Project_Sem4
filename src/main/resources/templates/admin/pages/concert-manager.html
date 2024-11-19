@@ -1,0 +1,280 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- Custom Script File -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="modal fade" id="modalXoa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Confirm deletion of concert</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="id" />
+        <p>Bạn có chắc muốn xóa?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Concert table</h6>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex justify-content-between" style="width: 100%; margin: 20px 0;">
+          <!-- Add Concert Button -->
+          <button type="submit" class="btn btn-secondary" style="max-width: 200px; margin: 0;margin-left: 20px;"
+            onclick="window.location.href='/addConcertAndSeats'">Add Concert</button>
+
+          <!-- Search Input -->
+          <input type="text" id="searchInput" class="input" placeholder="Search Concert"
+            style="flex-grow: 1; margin-left: 20px; max-width: 50%; padding: 10px; margin-right: 20px;">
+        </div>
+
+
+
+
+        <div class="card-body px-0 pb-2" style="padding: 0;">
+          <div class="table-responsive p-0">
+
+            <table id="myTable" class="table table-striped" style="table-layout: fixed; width: 100%;">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Concert Name</th>
+                  <th>Sale start</th>
+                  <th>Sale end</th>
+                  <th>Event date</th>
+                  <th>Status</th>
+                  <th>Banner</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr th:each="dl : ${ds}">
+                  <td>
+                    <div class="d-flex px-3 py-1">
+                      <span class="text-xs font-weight-bold mb-0" th:text="${dl.id}"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.name}" style="overflow: hidden;"></p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.startSale}"></p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0" th:text="${dl.endSale}"></p>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold" th:text="${dl.startDate}"></span>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm"
+                      th:classappend="${dl.status == false ? 'bg-gradient-danger' : 'bg-gradient-success'}"
+                      th:text="${dl.status ? 'Available' : 'Unavailable'}"></span>
+
+
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <img th:src="@{/images/{imageName}(imageName=${dl.mainImage})}" alt="Ảnh Đại Diện"
+                      style="width: 50px;height: 50px;" onerror="this.onerror=null; this.src='@{/images/error.png}';" />
+                  </td>
+                  <td class="align-middle">
+                    <a class="text-secondary font-weight-bold text-xs" th:href="@{/concert/update/{id}(id=${dl.id})}">
+                      <i class="fa-solid fa-wrench" style="font-size: 20px; color: green"></i>
+                    </a>
+
+                    &nbsp;
+                    <a type="button" class="text-secondary font-weight-bold text-xs" data-toggle="modal"
+                      data-target="#modalXoa" href="#modalXoa" th:data-id="${dl.id}">
+                      <i class="fa-solid fa-trash-can" style="font-size: 20px; color: red;" ></i>
+                    </a>
+                    <script>
+                      function setupDeleteButton() {
+                        $('#modalXoa').off('click', '.btn.bg-gradient-danger').on('click', '.btn.bg-gradient-danger', function () {
+                          $('#modalXoa').modal('hide'); // Ẩn modal
+                          var id = $('#modalXoa').find('input[name="id"]').val();
+
+                          $.ajax({
+                            url: '/concert/delete',
+                            type: 'POST',
+                            data: {
+                              id: id
+                            },
+                            success: function (response) {
+                              alert(response); // Thông báo xóa thành công
+                              $('tr:has(td:contains("' + id + '"))').remove(); // Tìm hàng có ID tương ứng và xóa
+                              $('#modalXoa').modal('hide');
+                            },
+                            error: function (xhr, status, error) {
+                              alert("Error deleting concert: " + error);
+                            }
+                          });
+                        });
+                      }
+
+                      $('#modalXoa').on('show.bs.modal', function (e) {
+                        var id = $(e.relatedTarget).data('id');
+                        $(e.currentTarget).find('input[name="id"]').val(id);
+                        setupDeleteButton(); // Gọi hàm để thiết lập sự kiện mỗi khi modal mở
+                      });
+
+                    </script>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </body>
+
+          <script>
+            $(document).ready(function () {
+              $('#myTable').dataTable();
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Style the DataTables length menu (the dropdown) */
+  .dataTables_length select {
+    width: 75px;
+    padding: 5px;
+    margin: 5px 0;
+  }
+
+  /* Style the search input box */
+  .dataTables_filter input {
+    margin-left: 10px;
+  }
+
+  /* Style the table buttons (Export, etc.) */
+  .dataTables_wrapper .dt-buttons {
+    margin: 15px 0;
+  }
+
+  .dt-button {
+    background-color: #5bc0de;
+    border: 1px solid #5bc0de;
+    color: white;
+    padding: 6px 12px;
+    margin-right: 5px;
+    font-size: 14px;
+  }
+
+  .dt-button:hover {
+    background-color: #31b0d5;
+    border-color: #31b0d5;
+  }
+
+  .dataTables_filter {
+    display: none;
+  }
+</style>
+
+<script>
+
+
+  // Initialize DataTable
+  $('#myTable').DataTable({
+    "lengthMenu": [5, 10, 15],
+
+  });
+
+</script>
+
+<style>
+  /* Giữ padding cho các ô trong bảng để tạo không gian xung quanh nội dung */
+  #myTable td {
+    padding: 10px;
+    /* Tạo khoảng cách giữa nội dung và viền của ô */
+  }
+
+  /* Căn chỉnh các ảnh trong các ô để chúng không bị dính sát vào lề trên */
+  #myTable td img {
+    display: block;
+    /* Làm cho ảnh thành block để dễ dàng căn chỉnh */
+    margin: 0 auto;
+    /* Căn giữa ảnh */
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  /* Căn chỉnh chữ trong các ô (bao gồm cả chữ và các phần tử con khác) */
+  #myTable td p,
+  #myTable td span {
+    display: block;
+    /* Đảm bảo chữ được hiển thị dưới dạng block để có thể căn chỉnh */
+    margin-top: 5px;
+    /* Tạo khoảng cách giữa chữ và các phần tử khác, ví dụ ảnh */
+    vertical-align: middle;
+    /* Căn chỉnh văn bản theo chiều dọc */
+  }
+
+  /* Căn chỉnh các ô có ảnh và văn bản được căn giữa dọc */
+  #myTable td {
+    vertical-align: middle;
+    /* Căn chỉnh tất cả nội dung theo chiều dọc */
+  }
+
+  /* Đảm bảo các ô có ảnh và văn bản có khoảng cách hợp lý */
+  #myTable td img+p,
+  #myTable td img+span {
+    margin-top: 5px;
+    /* Tạo khoảng cách giữa ảnh và văn bản */
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script> $(document).ready(function () {
+    $('#searchInput').on('keyup', function () {
+      var value = $(this).val().toLowerCase();
+      $('#tableBody tr').filter(function () {
+        $(this).toggle($(this).find('td:eq(1)').text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  }); </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+  .input {
+    background-color: #ffffff;
+    max-width: 190px;
+    height: 40px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+  }
+
+  .input:focus {
+    color: rgb(0, 0, 0);
+    background-color: white;
+    transition: .1s;
+    transition-property: box-shadow;
+  }
+</style>
