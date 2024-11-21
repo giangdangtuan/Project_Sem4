@@ -94,9 +94,5 @@ public class ConcertService {
         concertRepository.deleteById(id);
     }
 
-    public String getMainImage(int concertId) {
-        Concert concert = concertRepository.findById(concertId)
-                .orElseThrow(() -> new RuntimeException("Concert not found!"));
-        return concert.getMainImage();
-    }
+   
 }

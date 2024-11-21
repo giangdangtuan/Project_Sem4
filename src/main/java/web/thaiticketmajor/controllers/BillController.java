@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import web.thaiticketmajor.Models.Bill;
 import web.thaiticketmajor.Models.Bill_detail;
+import web.thaiticketmajor.Models.Concert;
 import web.thaiticketmajor.Models.Seat;
 import web.thaiticketmajor.Services.BillDetailService;
 import web.thaiticketmajor.Services.BillService;
@@ -33,7 +34,7 @@ public class BillController {
 
     @Autowired
     private ConcertService concertService;
-
+    
     @PreAuthorize("hasRole('SUPER_ADMIN') || hasRole('ADMIN_CONCERT')")
     @GetMapping({
             "/bill",
@@ -56,11 +57,11 @@ public class BillController {
     public String getDetail(@PathVariable int id, Model model) {
 
         List<Bill_detail> billDetails = billService.findBillsDetailByBillId(id);
+        Concert concert = concertService.getConcertById(billService.findBillById(id).getConcert_id());
+        String mainImg = concert.getMainImage();
         model.addAttribute("bills", billDetails);
+        model.addAttribute("mainImg", mainImg);
         model.addAttribute("content", "admin/pages/billDetails-manager.html"); // duyet.html
-        
-        String imageUrl = concertService.getMainImage(id);
-        model.addAttribute("img", imageUrl);
         return "admin/index.html";
     }
 }

@@ -49,4 +49,5 @@ public class Bill_detail
     public String getCollumn(){
         return this.seat.getSeat_column();
     }
+
 }

@@ -1,15 +1,9 @@
 <div class="ticket" style="width: 950px;" th:each="dl, iterStat : ${bills}" th:if="${iterStat.index == 0}">
     <div class="left">
-        <div class="image">
-            <p class="admit-one">
-                <span>ADMIT ONE</span>
-                <span>ADMIT ONE</span>
-                <span>ADMIT ONE</span>
-            </p>
+        <div class="image" th:style="'background-image: url(' + @{'/images/'+${mainImg}} + ')'" style="height: 1000px;">
+        
             <div class="ticket-number">
-                <p>
-                    Order Number : <span th:text="${dl.bill_id}"></span>
-                </p>
+              
             </div>
         </div>
         <div class="ticket-info">
@@ -25,9 +19,12 @@
             <div class="time">
                 <p>Number of tickets: <span th:text="${#lists.size(bills)}"></span></p>
                 <p>Zone <span th:text="${dl.getZone()}"></span></p>
+                <p>Price For Each ticket: <span th:text="${dl.getPrice()}"></span></p>
             </div>
-            <p class="location"><span>some place name</span>
-                <span class="separator"><i class="far fa-smile"></i></span><span>around cornor</span>
+            <p class="location"><span> 
+                Order Number : <span th:text="${dl.bill_id}"></span>
+            </span>
+                <span class="separator"><i class="far fa-smile"></i></span><span>Boss tickets</span>
             </p>
         </div>
     </div>
@@ -90,10 +87,7 @@
     }
 
     .image {
-        height: 250px;
-        width: 250px;
-        background-image: url("https://images.pexels.com/photos/2311713/pexels-photo-2311713.jpeg?auto=compress&cs=tinysrgb&w=600");
-        background-size: cover;
+
         opacity: 0.85;
     }
 
